@@ -1,0 +1,84 @@
+.root {
+  position: fixed;
+  top: 18vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1200;
+  width: min(560px, calc(100vw - 2.5rem));
+  border-radius: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.92);
+  color: #f8fafc;
+  backdrop-filter: blur(28px);
+  box-shadow: 0 48px 120px -60px rgba(2, 6, 23, 0.65);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.shortcut {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  color: rgba(226, 232, 240, 0.75);
+}
+
+.list {
+  max-height: 320px;
+  overflow: auto;
+  padding: 0.65rem;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.group [cmdk-group-heading] {
+  font-size: 0.75rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.6);
+  padding: 0.6rem 0.4rem 0.2rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.item[data-selected="true"],
+.item:hover {
+  background: rgba(99, 102, 241, 0.16);
+}
+
+.empty {
+  padding: 1.25rem;
+  text-align: center;
+  color: rgba(148, 163, 184, 0.75);
+}
