@@ -1,0 +1,20 @@
+<svg width="960" height="600" viewBox="0 0 960 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="600" rx="48" fill="url(#paint0_linear)" />
+  <g opacity="0.92">
+    <rect x="130" y="130" width="700" height="120" rx="26" fill="rgba(8, 47, 73, 0.55)" stroke="rgba(59, 130, 246, 0.55)" stroke-width="2"/>
+    <rect x="170" y="286" width="240" height="168" rx="26" fill="rgba(12, 74, 110, 0.55)" stroke="rgba(96, 165, 250, 0.5)" stroke-width="2"/>
+    <rect x="450" y="286" width="340" height="168" rx="26" fill="rgba(8, 47, 73, 0.55)" stroke="rgba(78, 190, 255, 0.5)" stroke-width="2"/>
+    <rect x="210" y="322" width="160" height="22" rx="11" fill="#F97316" opacity="0.45"/>
+    <rect x="210" y="358" width="120" height="22" rx="11" fill="#FB923C" opacity="0.35"/>
+    <rect x="494" y="330" width="240" height="20" rx="10" fill="#0EA5E9" opacity="0.45"/>
+    <rect x="494" y="364" width="280" height="20" rx="10" fill="#38BDF8" opacity="0.35"/>
+    <path d="M210 180H750" stroke="#38BDF8" stroke-width="8" stroke-linecap="round" stroke-dasharray="20 14" opacity="0.65"/>
+    <path d="M210 220H750" stroke="#F97316" stroke-width="8" stroke-linecap="round" stroke-dasharray="12 12" opacity="0.55"/>
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear" x1="120" y1="40" x2="840" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0c4a6e"/>
+      <stop offset="1" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+</svg>

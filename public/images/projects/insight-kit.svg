@@ -1,0 +1,21 @@
+<svg width="960" height="600" viewBox="0 0 960 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="600" rx="48" fill="url(#paint0_linear)" />
+  <g opacity="0.9">
+    <rect x="150" y="140" width="660" height="120" rx="28" fill="rgba(23, 37, 84, 0.5)" stroke="rgba(251, 191, 36, 0.55)" stroke-width="2"/>
+    <rect x="150" y="288" width="280" height="182" rx="28" fill="rgba(30, 64, 175, 0.6)" stroke="rgba(251, 191, 36, 0.45)" stroke-width="2"/>
+    <rect x="460" y="288" width="350" height="182" rx="28" fill="rgba(23, 37, 84, 0.5)" stroke="rgba(250, 204, 21, 0.55)" stroke-width="2"/>
+    <path d="M210 196H250V244H210V196Z" fill="#FACC15" opacity="0.75"/>
+    <path d="M280 196H320V244H280V196Z" fill="#FBBF24" opacity="0.65"/>
+    <path d="M350 196H390V244H350V196Z" fill="#F59E0B" opacity="0.55"/>
+    <path d="M520 340C520 316.804 538.804 298 562 298H668C691.196 298 710 316.804 710 340C710 363.196 691.196 382 668 382H562C538.804 382 520 363.196 520 340Z" stroke="#FACC15" stroke-width="8" opacity="0.75"/>
+    <path d="M520 420H756" stroke="#FACC15" stroke-width="10" stroke-linecap="round" stroke-dasharray="28 14" opacity="0.7"/>
+    <circle cx="236" cy="356" r="38" fill="#FACC15" opacity="0.3"/>
+    <circle cx="236" cy="356" r="24" fill="#22C55E" opacity="0.5"/>
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear" x1="120" y1="60" x2="840" y2="540" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1e3a8a"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+</svg>

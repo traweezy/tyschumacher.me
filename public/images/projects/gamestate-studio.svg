@@ -1,0 +1,21 @@
+<svg width="960" height="600" viewBox="0 0 960 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="600" rx="48" fill="url(#paint0_linear)" />
+  <g opacity="0.92">
+    <rect x="120" y="112" width="720" height="136" rx="28" fill="rgba(6, 78, 110, 0.35)" stroke="rgba(34, 211, 238, 0.5)" stroke-width="2"/>
+    <rect x="160" y="284" width="260" height="184" rx="28" fill="rgba(9, 28, 37, 0.55)" stroke="rgba(94, 234, 212, 0.45)" stroke-width="2"/>
+    <rect x="460" y="284" width="360" height="184" rx="28" fill="rgba(9, 24, 39, 0.55)" stroke="rgba(59, 130, 246, 0.45)" stroke-width="2"/>
+    <circle cx="240" cy="210" r="36" fill="rgba(53, 162, 159, 0.45)" stroke="#5EEAD4" stroke-width="2"/>
+    <circle cx="360" cy="210" r="36" fill="rgba(14, 165, 233, 0.35)" stroke="#38BDF8" stroke-width="2"/>
+    <circle cx="480" cy="210" r="36" fill="rgba(14, 116, 144, 0.35)" stroke="#06B6D4" stroke-width="2"/>
+    <path d="M520 360H720" stroke="#38BDF8" stroke-width="8" stroke-linecap="round" opacity="0.75"/>
+    <path d="M520 400H680" stroke="#5EEAD4" stroke-width="8" stroke-linecap="round" opacity="0.65"/>
+    <rect x="180" y="324" width="200" height="24" rx="12" fill="#0EA5E9" opacity="0.4"/>
+    <rect x="180" y="364" width="160" height="24" rx="12" fill="#22D3EE" opacity="0.3"/>
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear" x1="80" y1="40" x2="880" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#115E59"/>
+      <stop offset="1" stop-color="#0C4A6E"/>
+    </linearGradient>
+  </defs>
+</svg>
