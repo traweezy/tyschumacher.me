@@ -1,0 +1,75 @@
+.form {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1.8rem, 2.1vw, 2.4rem);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface-100);
+  box-shadow: 0 22px 60px -48px var(--shadow-color);
+}
+
+.row {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.field span:first-of-type {
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface-0);
+  color: var(--text-primary);
+  font: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.field input[aria-invalid="true"],
+.field textarea[aria-invalid="true"] {
+  border-color: rgba(244, 63, 94, 0.6);
+  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.16);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.error {
+  min-height: 1.1rem;
+  font-size: 0.8rem;
+  color: rgba(244, 63, 94, 0.9);
+}
+
+.status {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .form {
+  background: linear-gradient(150deg, rgba(8, 18, 44, 0.9), rgba(36, 12, 64, 0.82));
+}
