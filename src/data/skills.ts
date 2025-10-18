@@ -1,0 +1,17 @@
+export const skills = [
+  "React 19",
+  "Next.js",
+  "TypeScript",
+  "Go",
+  "Node.js",
+  "PostgreSQL",
+  "GraphQL",
+  "Kubernetes",
+  "WebSockets",
+  "Tailwind CSS",
+  "Zustand",
+  "TanStack Query",
+  "Accessibility Audits",
+  "Performance Budgets",
+  "SEO",
+] as const;
