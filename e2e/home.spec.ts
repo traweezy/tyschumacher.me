@@ -26,7 +26,7 @@ test.describe("Home experience", () => {
     const viewExperience = page.getByRole("link", { name: /View experience/i });
     await expect(viewExperience).toHaveAttribute("href", "#experience");
 
-    const resumeLink = page.getByRole("link", { name: /^Download résumé$/i });
+    const resumeLink = page.getByRole("link", { name: /^Download resume$/i });
     await expect(resumeLink).toHaveAttribute("download", "");
     await expect(resumeLink).toHaveAttribute("href", "/tyler-schumacher-resume.pdf");
 
@@ -63,7 +63,7 @@ test.describe("Home experience", () => {
     });
 
     await page.goto("/");
-    await page.waitForLoadState("networkidle");
+    await page.waitForLoadState("load");
 
     const header = page.getByRole("banner");
     const initialHeight = await header.evaluate((element) => element.getBoundingClientRect().height);
@@ -313,19 +313,16 @@ test.describe("Home experience", () => {
     }
   });
 
-  test("shows contact guidance and default status message", async ({ page }) => {
+  test("shows contact guidance without exposing direct email", async ({ page }) => {
     await page.goto("/");
 
     const contactRegion = page.getByRole("region", { name: /Contact/i });
     await expect(contactRegion).toBeVisible();
 
     const status = page.getByRole("status");
-    await expect(status).toHaveText(new RegExp(profile.email, "i"));
+    await expect(status).toHaveText("");
 
-    await expect(contactRegion.getByRole("link", { name: profile.email })).toHaveAttribute(
-      "href",
-      `mailto:${profile.email}`,
-    );
+    await expect(contactRegion.getByText(new RegExp(profile.email, "i"))).toHaveCount(0);
   });
 
   test("validates contact form fields on blur", async ({ page }) => {
@@ -382,10 +379,7 @@ test.describe("Home experience", () => {
 
     await page.locator('form button[type="submit"]').click();
 
-    const fallbackMessage = new RegExp(
-      `We couldn[’']t send your message right now\\. Please email ${profile.email.replace(/\./g, "\\.")} instead\\.`,
-      "i",
-    );
+    const fallbackMessage = /We couldn[’']t send your message right now\. Please try again later\./i;
     await expect(page.getByRole("status")).toHaveText(fallbackMessage);
     await expect(page.getByText(fallbackMessage)).toBeVisible();
   });
