@@ -75,6 +75,12 @@ export const metadata: Metadata = {
     title,
     description,
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+  },
 };
 
 export const viewport: Viewport = {
