@@ -888,7 +888,7 @@ a:focus-visible {
 .experience-filter--active {
   background: var(--accent);
   border-color: var(--accent);
-  color: var(--background);
+  color: #02000b;
 }
 
 .experience-card[style*="width: 0px"] {
