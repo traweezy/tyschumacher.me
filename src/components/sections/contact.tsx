@@ -1,5 +1,6 @@
 import { Section } from "@/components/layout/section";
 import { ContactForm } from "@/components/forms/contact-form";
+import { profile } from "@/data/profile";
 
 export const ContactSection = () => (
   <Section
@@ -22,7 +23,7 @@ export const ContactSection = () => (
         </li>
       </ul>
       <p className="contact-info__email type-body-sm measure-short">
-        Or reach me directly at <a href="mailto:hello@example.com">hello@example.com</a>.
+        Or reach me directly at <a href={`mailto:${profile.email}`}>{profile.email}</a>.
       </p>
     </div>
   </Section>

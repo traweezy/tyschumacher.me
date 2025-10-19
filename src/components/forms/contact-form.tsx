@@ -14,8 +14,11 @@ const contactSchema = z.object({
 
 type ContactValues = z.infer<typeof contactSchema>;
 
+const DIRECT_EMAIL = "tyschumacher@proton.me";
+
 export const ContactForm = () => {
-  const [status, setStatus] = useState<"idle" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "pending" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const form = useForm<ContactValues>({
     defaultValues: {
@@ -32,10 +35,32 @@ export const ContactForm = () => {
         })));
         return;
       }
-      await new Promise((resolve) => setTimeout(resolve, 600));
-      formApi.reset();
-      setStatus("success");
-      console.info("Contact form submission", parsed.data);
+      setStatus("pending");
+      setErrorMessage(null);
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(parsed.data),
+        });
+
+        if (!response.ok) {
+          const data = (await response.json().catch(() => ({}))) as { message?: string };
+          const message =
+            data?.message ??
+            `We couldn’t send your message right now. Please email ${DIRECT_EMAIL} instead.`;
+          setStatus("error");
+          setErrorMessage(message);
+          return;
+        }
+
+        formApi.reset();
+        setStatus("success");
+      } catch (error) {
+        console.error("Contact form submission failed", error);
+        setStatus("error");
+        setErrorMessage(`We couldn’t send your message. Please email ${DIRECT_EMAIL} instead.`);
+      }
     },
   });
 
@@ -107,13 +132,15 @@ export const ContactForm = () => {
           </label>
         )}
       </form.Field>
-      <Button type="submit" size="lg">
-        Send message
+      <Button type="submit" size="lg" disabled={status === "pending"}>
+        {status === "pending" ? "Sending…" : "Send message"}
       </Button>
       <p role="status" aria-live="polite" className={styles.status}>
         {status === "success"
           ? "Thanks! I’ll reach out within two business days."
-          : "Prefer email? hello@example.com—include context and I’ll respond quickly."}
+          : status === "error" && errorMessage
+            ? errorMessage
+            : `Prefer email? ${DIRECT_EMAIL}—include context and I’ll respond quickly.`}
       </p>
     </form>
   );

@@ -1,7 +1,7 @@
 export const profile = {
   name: "Tyler Schumacher",
   location: "Buffalo, NY",
-  email: "hello@example.com",
+  email: "tyschumacher@proton.me",
   headline: "Full-stack engineer building realtime, high-performance products.",
   subhead:
     "I help product squads ship delightful, resilient experiences—balancing accessibility, performance, and observability from day one.",
