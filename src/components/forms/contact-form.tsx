@@ -119,7 +119,7 @@ export const ContactForm = () => {
           : FALLBACK_ERROR_MESSAGE;
       return message;
     }
-    return "I reply to every message within two business days.";
+    return null;
   }, [contactMutation.error, contactMutation.isError, contactMutation.isSuccess]);
 
   const textInputs = [
