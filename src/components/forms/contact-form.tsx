@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
+import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import styles from "./contact-form.module.css";
@@ -20,6 +21,37 @@ export const ContactForm = () => {
   const [status, setStatus] = useState<"idle" | "pending" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const contactMutation = useMutation({
+    mutationFn: async (values: ContactValues) => {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
+        const data = (await response.json().catch(() => ({}))) as { message?: string };
+        throw new Error(
+          data?.message ??
+            `We couldn’t send your message right now. Please email ${DIRECT_EMAIL} instead.`,
+        );
+      }
+    },
+    onSuccess: (_data, _variables, context) => {
+      context?.reset?.();
+      setStatus("success");
+    },
+    onError: (error: unknown) => {
+      console.error("Contact form submission failed", error);
+      setStatus("error");
+      const message =
+        error instanceof Error
+          ? error.message
+          : `We couldn’t send your message. Please email ${DIRECT_EMAIL} instead.`;
+      setErrorMessage(message);
+    },
+  });
+
   const form = useForm<ContactValues>({
     defaultValues: {
       name: "",
@@ -37,30 +69,12 @@ export const ContactForm = () => {
       }
       setStatus("pending");
       setErrorMessage(null);
-      try {
-        const response = await fetch("/api/contact", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(parsed.data),
-        });
-
-        if (!response.ok) {
-          const data = (await response.json().catch(() => ({}))) as { message?: string };
-          const message =
-            data?.message ??
-            `We couldn’t send your message right now. Please email ${DIRECT_EMAIL} instead.`;
-          setStatus("error");
-          setErrorMessage(message);
-          return;
-        }
-
-        formApi.reset();
-        setStatus("success");
-      } catch (error) {
-        console.error("Contact form submission failed", error);
-        setStatus("error");
-        setErrorMessage(`We couldn’t send your message. Please email ${DIRECT_EMAIL} instead.`);
-      }
+      contactMutation.mutate(parsed.data, {
+        onSuccess: () => {
+          formApi.reset();
+        },
+        context: { reset: formApi.reset },
+      });
     },
   });
 
