@@ -1,6 +1,6 @@
 "use client";
 
-import { trace, context, SpanStatusCode } from "@opentelemetry/api";
+import { trace, context } from "@opentelemetry/api";
 import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
 import { BatchSpanProcessor, ConsoleSpanExporter, SimpleSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";

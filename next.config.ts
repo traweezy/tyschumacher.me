@@ -6,7 +6,9 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
-  typedRoutes: true,
+  experimental: {
+    turbopackFileSystemCacheForDev: true,
+  },
 };
 
 export default nextConfig;
