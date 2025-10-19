@@ -11,9 +11,7 @@ export const Hero = () => (
   <section id="home" className="hero">
     <Container className="hero__content">
       <div className="hero__intro">
-        <span className="hero__eyebrow type-eyebrow">
-          {profile.name} · {profile.location}
-        </span>
+        <span className="hero__eyebrow type-eyebrow">{profile.location}</span>
         <h1 className="hero__title type-heading-1 text-balance">
           {profile.name}
           <span className="hero__title-tagline">{profile.headline}</span>
