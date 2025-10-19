@@ -80,18 +80,24 @@ export const ContactForm = () => {
       FORM_FIELDS.forEach((field) =>
         formApi.setFieldMeta(field, (meta) => ({
           ...meta,
+          touched: true,
           errors: [],
         })),
       );
 
       const parsed = contactSchema.safeParse(value);
       if (!parsed.success) {
-        parsed.error.issues.forEach((issue) =>
-          formApi.setFieldMeta(issue.path[0] as keyof ContactValues, (meta) => ({
+        parsed.error.issues.forEach((issue) => {
+          const field = issue.path[0];
+          if (typeof field !== "string" || !FORM_FIELDS.includes(field as ContactField)) {
+            return;
+          }
+          formApi.setFieldMeta(field as ContactField, (meta) => ({
             ...meta,
+            touched: true,
             errors: [issue.message],
-          })),
-        );
+          }));
+        });
         return;
       }
 
@@ -105,6 +111,7 @@ export const ContactForm = () => {
             }
             formApi.setFieldMeta(field, (meta) => ({
               ...meta,
+              touched: true,
               errors: [message],
             }));
           });
