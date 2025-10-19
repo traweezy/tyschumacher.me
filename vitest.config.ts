@@ -5,10 +5,11 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
-    setupFiles: [path.resolve(__dirname, "tests/setup.ts")],
+    setupFiles: [path.resolve(__dirname, "vitest.setup.ts")],
     coverage: {
       provider: "v8",
       reporter: ["text", "html"],
+      include: ["src/**/*.{ts,tsx}"],
     },
   },
   resolve: {

@@ -1,14 +1,12 @@
-import React from "react";
 import { act } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
-import { renderWithProviders } from "../tests/utils";
+import { renderWithProviders } from "@/test-utils/render-with-providers";
 
 declare global {
-  // eslint-disable-next-line no-var
   var __dispatchMatchMedia: (query: string, matches: boolean) => void;
 }
 
-describe("Preference hydration", () => {
+describe("Providers preference hydration", () => {
   test("updates reduced-motion dataset", () => {
     renderWithProviders(<div />);
     expect(document.documentElement.dataset.motion).toBe("safe");

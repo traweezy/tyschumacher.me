@@ -1,8 +1,7 @@
-import React from "react";
 import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import { SiteHeader } from "@/components/layout/site-header";
-import { renderWithProviders } from "../tests/utils";
+import { renderWithProviders } from "@/test-utils/render-with-providers";
 
 describe("SiteHeader", () => {
   test("renders primary navigation landmarks", () => {

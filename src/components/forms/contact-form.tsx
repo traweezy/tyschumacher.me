@@ -88,6 +88,11 @@ export const ContactForm = () => {
             if (!FORM_FIELDS.includes(field as ContactField)) return;
             formApi.setFieldMeta(field as ContactField, (meta) => ({
               ...meta,
+              isTouched: true,
+              errorMap: {
+                ...meta.errorMap,
+                onSubmit: message,
+              },
               errors: [message],
             }));
           });

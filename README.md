@@ -1,42 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Overview
 
-## Getting Started
+Personal site built with Next.js 15 (App Router), React 19, and Tailwind v4. The project highlights realtime-focused engineering work and ships with a hardened UI surface (accessible navigation, contact form, command palette, etc.).
 
-First, run the development server:
+## Requirements
+
+- Node 18+
+- [`pnpm`](https://pnpm.io/) (single package manager for this repo)
+
+Install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Running the app
+
+```bash
+pnpm dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000) to view the site during development.
 
 ## Environment
 
-Create an `.env.local` file and provide the credentials below:
+Outbound contact emails are sent through Resend. Provide a key in `.env.local`:
 
 ```env
 RESEND_API_KEY="your-resend-api-key"
 ```
 
-The key powers outbound contact emails via [Resend](https://resend.com/).
+Without the key the `/api/contact` endpoint responds with a `503` and the form surfaces a helpful fallback message.
 
-## Learn More
+## Quality gates
 
-To learn more about Next.js, take a look at the following resources:
+Colocated tests live next to the code they validate and the Vitest runner is preconfigured with jsdom, Next.js shims, and global providers. Run the full suite with coverage (≈96% statements) before shipping:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm test:coverage
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Additional checks:
 
-## Deploy on Vercel
+```bash
+pnpm typecheck   # strict TypeScript
+pnpm lint        # ESLint (flat config via Next.js)
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The coverage report is written to `coverage/`; open `coverage/index.html` for the HTML summary.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project layout
+
+- `src/app` – App Router entrypoints, layout, providers, API route.
+- `src/components` – Feature and UI components with colocated tests (`*.test.tsx`).
+- `src/lib` – Shared utilities (content loading, view transitions, etc.).
+- `src/state` – Zustand stores for UI and accessibility preferences.
+- `src/test-utils` – Helpers reused across tests (e.g., provider wrapper).
+
+## Deployment
+
+The app targets standard Next.js build workflows (e.g., `pnpm build` → `next build`). Provision the `RESEND_API_KEY` secret in each environment to keep the contact form functional. All other content is static. Continuous integration should run `pnpm lint`, `pnpm typecheck`, `pnpm vitest run --coverage`, and `pnpm build` to respect the repo’s quality gates.

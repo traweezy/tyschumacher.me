@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom/vitest";
 
+import React from "react";
 import { vi } from "vitest";
 
 declare global {
@@ -129,5 +130,27 @@ vi.mock("next/navigation", () => {
   return {
     useRouter: () => ({ push, prefetch, replace, back, forward, refresh }),
     usePathname: () => "/",
+  };
+});
+
+vi.mock("next/image", () => {
+  const MockImage = ({
+    src,
+    alt = "",
+    ...rest
+  }: {
+    src: string | { src: string };
+    alt?: string;
+    fill?: boolean;
+    priority?: boolean;
+  }) => {
+    const resolvedSrc = typeof src === "string" ? src : src?.src ?? "";
+    const { fill: _fill, priority: _priority, ...imgProps } = rest;
+    return React.createElement("img", { src: resolvedSrc, alt, ...imgProps });
+  };
+
+  return {
+    __esModule: true,
+    default: MockImage,
   };
 });
