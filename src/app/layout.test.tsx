@@ -18,8 +18,42 @@ vi.mock("@/components/layout/site-header", () => ({
 describe("RootLayout metadata", () => {
   it("defines metadata and viewport properties", async () => {
     const { metadata, viewport } = await import("./layout");
-    expect(metadata.title?.default).toMatch(/Tyler Schumacher/);
-    expect(metadata.openGraph?.images?.[0]?.url).toBe("/og-image.svg");
+    const resolveTitle = (value: typeof metadata.title): string | undefined => {
+      if (typeof value === "string") {
+        return value;
+      }
+      if (!value) {
+        return undefined;
+      }
+      if ("default" in value) {
+        return value.default;
+      }
+      if ("absolute" in value) {
+        return value.absolute;
+      }
+
+      return undefined;
+    };
+
+    const resolvedTitle = resolveTitle(metadata.title);
+    expect(resolvedTitle).toMatch(/Tyler Schumacher/);
+
+    const openGraphImages = metadata.openGraph?.images;
+    const firstImage = Array.isArray(openGraphImages)
+      ? openGraphImages[0] ?? null
+      : openGraphImages ?? null;
+
+    if (!firstImage) {
+      throw new Error("Expected Open Graph image.");
+    }
+
+    if (firstImage instanceof URL) {
+      expect(firstImage.pathname).toBe("/og-image.svg");
+    } else if (typeof firstImage === "string") {
+      expect(firstImage).toBe("/og-image.svg");
+    } else {
+      expect(firstImage.url).toBe("/og-image.svg");
+    }
     expect(viewport.themeColor).toBe("#020009");
   });
 });

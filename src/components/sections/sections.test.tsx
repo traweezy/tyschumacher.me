@@ -14,7 +14,7 @@ describe("Section components", () => {
 
     expect(screen.getByRole("heading", { name: /Tyler Schumacher/i })).toBeInTheDocument();
     expect(
-      screen.getByText(/Full-stack engineer building realtime, high performance products./i),
+      screen.getByText(/Full[-\s]Stack engineer building realtime, high performance products\./i),
     ).toBeInTheDocument();
     expect(screen.getByText(/Realtime platforms/i)).toBeInTheDocument();
   });

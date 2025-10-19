@@ -4,7 +4,7 @@ import { profile } from "@/data/profile";
 const HERO_FOCUS_AREAS = [
   "Realtime platforms",
   "Design systems leadership",
-  "Observability-first delivery",
+  "Observability first delivery",
 ] as const;
 
 export const Hero = () => (

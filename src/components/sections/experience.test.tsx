@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import type { ExperienceEntry } from "@/data/experience";
 
-const getExperiencesMock = vi.fn<[], Promise<ExperienceEntry[]>>();
+const getExperiencesMock = vi.fn<() => Promise<ExperienceEntry[]>>();
 
 vi.mock("@/lib/content", () => ({
   getExperiences: () => getExperiencesMock(),

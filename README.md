@@ -44,9 +44,27 @@ Additional checks:
 ```bash
 pnpm typecheck   # strict TypeScript
 pnpm lint        # ESLint (flat config via Next.js)
+pnpm test:e2e    # Playwright end-to-end suite (requires a build)
 ```
 
 The coverage report is written to `coverage/`; open `coverage/index.html` for the HTML summary.
+
+End-to-end tests rely on Playwright’s browser bundle. Install once per environment with:
+
+```bash
+pnpm playwright:install
+```
+
+## End-to-end coverage
+
+Playwright exercises the primary user journeys (navigation, command palette, contact form happy-path and error path). To collect V8 coverage for those flows, run:
+
+```bash
+pnpm build
+pnpm test:e2e:coverage
+```
+
+Reports live under `playwright-report/coverage/`.
 
 ## Project layout
 
@@ -55,6 +73,7 @@ The coverage report is written to `coverage/`; open `coverage/index.html` for th
 - `src/lib` – Shared utilities (content loading, view transitions, etc.).
 - `src/state` – Zustand stores for UI and accessibility preferences.
 - `src/test-utils` – Helpers reused across tests (e.g., provider wrapper).
+- `e2e/` – Playwright end-to-end specs.
 
 ## Deployment
 

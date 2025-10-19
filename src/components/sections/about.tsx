@@ -6,7 +6,7 @@ export const AboutSection = () => (
   <Section
     id="about"
     label="About"
-    headline="Systems thinking with people-first execution"
+    headline="Systems thinking with people first execution"
     caption={profile.bio[0]}
     overline={profile.bio[1]}
     contentClassName="about-grid"

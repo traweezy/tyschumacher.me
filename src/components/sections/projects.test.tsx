@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Project } from "@/data/projects";
 import { PROJECT_SLOTS } from "@/components/projects/layout";
 
-const getProjectsMock = vi.fn<[], Promise<Project[]>>();
+const getProjectsMock = vi.fn<() => Promise<Project[]>>();
 const projectsGridSpy = vi.fn(({ projects }: { projects: Array<Project & { layout: (typeof PROJECT_SLOTS)[number] }> }) => (
   <div data-testid="projects-grid" data-count={projects.length} />
 ));
