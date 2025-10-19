@@ -12,7 +12,10 @@ export const SiteFooter = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-[var(--border)] bg-[var(--background)]/80 py-12 backdrop-blur">
+    <footer
+      className="border-t border-[var(--border)] bg-[var(--background)]/80 py-12 backdrop-blur"
+      role="contentinfo"
+    >
       <Container className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-2 text-sm text-[var(--foreground)]/70">
           <span>© {year} Tyler Schumacher. All opinions are my own.</span>

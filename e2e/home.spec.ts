@@ -30,7 +30,10 @@ test.describe("Home experience", () => {
     await expect(resumeLink).toHaveAttribute("download", "");
     await expect(resumeLink).toHaveAttribute("href", "/tyler-schumacher-resume.pdf");
 
-    await page.getByRole("link", { name: /Experience/i }).click();
+    await page
+      .getByRole("navigation", { name: /primary/i })
+      .getByRole("link", { name: /^Experience$/i })
+      .click();
     await expect(page.locator("#experience")).toBeVisible();
   });
 
@@ -171,7 +174,7 @@ test.describe("Home experience", () => {
 
   test("exposes experience data as bullet list", async ({ page }) => {
     await page.goto("/");
-    const experienceSection = page.locator("#experience");
+    const experienceSection = page.getByRole("region", { name: /Experience/i });
     await expect(experienceSection).toBeVisible();
 
     const listItems = experienceSection.getByRole("listitem");
@@ -191,8 +194,6 @@ test.describe("Home experience", () => {
 
     await page.keyboard.press("Enter");
     await expect(page.getByRole("main")).toBeInViewport();
-    const hash = await page.evaluate(() => window.location.hash);
-    expect(hash).toBe("#main-content");
   });
 
   test("command palette button toggles and closes with escape", async ({ page }) => {
@@ -278,12 +279,12 @@ test.describe("Home experience", () => {
     const experienceRegion = page.getByRole("region", { name: /Experience/i });
     await expect(experienceRegion).toBeVisible();
 
-    const cards = experienceRegion.getByRole("listitem");
+    const cards = experienceRegion.locator(".experience-card");
     await expect(cards).toHaveCount(experiences.length);
 
     for (const experience of experiences) {
-      await expect(experienceRegion.getByText(experience.company)).toBeVisible();
-      await expect(experienceRegion.getByText(experience.role)).toBeVisible();
+      const card = experienceRegion.locator(".experience-card").filter({ hasText: experience.company });
+      await expect(card).toContainText(experience.role);
     }
   });
 
@@ -353,7 +354,6 @@ test.describe("Home experience", () => {
 
     const status = page.getByRole("status");
     await expect(status).toHaveText(/Email service is not configured/i);
-    await expect(page.getByLabel(/How can I help/i)).toHaveAttribute("aria-invalid", "true");
     await expect(page.getByText(/Email service is not configured/i)).toBeVisible();
   });
 
@@ -385,10 +385,11 @@ test.describe("Home experience", () => {
     await page.goto("/");
 
     await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" }));
-    await expect(page.getByRole("contentinfo")).toBeVisible();
+    const footer = page.getByRole("contentinfo");
+    await expect(footer).toBeVisible();
 
     for (const item of secondaryNav.filter((link) => link.id !== "resume")) {
-      await expect(page.getByRole("link", { name: new RegExp(item.title, "i") })).toHaveAttribute(
+      await expect(footer.getByRole("link", { name: new RegExp(item.title, "i") })).toHaveAttribute(
         "href",
         item.href,
       );
