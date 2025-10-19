@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo } from "react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
@@ -18,9 +18,6 @@ type ContactValues = z.infer<typeof contactSchema>;
 const DIRECT_EMAIL = "tyschumacher@proton.me";
 
 export const ContactForm = () => {
-  const [status, setStatus] = useState<"idle" | "pending" | "success" | "error">("idle");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
   const contactMutation = useMutation({
     mutationFn: async (values: ContactValues) => {
       const response = await fetch("/api/contact", {
@@ -37,18 +34,8 @@ export const ContactForm = () => {
         );
       }
     },
-    onSuccess: (_data, _variables, context) => {
-      context?.reset?.();
-      setStatus("success");
-    },
-    onError: (error: unknown) => {
+    onError: (error) => {
       console.error("Contact form submission failed", error);
-      setStatus("error");
-      const message =
-        error instanceof Error
-          ? error.message
-          : `We couldn’t send your message. Please email ${DIRECT_EMAIL} instead.`;
-      setErrorMessage(message);
     },
   });
 
@@ -67,16 +54,51 @@ export const ContactForm = () => {
         })));
         return;
       }
-      setStatus("pending");
-      setErrorMessage(null);
-      contactMutation.mutate(parsed.data, {
-        onSuccess: () => {
-          formApi.reset();
-        },
-        context: { reset: formApi.reset },
-      });
+      try {
+        await contactMutation.mutateAsync(parsed.data);
+        formApi.reset();
+      } catch {
+        // error handled via mutation error state
+      }
     },
   });
+
+  const statusMessage = useMemo(() => {
+    if (contactMutation.isSuccess) {
+      return "Thanks! I’ll reach out within two business days.";
+    }
+    if (contactMutation.isError) {
+      const message =
+        contactMutation.error instanceof Error
+          ? contactMutation.error.message
+          : `We couldn’t send your message. Please email ${DIRECT_EMAIL} instead.`;
+      return message;
+    }
+    return `Prefer email? ${DIRECT_EMAIL}—include context and I’ll respond quickly.`;
+  }, [contactMutation.error, contactMutation.isError, contactMutation.isSuccess]);
+
+  const textInputs = [
+    {
+      name: "name",
+      label: "Name",
+      type: "text" as const,
+      placeholder: "Leslie Knope",
+      autoComplete: "name",
+    },
+    {
+      name: "email",
+      label: "Email",
+      type: "email" as const,
+      placeholder: "ty.schumacher@example.com",
+      autoComplete: "email",
+    },
+  ] satisfies Array<{
+    name: keyof ContactValues;
+    label: string;
+    type: "text" | "email";
+    placeholder: string;
+    autoComplete: string;
+  }>;
 
   return (
     <form
@@ -88,44 +110,28 @@ export const ContactForm = () => {
       noValidate
     >
       <div className={styles.row}>
-        <form.Field name="name">
-          {(field) => (
-            <label className={styles.field}>
-              <span>Name</span>
-              <input
-                type="text"
-                value={field.state.value}
-                onChange={(event) => field.handleChange(event.target.value)}
-                onBlur={field.handleBlur}
-                aria-invalid={field.state.meta.errors.length > 0}
-                aria-describedby="contact-name-error"
-                placeholder="Leslie Knope"
-              />
-              <span id="contact-name-error" className={styles.error}>
-                {field.state.meta.errors[0]}
-              </span>
-            </label>
-          )}
-        </form.Field>
-        <form.Field name="email">
-          {(field) => (
-            <label className={styles.field}>
-              <span>Email</span>
-              <input
-                type="email"
-                value={field.state.value}
-                onChange={(event) => field.handleChange(event.target.value)}
-                onBlur={field.handleBlur}
-                aria-invalid={field.state.meta.errors.length > 0}
-                aria-describedby="contact-email-error"
-                placeholder="hello@example.com"
-              />
-              <span id="contact-email-error" className={styles.error}>
-                {field.state.meta.errors[0]}
-              </span>
-            </label>
-          )}
-        </form.Field>
+        {textInputs.map((fieldConfig) => (
+          <form.Field key={fieldConfig.name} name={fieldConfig.name}>
+            {(field) => (
+              <label className={styles.field}>
+                <span>{fieldConfig.label}</span>
+                <input
+                  type={fieldConfig.type}
+                  value={field.state.value}
+                  onChange={(event) => field.handleChange(event.target.value)}
+                  onBlur={field.handleBlur}
+                  aria-invalid={field.state.meta.errors.length > 0}
+                  aria-describedby={`contact-${fieldConfig.name}-error`}
+                  placeholder={fieldConfig.placeholder}
+                  autoComplete={fieldConfig.autoComplete}
+                />
+                <span id={`contact-${fieldConfig.name}-error`} className={styles.error}>
+                  {field.state.meta.errors[0]}
+                </span>
+              </label>
+            )}
+          </form.Field>
+        ))}
       </div>
       <form.Field name="message">
         {(field) => (
@@ -146,15 +152,11 @@ export const ContactForm = () => {
           </label>
         )}
       </form.Field>
-      <Button type="submit" size="lg" disabled={status === "pending"}>
-        {status === "pending" ? "Sending…" : "Send message"}
+      <Button type="submit" size="lg" disabled={contactMutation.isPending}>
+        {contactMutation.isPending ? "Sending…" : "Send message"}
       </Button>
       <p role="status" aria-live="polite" className={styles.status}>
-        {status === "success"
-          ? "Thanks! I’ll reach out within two business days."
-          : status === "error" && errorMessage
-            ? errorMessage
-            : `Prefer email? ${DIRECT_EMAIL}—include context and I’ll respond quickly.`}
+        {statusMessage}
       </p>
     </form>
   );
