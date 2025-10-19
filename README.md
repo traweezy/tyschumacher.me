@@ -1,10 +1,10 @@
 ## Overview
 
-Personal site built with Next.js 15 (App Router), React 19, and Tailwind v4. The project highlights realtime-focused engineering work and ships with a hardened UI surface (accessible navigation, contact form, command palette, etc.).
+Personal site built with Next.js 16 (beta, App Router), React 19.2, and Tailwind v4. The project highlights realtime-focused engineering work and ships with a hardened UI surface (accessible navigation, contact form, command palette, etc.).
 
 ## Requirements
 
-- Node 18+
+- Node 20.9+
 - [`pnpm`](https://pnpm.io/) (single package manager for this repo)
 
 Install dependencies:
@@ -19,7 +19,11 @@ pnpm install
 pnpm dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to view the site during development.
+Visit [http://localhost:3000](http://localhost:3000) to view the site during development. Turbopack’s filesystem cache is enabled, so successive `pnpm dev` runs reuse `.next/cache` artifacts for faster startups.
+
+## Production build
+
+`pnpm build` runs `next build --webpack` for now. Turbopack’s production pipeline currently fails on this project (Next.js 16.0.0-beta.0 reports missing modules for `/` and `/api/experience`). Re-enable Turbopack builds with `pnpm exec next build --turbo` once the upstream fix ships.
 
 ## Environment
 
@@ -43,7 +47,7 @@ Additional checks:
 
 ```bash
 pnpm typecheck   # strict TypeScript
-pnpm lint        # ESLint (flat config via Next.js)
+pnpm lint        # ESLint CLI (Next.js 16 removes `next lint`)
 pnpm test:e2e    # Playwright end-to-end suite (requires a build)
 # If you configure an OTLP endpoint (NEXT_PUBLIC_OTEL_EXPORT_URL), collect E2E coverage + spans:
 pnpm build && pnpm test:e2e:coverage
