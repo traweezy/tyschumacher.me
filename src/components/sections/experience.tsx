@@ -2,7 +2,7 @@ import { getExperiences } from "@/lib/content";
 import { Section } from "@/components/layout/section";
 import { formatDateRange } from "@/lib/utils";
 
-export const experienceHeadline = "High-leverage work across trading, sports, and media";
+export const experienceHeadline = "High leverage work across trading, sports, and media";
 export const experienceCaption =
   "Recent roles where I’ve paired realtime systems with resilient delivery.";
 

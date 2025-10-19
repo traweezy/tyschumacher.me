@@ -33,7 +33,7 @@ describe("ExperienceSection", () => {
 
     render(await ExperienceSection());
 
-    expect(screen.getByRole("heading", { name: /high-leverage work/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /high leverage work/i })).toBeInTheDocument();
     expect(screen.getByText("Company A")).toBeInTheDocument();
     expect(screen.getByText("Role A")).toBeInTheDocument();
     expect(
