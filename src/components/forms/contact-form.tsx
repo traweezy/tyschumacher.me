@@ -14,23 +14,11 @@ const contactSchema = z.object({
 });
 
 type ContactValues = z.infer<typeof contactSchema>;
-const FORM_FIELDS = ["name", "email", "message"] as const;
-type ContactField = (typeof FORM_FIELDS)[number];
-
-class ContactSubmissionError extends Error {
-  constructor(
-    message: string,
-    public fieldErrors?: Array<{ field: ContactField | "form"; message: string }>,
-  ) {
-    super(message);
-    this.name = "ContactSubmissionError";
-  }
-}
 
 const DIRECT_EMAIL = "tyschumacher@proton.me";
 
 export const ContactForm = () => {
-  const contactMutation = useMutation<void, Error | ContactSubmissionError, ContactValues>({
+  const contactMutation = useMutation<void, Error, ContactValues>({
     mutationFn: async (values: ContactValues) => {
       const response = await fetch("/api/contact", {
         method: "POST",
@@ -39,29 +27,10 @@ export const ContactForm = () => {
       });
 
       if (!response.ok) {
-        const data = (await response.json().catch(() => ({}))) as {
-          message?: string;
-          errors?: Array<{ field?: string; message?: string }>;
-        };
-
-        const fieldErrors = Array.isArray(data?.errors)
-          ? data.errors
-              .filter(
-                (error): error is { field: string; message: string } =>
-                  typeof error?.field === "string" && typeof error?.message === "string",
-              )
-              .map((error) => ({
-                field: FORM_FIELDS.includes(error.field as ContactField)
-                  ? (error.field as ContactField)
-                  : ("form" as const),
-                message: error.message,
-              }))
-          : undefined;
-
-        throw new ContactSubmissionError(
+        const data = (await response.json().catch(() => ({}))) as { message?: string };
+        throw new Error(
           data?.message ??
             `We couldn’t send your message right now. Please email ${DIRECT_EMAIL} instead.`,
-          fieldErrors,
         );
       }
     },
@@ -77,47 +46,17 @@ export const ContactForm = () => {
       message: "",
     },
     onSubmit: async ({ value, formApi }) => {
-      FORM_FIELDS.forEach((field) =>
-        formApi.setFieldMeta(field, (meta) => ({
-          ...meta,
-          touched: true,
-          errors: [],
-        })),
-      );
-
       const parsed = contactSchema.safeParse(value);
       if (!parsed.success) {
-        parsed.error.issues.forEach((issue) => {
-          const field = issue.path[0];
-          if (typeof field !== "string" || !FORM_FIELDS.includes(field as ContactField)) {
-            return;
-          }
-          formApi.setFieldMeta(field as ContactField, (meta) => ({
-            ...meta,
-            touched: true,
-            errors: [issue.message],
-          }));
-        });
+        parsed.error.issues.forEach((issue) => formApi.setFieldMeta(issue.path[0] as keyof ContactValues, (meta) => ({
+          ...meta,
+          errors: [issue.message],
+        })));
         return;
       }
-
       try {
         await contactMutation.mutateAsync(parsed.data);
-      } catch (error) {
-        if (error instanceof ContactSubmissionError) {
-          error.fieldErrors?.forEach(({ field, message }) => {
-            if (field === "form") {
-              return;
-            }
-            formApi.setFieldMeta(field, (meta) => ({
-              ...meta,
-              touched: true,
-              errors: [message],
-            }));
-          });
-        } else {
-          console.error("Unexpected contact form error", error);
-        }
+      } catch {
         return;
       }
       formApi.reset();
