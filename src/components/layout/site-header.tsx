@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import avatarImage from "@/../public/images/avatar.png";
 import { Menu, Search, X, ExternalLink, FileText, Github, Linkedin } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import {
@@ -113,12 +114,11 @@ export const SiteHeader = () => {
           className="group flex items-center gap-3 rounded-full bg-white/4 px-2 py-1 transition hover:bg-white/6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
         >
           <Image
-            src="/images/avatar.png"
+            src={avatarImage}
             alt="Tyler Schumacher"
             width={40}
             height={40}
             className="h-10 w-10 rounded-full border border-white/60 shadow-sm ring-1 ring-black/5 transition group-hover:scale-105"
-            priority
           />
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-semibold tracking-[0.18em] uppercase text-[var(--text-primary)] transition group-hover:text-[var(--accent)]">
