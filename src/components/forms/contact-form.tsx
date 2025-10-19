@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { useForm } from "@tanstack/react-form";
+import { zodValidator } from "@tanstack/zod-form-adapter";
 import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -76,6 +77,10 @@ export const ContactForm = () => {
       email: "",
       message: "",
     },
+    validatorAdapter: zodValidator(),
+    validators: {
+      onSubmit: contactSchema,
+    },
     onSubmit: async ({ value, formApi }) => {
       FORM_FIELDS.forEach((field) =>
         formApi.setFieldMeta(field, (meta) => ({
@@ -83,17 +88,8 @@ export const ContactForm = () => {
           errors: [],
         })),
       );
-
-      const parsed = contactSchema.safeParse(value);
-      if (!parsed.success) {
-        parsed.error.issues.forEach((issue) => formApi.setFieldMeta(issue.path[0] as keyof ContactValues, (meta) => ({
-          ...meta,
-          errors: [issue.message],
-        })));
-        return;
-      }
       try {
-        await contactMutation.mutateAsync(parsed.data);
+        await contactMutation.mutateAsync(value);
       } catch (error) {
         if (error instanceof ContactSubmissionError) {
           error.fieldErrors?.forEach(({ field, message }) => {
@@ -135,6 +131,7 @@ export const ContactForm = () => {
       type: "text" as const,
       placeholder: "Leslie Knope",
       autoComplete: "name",
+      validator: contactSchema.shape.name,
     },
     {
       name: "email",
@@ -142,6 +139,7 @@ export const ContactForm = () => {
       type: "email" as const,
       placeholder: "ty.schumacher@example.com",
       autoComplete: "email",
+      validator: contactSchema.shape.email,
     },
   ] satisfies Array<{
     name: keyof ContactValues;
@@ -149,6 +147,7 @@ export const ContactForm = () => {
     type: "text" | "email";
     placeholder: string;
     autoComplete: string;
+    validator: z.ZodTypeAny;
   }>;
 
   return (
@@ -162,7 +161,11 @@ export const ContactForm = () => {
     >
       <div className={styles.row}>
         {textInputs.map((fieldConfig) => (
-          <form.Field key={fieldConfig.name} name={fieldConfig.name}>
+          <form.Field
+            key={fieldConfig.name}
+            name={fieldConfig.name}
+            validators={{ onBlur: fieldConfig.validator }}
+          >
             {(field) => (
               <label className={styles.field}>
                 <span>{fieldConfig.label}</span>
@@ -184,7 +187,10 @@ export const ContactForm = () => {
           </form.Field>
         ))}
       </div>
-      <form.Field name="message">
+      <form.Field
+        name="message"
+        validators={{ onBlur: contactSchema.shape.message }}
+      >
         {(field) => (
           <label className={styles.field}>
             <span>How can I help?</span>
