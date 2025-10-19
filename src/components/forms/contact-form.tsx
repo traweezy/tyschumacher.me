@@ -27,11 +27,31 @@ export const ContactForm = () => {
       });
 
       if (!response.ok) {
-        const data = (await response.json().catch(() => ({}))) as { message?: string };
-        throw new Error(
+        const data = (await response.json().catch(() => ({}))) as { message?: string; errors?: Array<{ field?: string; message?: string }> };
+
+        const fieldErrors = Array.isArray(data?.errors)
+          ? data.errors
+              .filter(
+                (error): error is { field: string; message: string } =>
+                  typeof error?.field === "string" && typeof error?.message === "string",
+              )
+              .map((error) => ({
+                field: error.field,
+                message: error.message,
+              }))
+          : undefined;
+
+        const errorMessage =
           data?.message ??
-            `We couldn’t send your message right now. Please email ${DIRECT_EMAIL} instead.`,
-        );
+          `We couldn’t send your message right now. Please email ${DIRECT_EMAIL} instead.`;
+
+        const error = new Error(errorMessage) as Error & {
+          fieldErrors?: Array<{ field: string; message: string }>;
+        };
+        if (fieldErrors) {
+          error.fieldErrors = fieldErrors;
+        }
+        throw error;
       }
     },
     onError: (error) => {
@@ -46,17 +66,35 @@ export const ContactForm = () => {
       message: "",
     },
     onSubmit: async ({ value, formApi }) => {
-      const parsed = contactSchema.safeParse(value);
+      const parsed = contactSchema.safeParse({ ...value });
+
       if (!parsed.success) {
-        parsed.error.issues.forEach((issue) => formApi.setFieldMeta(issue.path[0] as keyof ContactValues, (meta) => ({
-          ...meta,
-          errors: [issue.message],
-        })));
+        parsed.error.issues.forEach((issue) => {
+          const field = issue.path[0];
+          if (typeof field !== "string") return;
+          formApi.setFieldMeta(field as keyof ContactValues, (meta) => ({
+            ...meta,
+            errors: [issue.message],
+          }));
+        });
         return;
       }
       try {
         await contactMutation.mutateAsync(parsed.data);
-      } catch {
+      } catch (error) {
+        const typedError = error as Error & {
+          fieldErrors?: Array<{ field: string; message: string }>;
+        };
+        const fieldErrors = typedError.fieldErrors;
+        if (fieldErrors) {
+          fieldErrors.forEach(({ field, message }) => {
+            if (!field) return;
+            formApi.setFieldMeta(field as keyof ContactValues, (meta) => ({
+              ...meta,
+              errors: [message],
+            }));
+          });
+        }
         return;
       }
       formApi.reset();
