@@ -19,7 +19,7 @@ export const SiteFooter = () => {
       <Container className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-2 text-sm text-[var(--foreground)]/70">
           <span>© {year} Tyler Schumacher. All opinions are my own.</span>
-          <span>Shipping delightful, resilient experiences from Buffalo, NY.</span>
+          <span>Building resilient, human-centered products from Buffalo, NY.</span>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           {github ? (
