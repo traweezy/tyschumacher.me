@@ -2,7 +2,10 @@
 
 import React, { useEffect, useState, type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useAccessibilityStore } from "@/state/accessibility-store";
+import {
+  usePrefersReducedMotion,
+  useSetPrefersReducedMotion,
+} from "@/state/accessibility-store";
 import { initObservability } from "@/lib/observability";
 
 type ProvidersProps = {
@@ -10,12 +13,8 @@ type ProvidersProps = {
 };
 
 const useInitializePreferences = (): void => {
-  const setPrefersReducedMotion = useAccessibilityStore(
-    (state) => state.setPrefersReducedMotion,
-  );
-  const prefersReducedMotion = useAccessibilityStore(
-    (state) => state.prefersReducedMotion,
-  );
+  const setPrefersReducedMotion = useSetPrefersReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     if (typeof window === "undefined") {

@@ -7,7 +7,11 @@ import { Search, ExternalLink } from "lucide-react";
 import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { primaryNav, secondaryNav } from "@/data/navigation";
-import { useUIStore } from "@/state/ui-store";
+import {
+  useIsCommandOpen,
+  useSetCommandOpen,
+  useUIStore,
+} from "@/state/ui-store";
 import { runViewTransition } from "@/lib/view-transitions";
 import styles from "./command-palette.module.css";
 
@@ -16,8 +20,8 @@ const isExternal = (href: string) => /^https?:\/\//.test(href);
 
 export const CommandPalette = () => {
   const router = useRouter();
-  const isOpen = useUIStore((state) => state.isCommandOpen);
-  const setCommandOpen = useUIStore((state) => state.setCommandOpen);
+  const isOpen = useIsCommandOpen();
+  const setCommandOpen = useSetCommandOpen();
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {

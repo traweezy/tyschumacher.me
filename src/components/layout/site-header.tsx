@@ -14,7 +14,11 @@ import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/s
 import { Button } from "@/components/ui/button";
 import { CommandPalette } from "@/components/command/command-palette";
 import { primaryNav, secondaryNav } from "@/data/navigation";
-import { useUIStore } from "@/state/ui-store";
+import {
+  useIsMobileNavOpen,
+  useSetCommandOpen,
+  useSetMobileNavOpen,
+} from "@/state/ui-store";
 import { cn } from "@/lib/utils";
 
 const scrollThreshold = 64;
@@ -22,9 +26,9 @@ const scrollThreshold = 64;
 export const SiteHeader = () => {
   const [condensed, setCondensed] = useState(false);
   const [, setActiveId] = useState<string>("home");
-  const isMobileNavOpen = useUIStore((state) => state.isMobileNavOpen);
-  const setMobileNavOpen = useUIStore((state) => state.setMobileNavOpen);
-  const setCommandOpen = useUIStore((state) => state.setCommandOpen);
+  const isMobileNavOpen = useIsMobileNavOpen();
+  const setMobileNavOpen = useSetMobileNavOpen();
+  const setCommandOpen = useSetCommandOpen();
   const progressRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
