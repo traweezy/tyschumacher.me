@@ -27,8 +27,17 @@ export async function POST(request: Request) {
 
   const parsed = contactSchema.safeParse(body);
   if (!parsed.success) {
-    const [{ message }] = parsed.error.issues;
-    return NextResponse.json({ message }, { status: 400 });
+    const errors = parsed.error.issues.map((issue) => ({
+      field: typeof issue.path[0] === "string" ? issue.path[0] : "form",
+      message: issue.message,
+    }));
+    return NextResponse.json(
+      {
+        message: "Please double-check the highlighted fields.",
+        errors,
+      },
+      { status: 400 },
+    );
   }
 
   if (!resend) {
