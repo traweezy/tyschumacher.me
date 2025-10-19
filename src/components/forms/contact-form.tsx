@@ -66,7 +66,8 @@ export const ContactForm = () => {
       message: "",
     },
     onSubmit: async ({ value, formApi }) => {
-      const parsed = contactSchema.safeParse({ ...value });
+      const plainValue = JSON.parse(JSON.stringify(value)) as ContactValues;
+      const parsed = contactSchema.safeParse(plainValue);
 
       if (!parsed.success) {
         parsed.error.issues.forEach((issue) => {
