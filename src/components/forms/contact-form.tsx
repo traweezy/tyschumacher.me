@@ -18,12 +18,7 @@ type ContactValues = z.infer<typeof contactSchema>;
 const DIRECT_EMAIL = "tyschumacher@proton.me";
 
 export const ContactForm = () => {
-  const contactMutation = useMutation<
-    ContactValues,
-    Error,
-    ContactValues,
-    { reset: () => void }
-  >({
+  const contactMutation = useMutation<void, Error, ContactValues>({
     mutationFn: async (values: ContactValues) => {
       const response = await fetch("/api/contact", {
         method: "POST",
@@ -38,9 +33,6 @@ export const ContactForm = () => {
             `We couldn’t send your message right now. Please email ${DIRECT_EMAIL} instead.`,
         );
       }
-    },
-    onSuccess: (_data, _variables, context) => {
-      context?.reset();
     },
     onError: (error) => {
       console.error("Contact form submission failed", error);
@@ -64,12 +56,11 @@ export const ContactForm = () => {
       }
       contactMutation.reset();
       try {
-        await contactMutation.mutateAsync(parsed.data, {
-          context: { reset: () => formApi.reset() },
-        });
+        await contactMutation.mutateAsync(parsed.data);
       } catch {
-        // errors surface through mutation state; prevent unhandled rejection
+        return;
       }
+      formApi.reset();
     },
   });
 
