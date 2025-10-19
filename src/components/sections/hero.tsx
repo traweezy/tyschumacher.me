@@ -40,7 +40,7 @@ export const Hero = () => (
           download
           data-observe-click="hero.download_resume"
         >
-          Download résumé
+          Download resume
         </a>
       </div>
     </Container>

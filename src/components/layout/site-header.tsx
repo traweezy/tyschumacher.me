@@ -167,11 +167,11 @@ export const SiteHeader = () => {
                   rel={isResume ? undefined : "noreferrer"}
                   download={isResume ? true : undefined}
                   aria-label={
-                    isResume ? "Download résumé (PDF)" : `Visit ${item.title}`
+                    isResume ? "Download resume (PDF)" : `Visit ${item.title}`
                   }
                   className="cursor-pointer"
                   data-tooltip={
-                    isResume ? "Download résumé" : `Visit ${item.title}`
+                    isResume ? "Download resume" : `Visit ${item.title}`
                   }
                 >
                   <Icon className="h-5 w-5" />
