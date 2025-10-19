@@ -6,6 +6,7 @@ type UIState = {
   isMobileNavOpen: boolean;
   setCommandOpen: (open: boolean) => void;
   setMobileNavOpen: (open: boolean) => void;
+  toggleCommandOpen: () => void;
 };
 
 export const useUIStore = create<UIState>()((set) => ({
@@ -13,6 +14,10 @@ export const useUIStore = create<UIState>()((set) => ({
   isMobileNavOpen: false,
   setCommandOpen: (open) => set({ isCommandOpen: open }),
   setMobileNavOpen: (open) => set({ isMobileNavOpen: open }),
+  toggleCommandOpen: () =>
+    set((state) => ({
+      isCommandOpen: !state.isCommandOpen,
+    })),
 }));
 
 export const useUIState = <T>(selector: (state: UIState) => T) =>
@@ -26,3 +31,5 @@ export const useIsMobileNavOpen = () =>
   useUIState((state) => state.isMobileNavOpen);
 export const useSetMobileNavOpen = () =>
   useUIState((state) => state.setMobileNavOpen);
+export const useToggleCommandOpen = () =>
+  useUIState((state) => state.toggleCommandOpen);

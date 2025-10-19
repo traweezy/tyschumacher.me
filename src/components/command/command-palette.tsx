@@ -10,7 +10,7 @@ import { primaryNav, secondaryNav } from "@/data/navigation";
 import {
   useIsCommandOpen,
   useSetCommandOpen,
-  useUIStore,
+  useToggleCommandOpen,
 } from "@/state/ui-store";
 import { runViewTransition } from "@/lib/view-transitions";
 import styles from "./command-palette.module.css";
@@ -22,17 +22,18 @@ export const CommandPalette = () => {
   const router = useRouter();
   const isOpen = useIsCommandOpen();
   const setCommandOpen = useSetCommandOpen();
+  const toggleCommandOpen = useToggleCommandOpen();
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        setCommandOpen(!useUIStore.getState().isCommandOpen);
+        toggleCommandOpen();
       }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [setCommandOpen]);
+  }, [toggleCommandOpen]);
 
   const quickActions = useMemo(
     () => [
