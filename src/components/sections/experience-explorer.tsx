@@ -70,7 +70,6 @@ export const ExperienceExplorer = ({ initialExperiences }: ExperienceExplorerPro
   return (
     <div className="experience-explorer">
       <fieldset className="experience-filters" aria-label="Filter experience by location">
-        <legend className="type-body-sm text-[var(--text-secondary)]">View by location</legend>
         <div className="experience-filters__options">
           {availableLocations.map((option) => (
             <button
