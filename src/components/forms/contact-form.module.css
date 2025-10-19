@@ -6,7 +6,8 @@
   border: 1px solid var(--border);
   background: var(--surface-100);
   box-shadow: 0 22px 60px -48px var(--shadow-color);
-  width: 100%;
+  width: min(100%, 48rem);
+  margin: 0 auto;
 }
 
 .row {

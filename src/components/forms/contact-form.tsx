@@ -18,7 +18,8 @@ type ContactValues = z.infer<typeof contactSchema>;
 const FORM_FIELDS = ["name", "email", "message"] as const;
 type ContactField = (typeof FORM_FIELDS)[number];
 
-const DIRECT_EMAIL = "tyschumacher@proton.me";
+const FALLBACK_ERROR_MESSAGE =
+  "We couldn’t send your message right now. Please try again later.";
 
 export const ContactForm = () => {
   const contactMutation = useMutation<void, Error, ContactValues>({
@@ -44,9 +45,7 @@ export const ContactForm = () => {
               }))
           : undefined;
 
-        const errorMessage =
-          data?.message ??
-          `We couldn’t send your message right now. Please email ${DIRECT_EMAIL} instead.`;
+        const errorMessage = data?.message ?? FALLBACK_ERROR_MESSAGE;
 
         const error = new Error(errorMessage) as Error & {
           fieldErrors?: Array<{ field: string; message: string }>;
@@ -117,10 +116,10 @@ export const ContactForm = () => {
       const message =
         contactMutation.error instanceof Error
           ? contactMutation.error.message
-          : `We couldn’t send your message. Please email ${DIRECT_EMAIL} instead.`;
+          : FALLBACK_ERROR_MESSAGE;
       return message;
     }
-    return `Prefer email? ${DIRECT_EMAIL} include context and I’ll respond quickly.`;
+    return "I reply to every message within two business days.";
   }, [contactMutation.error, contactMutation.isError, contactMutation.isSuccess]);
 
   const textInputs = [

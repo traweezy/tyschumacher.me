@@ -8,11 +8,6 @@ export const ContactSection = () => (
     caption="Drop a note about your team, stakeholders, and timeline. I’ll respond within two business days."
     contentClassName="contact-grid"
   >
-    <div className="contact-form-with-note">
-      <ContactForm />
-      <p className="contact-note type-body-sm measure-short">
-        Or reach me directly at <a href="mailto:tyschumacher@proton.me">tyschumacher@proton.me</a>.
-      </p>
-    </div>
+    <ContactForm />
   </Section>
 );

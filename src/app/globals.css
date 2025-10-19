@@ -1038,25 +1038,9 @@ a:focus-visible {
 
 
 .contact-grid {
-  display: grid;
-  gap: 2rem;
-  justify-items: center;
-}
-
-.contact-form-with-note {
-  display: grid;
-  gap: 1.25rem;
-  width: min(100%, 64rem);
-  margin: 0 auto;
-}
-
-.contact-note {
-  margin: 0;
-  color: var(--text-secondary);
-}
-
-.contact-note a {
-  color: var(--accent);
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
 }
 
 :root[data-motion="reduce"] .projects-card:hover,

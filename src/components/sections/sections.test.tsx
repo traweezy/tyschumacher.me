@@ -44,9 +44,11 @@ describe("Section components", () => {
     expect(
       screen.getByRole("heading", { name: /Let’s build resilient/i }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "tyschumacher@proton.me" })).toHaveAttribute(
-      "href",
-      "mailto:tyschumacher@proton.me",
-    );
+    expect(
+      screen.getByRole("button", { name: /send message/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(/tyschumacher@proton\.me/i),
+    ).not.toBeInTheDocument();
   });
 });
