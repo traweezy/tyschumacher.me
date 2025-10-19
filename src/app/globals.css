@@ -97,7 +97,10 @@ body {
 
 .cosmic-background {
   position: fixed;
-  inset: -15vh -20vw -30vh;
+  top: -15vh;
+  right: 0;
+  bottom: -30vh;
+  left: 0;
   pointer-events: none;
   z-index: -1;
   overflow: hidden;
