@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     await resend.emails.send({
       from: "Tyler Schumacher <noreply@tyschumacher.me>",
       to: "tyschumacher@proton.me",
-      reply_to: parsed.data.email,
+      replyTo: parsed.data.email,
       subject: `New message from ${parsed.data.name}`,
       text: [
         `Name: ${parsed.data.name}`,
