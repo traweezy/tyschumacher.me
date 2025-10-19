@@ -54,7 +54,6 @@ export const ContactForm = () => {
         })));
         return;
       }
-      contactMutation.reset();
       try {
         await contactMutation.mutateAsync(parsed.data);
       } catch {
