@@ -13,15 +13,12 @@ export const projectsCaption =
 export const ProjectsSection = async () => {
   const data = await getProjects();
   const slots = [...PROJECT_SLOTS];
-  const projectsToShow = data
-    .map((project) => ({ project, weight: Math.random() }))
-    .sort((a, b) => a.weight - b.weight)
-    .slice(0, slots.length)
-    .map(({ project }) => project);
-  const shuffledSlots = slots
-    .map((slot) => ({ slot, weight: Math.random() }))
-    .sort((a, b) => a.weight - b.weight)
-    .map(({ slot }) => slot);
+  const projectsToShow = shuffleByDeterministicWeight(data, (project) => project.slug).slice(
+    0,
+    slots.length,
+  );
+  const slotSeed = projectsToShow.map((project) => project.slug).join("|");
+  const shuffledSlots = shuffleByDeterministicWeight(slots, (slot, index) => `${slot.id}-${slotSeed}-${index}`);
 
   const projectsWithLayout = projectsToShow.map((project, index) => ({
     ...project,
@@ -40,6 +37,21 @@ export const ProjectsSection = async () => {
     </Section>
   );
 };
+
+const hashToUnitInterval = (input: string): number => {
+  let hash = 0;
+  for (let index = 0; index < input.length; index += 1) {
+    hash = Math.imul(31, hash) + input.charCodeAt(index);
+    hash |= 0; // keep 32-bit int
+  }
+  return (hash >>> 0) / 0xffffffff;
+};
+
+const shuffleByDeterministicWeight = <T,>(items: readonly T[], keyForItem: (item: T, index: number) => string): T[] =>
+  items
+    .map((item, index) => ({ item, weight: hashToUnitInterval(keyForItem(item, index)) }))
+    .sort((a, b) => a.weight - b.weight)
+    .map(({ item }) => item);
 
 const placeholderCards = PROJECT_SLOTS;
 
