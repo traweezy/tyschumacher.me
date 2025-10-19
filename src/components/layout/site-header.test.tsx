@@ -8,7 +8,7 @@ describe("SiteHeader", () => {
     renderWithProviders(<SiteHeader />);
     const navigation = screen.getByRole("navigation", { name: /primary/i });
     expect(navigation).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Projects/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Experience/i })).toBeInTheDocument();
   });
 
   test("opens command palette via keyboard shortcut", async () => {

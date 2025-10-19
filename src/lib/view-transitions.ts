@@ -7,7 +7,7 @@ export const runViewTransition = (callback: () => void) => {
     });
 
     transition.finished.catch(() => {
-      // noop—transitions can be cancelled by the browser
+      // noop transitions can be cancelled by the browser
     });
     return;
   }

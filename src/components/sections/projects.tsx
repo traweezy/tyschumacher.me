@@ -8,7 +8,7 @@ import { PROJECT_SLOTS } from "@/components/projects/layout";
 export const projectsHeadline =
   "Recent work that blends realtime UX with resilient delivery";
 export const projectsCaption =
-  "Curated highlights spanning trading, sports, and platform initiatives—built to survive stress tests and deliver measurable outcomes.";
+  "Curated highlights spanning trading, sports, and platform initiatives built to survive stress tests and deliver measurable outcomes.";
 
 export const ProjectsSection = async () => {
   const data = await getProjects();

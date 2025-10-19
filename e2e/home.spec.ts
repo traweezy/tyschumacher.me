@@ -2,8 +2,6 @@ import { expect, test } from "@playwright/test";
 import { experiences } from "@/data/experience";
 import { primaryNav, secondaryNav } from "@/data/navigation";
 import { profile } from "@/data/profile";
-import { projects } from "@/data/projects";
-import { PROJECT_SLOTS } from "@/components/projects/layout";
 import { skills } from "@/data/skills";
 
 const commandShortcut = process.platform === "darwin" ? "Meta+K" : "Control+K";
@@ -11,7 +9,7 @@ const commandShortcut = process.platform === "darwin" ? "Meta+K" : "Control+K";
 test.describe.configure({ mode: "serial" });
 
 test.describe("Home experience", () => {
-  test("renders hero, navigation, and scrolls to projects", async ({ page }) => {
+  test("renders hero, navigation, and scrolls to experience", async ({ page }) => {
     await page.goto("/");
 
     await expect(page.getByRole("heading", { name: /Tyler Schumacher/i })).toBeVisible();
@@ -32,8 +30,8 @@ test.describe("Home experience", () => {
     await expect(resumeLink).toHaveAttribute("download", "");
     await expect(resumeLink).toHaveAttribute("href", "/tyler-schumacher-resume.pdf");
 
-    await page.getByRole("link", { name: /Projects/i }).click();
-    await expect(page.locator("#projects")).toBeVisible();
+    await page.getByRole("link", { name: /Experience/i }).click();
+    await expect(page.locator("#experience")).toBeVisible();
   });
 
   test("condenses header and updates scroll progress fallback when CSS animation timeline is unavailable", async ({
@@ -272,30 +270,6 @@ test.describe("Home experience", () => {
         }),
       )
       .toMatch(/\/tyler-schumacher-resume\.pdf$/i);
-  });
-
-  test("renders projects grid with all project cards", async ({ page }) => {
-    await page.goto("/");
-
-    const projectsRegion = page.getByRole("region", { name: /Projects/i });
-    await expect(projectsRegion).toBeVisible();
-
-    const cards = projectsRegion.getByRole("article");
-    await expect(cards).toHaveCount(PROJECT_SLOTS.length);
-
-    const headingTexts = (await projectsRegion.locator("article h3").allTextContents()).map((text) =>
-      text.trim(),
-    );
-    const knownProjectNames = new Set(projects.map((project) => project.name));
-    headingTexts.forEach((heading) => {
-      expect(knownProjectNames.has(heading)).toBe(true);
-    });
-
-    const media = projectsRegion.locator('article img[alt]');
-    await expect(media).toHaveCount(PROJECT_SLOTS.length);
-
-    const disabledCtas = projectsRegion.locator('[aria-disabled="true"]');
-    await expect(disabledCtas).toHaveCount(PROJECT_SLOTS.length);
   });
 
   test("renders all experience entries with expected metadata", async ({ page }) => {

@@ -120,7 +120,7 @@ export const ContactForm = () => {
           : `We couldn’t send your message. Please email ${DIRECT_EMAIL} instead.`;
       return message;
     }
-    return `Prefer email? ${DIRECT_EMAIL}—include context and I’ll respond quickly.`;
+    return `Prefer email? ${DIRECT_EMAIL} include context and I’ll respond quickly.`;
   }, [contactMutation.error, contactMutation.isError, contactMutation.isSuccess]);
 
   const textInputs = [

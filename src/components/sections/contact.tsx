@@ -6,7 +6,7 @@ export const ContactSection = () => (
   <Section
     id="contact"
     label="Contact"
-    headline="Let’s build resilient, human-centered products together"
+    headline="Let’s build resilient, human centered products together"
     caption="Drop a note about your team, stakeholders, and timeline. I’ll respond within two business days."
     contentClassName="contact-grid"
   >
@@ -14,7 +14,7 @@ export const ContactSection = () => (
     <div className="contact-info">
       <h3 className="contact-info__title type-heading-4 measure-short">What to expect</h3>
       <ul className="contact-info__list type-body measure">
-        <li className="text-pretty">No spam—just a thoughtful reply with next steps.</li>
+        <li className="text-pretty">No spam just a thoughtful reply with next steps.</li>
         <li className="text-pretty">
           Happy to workshop requirements, roadmaps, or hiring plans.
         </li>
