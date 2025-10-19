@@ -1,10 +1,10 @@
 import { getExperiences } from "@/lib/content";
 import { Section } from "@/components/layout/section";
-import { formatDateRange } from "@/lib/utils";
+import { ExperienceExplorer } from "@/components/sections/experience-explorer";
 
 export const experienceHeadline = "High leverage work across trading, sports, and media";
 export const experienceCaption =
-  "Recent roles where I’ve paired realtime systems with resilient delivery.";
+  "Explore engagements across locations and teams, filtering to the contexts that matter most.";
 
 export const ExperienceSection = async () => {
   const items = await getExperiences();
@@ -17,26 +17,7 @@ export const ExperienceSection = async () => {
       caption={experienceCaption}
       contentClassName="experience-grid"
     >
-      <ol className="experience-list">
-        {items.map((item) => (
-          <li key={`${item.company}-${item.start}`} className="experience-card">
-            <div className="experience-card__meta type-body-sm">
-              <span className="experience-card__company">{item.company}</span>
-              <span className="experience-card__dates">
-                {formatDateRange(item.start, item.end)} · {item.location}
-              </span>
-            </div>
-            <h3 className="experience-card__role type-heading-3">{item.role}</h3>
-            <ul className="experience-card__bullets type-body measure">
-              {item.bullets.map((bullet) => (
-                <li key={bullet} className="text-pretty">
-                  {bullet}
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ol>
+      <ExperienceExplorer initialExperiences={items} />
     </Section>
   );
 };

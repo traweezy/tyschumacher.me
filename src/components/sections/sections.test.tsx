@@ -28,7 +28,7 @@ describe("Section components", () => {
   });
 
   it("details recent experience entries", async () => {
-    render(await ExperienceSection());
+    renderWithProviders(await ExperienceSection());
 
     experiences.forEach(({ company, bullets }) => {
       expect(screen.getByText(company)).toBeInTheDocument();

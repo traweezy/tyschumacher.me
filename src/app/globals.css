@@ -842,6 +842,48 @@ a:focus-visible {
   gap: 1.5rem;
 }
 
+.experience-explorer {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.experience-filters {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.experience-filters__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.experience-filter {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.875rem;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.experience-filter:hover,
+.experience-filter:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+  outline: none;
+}
+
+.experience-filter--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--background);
+}
+
 .experience-card {
   padding: clamp(1.6rem, 2vw, 2.1rem);
   border-radius: var(--radius-lg);

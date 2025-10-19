@@ -45,6 +45,8 @@ Additional checks:
 pnpm typecheck   # strict TypeScript
 pnpm lint        # ESLint (flat config via Next.js)
 pnpm test:e2e    # Playwright end-to-end suite (requires a build)
+# If you configure an OTLP endpoint (NEXT_PUBLIC_OTEL_EXPORT_URL), collect E2E coverage + spans:
+pnpm build && pnpm test:e2e:coverage
 ```
 
 The coverage report is written to `coverage/`; open `coverage/index.html` for the HTML summary.
@@ -57,7 +59,7 @@ pnpm playwright:install
 
 ## End-to-end coverage
 
-Playwright exercises the primary user journeys (navigation, command palette, contact form happy-path and error path). To collect V8 coverage for those flows, run:
+Playwright exercises the primary user journeys (navigation, command palette, experience filters, contact form happy-path and error path). To collect V8 coverage for those flows, run:
 
 ```bash
 pnpm build
@@ -66,6 +68,10 @@ pnpm test:e2e:coverage
 
 Reports live under `playwright-report/coverage/`.
 
+## Observability
+
+The UI boots a lightweight OpenTelemetry tracer in the browser. By default spans emit to the console; set `NEXT_PUBLIC_OTEL_EXPORT_URL` to forward spans to an OTLP collector. Interactions annotated with `data-observe-click` (hero CTAs, filters, navigation actions) emit spans so you can join UX telemetry with server traces.
+
 ## Project layout
 
 - `src/app` – App Router entrypoints, layout, providers, API route.
@@ -73,6 +79,7 @@ Reports live under `playwright-report/coverage/`.
 - `src/lib` – Shared utilities (content loading, view transitions, etc.).
 - `src/state` – Zustand stores for UI and accessibility preferences.
 - `src/test-utils` – Helpers reused across tests (e.g., provider wrapper).
+- `src/app/api/experience` – JSON endpoint powering the experience filters.
 - `e2e/` – Playwright end-to-end specs.
 
 ## Deployment

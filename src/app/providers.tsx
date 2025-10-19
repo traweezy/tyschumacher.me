@@ -3,6 +3,7 @@
 import React, { useEffect, useState, type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useAccessibilityStore } from "@/state/accessibility-store";
+import { initObservability } from "@/lib/observability";
 
 type ProvidersProps = {
   children: ReactNode;
@@ -56,6 +57,10 @@ export const Providers = ({ children }: ProvidersProps) => {
   );
 
   useInitializePreferences();
+
+  useEffect(() => {
+    initObservability();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

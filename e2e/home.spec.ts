@@ -183,6 +183,15 @@ test.describe("Home experience", () => {
     expect(bulletText).not.toContain("—");
   });
 
+  test("filters experiences by location", async ({ page }) => {
+    await page.goto("/");
+    const experienceSection = page.getByRole("region", { name: /Experience/i });
+    await expect(experienceSection).toBeVisible();
+
+    await experienceSection.getByRole("button", { name: "New York, NY" }).click();
+    await expect(experienceSection.locator(".experience-card")).toHaveCount(2);
+  });
+
   test("supports keyboard skip link navigation", async ({ page }) => {
     await page.goto("/");
 

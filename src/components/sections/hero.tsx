@@ -11,7 +11,9 @@ export const Hero = () => (
   <section id="home" className="hero">
     <Container className="hero__content">
       <div className="hero__intro">
-        <span className="hero__eyebrow type-eyebrow">{profile.location}</span>
+        <p className="hero__eyebrow type-eyebrow" aria-label={`Based in ${profile.location}`}>
+          {profile.location}
+        </p>
         <h1 className="hero__title type-heading-1 text-balance">
           {profile.name}
           <span className="hero__title-tagline">{profile.headline}</span>
@@ -25,10 +27,19 @@ export const Hero = () => (
         ))}
       </div>
       <div className="hero__actions">
-        <a className="hero__cta hero__cta--primary" href="#experience">
+        <a
+          className="hero__cta hero__cta--primary"
+          href="#experience"
+          data-observe-click="hero.view_experience"
+        >
           View experience
         </a>
-        <a className="hero__cta hero__cta--outline" href="/tyler-schumacher-resume.pdf" download>
+        <a
+          className="hero__cta hero__cta--outline"
+          href="/tyler-schumacher-resume.pdf"
+          download
+          data-observe-click="hero.download_resume"
+        >
           Download résumé
         </a>
       </div>
