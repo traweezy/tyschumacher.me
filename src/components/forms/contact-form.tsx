@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { useForm } from "@tanstack/react-form";
+import { zodValidator } from "@tanstack/zod-form-adapter";
 import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,8 @@ const contactSchema = z.object({
 });
 
 type ContactValues = z.infer<typeof contactSchema>;
+const FORM_FIELDS = ["name", "email", "message"] as const;
+type ContactField = (typeof FORM_FIELDS)[number];
 
 const DIRECT_EMAIL = "tyschumacher@proton.me";
 
@@ -59,29 +62,21 @@ export const ContactForm = () => {
     },
   });
 
-  const form = useForm<ContactValues>({
+  const form = useForm<ContactValues, any>({
     defaultValues: {
       name: "",
       email: "",
       message: "",
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    validatorAdapter: zodValidator() as any,
+    validators: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onSubmit: contactSchema as any,
+    },
     onSubmit: async ({ value, formApi }) => {
-      const plainValue = JSON.parse(JSON.stringify(value)) as ContactValues;
-      const parsed = contactSchema.safeParse(plainValue);
-
-      if (!parsed.success) {
-        parsed.error.issues.forEach((issue) => {
-          const field = issue.path[0];
-          if (typeof field !== "string") return;
-          formApi.setFieldMeta(field as keyof ContactValues, (meta) => ({
-            ...meta,
-            errors: [issue.message],
-          }));
-        });
-        return;
-      }
       try {
-        await contactMutation.mutateAsync(parsed.data);
+        await contactMutation.mutateAsync(value);
       } catch (error) {
         const typedError = error as Error & {
           fieldErrors?: Array<{ field: string; message: string }>;
@@ -89,12 +84,18 @@ export const ContactForm = () => {
         const fieldErrors = typedError.fieldErrors;
         if (fieldErrors) {
           fieldErrors.forEach(({ field, message }) => {
-            if (!field) return;
-            formApi.setFieldMeta(field as keyof ContactValues, (meta) => ({
+            if (!FORM_FIELDS.includes(field as ContactField)) return;
+            formApi.setFieldMeta(field as ContactField, (meta) => ({
               ...meta,
               errors: [message],
             }));
           });
+        }
+        if (!fieldErrors?.length) {
+          formApi.setFieldMeta("message", (meta) => ({
+            ...meta,
+            errors: [typedError.message],
+          }));
         }
         return;
       }
@@ -150,7 +151,12 @@ export const ContactForm = () => {
     >
       <div className={styles.row}>
         {textInputs.map((fieldConfig) => (
-          <form.Field key={fieldConfig.name} name={fieldConfig.name}>
+          <form.Field
+            key={fieldConfig.name}
+            name={fieldConfig.name}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            validators={{ onBlur: contactSchema.shape[fieldConfig.name] as any }}
+          >
             {(field) => (
               <label className={styles.field}>
                 <span>{fieldConfig.label}</span>
@@ -172,7 +178,11 @@ export const ContactForm = () => {
           </form.Field>
         ))}
       </div>
-      <form.Field name="message">
+      <form.Field
+        name="message"
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        validators={{ onBlur: contactSchema.shape.message as any }}
+      >
         {(field) => (
           <label className={styles.field}>
             <span>How can I help?</span>

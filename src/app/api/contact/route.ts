@@ -26,6 +26,7 @@ export async function POST(request: Request) {
   }
 
   const parsed = contactSchema.safeParse(body);
+
   if (!parsed.success) {
     const errors = parsed.error.issues.map((issue) => ({
       field: typeof issue.path[0] === "string" ? issue.path[0] : "form",
