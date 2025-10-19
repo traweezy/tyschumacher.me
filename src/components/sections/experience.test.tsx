@@ -63,7 +63,11 @@ describe("ExperienceSection", () => {
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "Remote" }));
     await waitFor(() => {
-      expect(document.querySelectorAll(".experience-card")).toHaveLength(1);
+      const cards = Array.from(
+        document.querySelectorAll<HTMLLIElement>(".experience-card"),
+      ).filter((card) => !card.getAttribute("style")?.includes("width: 0px"));
+      expect(cards).toHaveLength(1);
+      expect(cards[0]?.textContent).toContain("Company A");
     });
   });
 

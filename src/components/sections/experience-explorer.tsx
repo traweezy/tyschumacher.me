@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import type { ExperienceEntry } from "@/data/experience";
 
 const experienceQueryKey = ["experiences"] as const;
@@ -33,6 +34,7 @@ type ExperienceExplorerProps = {
 
 export const ExperienceExplorer = ({ initialExperiences }: ExperienceExplorerProps) => {
   const [locationFilter, setLocationFilter] = useState("All");
+  const [listRef] = useAutoAnimate<HTMLOListElement>();
 
   const { data: experiences } = useQuery({
     queryKey: experienceQueryKey,
@@ -67,13 +69,14 @@ export const ExperienceExplorer = ({ initialExperiences }: ExperienceExplorerPro
               }
               onClick={() => setLocationFilter(option)}
               aria-pressed={option === locationFilter}
+              data-observe-click={`experience.filter.${option.toLowerCase().replace(/\s+/g, "_")}`}
             >
               {option}
             </button>
           ))}
         </div>
       </fieldset>
-      <ol className="experience-list" aria-live="polite">
+      <ol ref={listRef} className="experience-list" aria-live="polite">
         {filteredExperiences.map((item) => (
           <li key={`${item.company}-${item.start}`} className="experience-card">
             <div className="experience-card__meta type-body-sm">

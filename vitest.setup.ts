@@ -119,6 +119,21 @@ Object.defineProperty(window.HTMLElement.prototype, "scrollIntoView", {
   writable: true,
 });
 
+if (!window.Element.prototype.animate) {
+  Object.defineProperty(window.Element.prototype, "animate", {
+    writable: true,
+    value: () => ({
+      finished: Promise.resolve(),
+      cancel: vi.fn(),
+      play: vi.fn(),
+      pause: vi.fn(),
+      reverse: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }),
+  });
+}
+
 vi.mock("next/navigation", () => {
   const push = vi.fn();
   const prefetch = vi.fn();
