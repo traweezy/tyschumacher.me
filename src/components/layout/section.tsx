@@ -25,27 +25,31 @@ export const Section = ({
   <section
     id={id}
     aria-labelledby={`${id}-label`}
-    className={cn("scroll-mt-24 py-10 md:py-14", className)}
+    className={cn("scroll-mt-24 py-20 sm:py-24", className)}
   >
     <Container>
-      <header className="mb-8 flex max-w-2xl flex-col gap-2.5">
+      <header className="mb-12 flex max-w-3xl flex-col gap-3">
         <p
           id={`${id}-label`}
-          className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--accent)]"
+          className="type-eyebrow text-[var(--accent)]"
         >
           {label}
         </p>
-        <h2 className="text-balance text-3xl font-semibold text-[var(--text-primary)] md:text-4xl">
+        <h2 className="type-heading-2 text-balance">
           {headline}
         </h2>
         {caption ? (
-          <p className="text-pretty text-base text-[var(--text-secondary)]">{caption}</p>
+          <p className="type-body-lg measure text-pretty text-[var(--text-secondary)]">
+            {caption}
+          </p>
         ) : null}
         {overline ? (
-          <p className="text-sm text-[var(--text-secondary)]">{overline}</p>
+          <p className="type-body-sm measure-medium text-[var(--text-secondary)]">
+            {overline}
+          </p>
         ) : null}
       </header>
-      <div className={cn("flex flex-col gap-6", contentClassName)}>{children}</div>
+      <div className={cn("flex flex-col gap-10", contentClassName)}>{children}</div>
     </Container>
   </section>
 );

@@ -70,9 +70,10 @@
 }
 
 .projects-card__title {
-  font-size: clamp(1.35rem, 1.8vw, 1.8rem);
+  font-size: clamp(1.6rem, 1.3rem + 0.9vw, 2.15rem);
   font-weight: 600;
   line-height: 1.2;
+  letter-spacing: -0.014em;
 }
 
 .projects-card__media {
@@ -96,7 +97,9 @@
 
 .projects-card__summary {
   color: var(--text-secondary);
-  line-height: 1.55;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  max-width: var(--measure-medium);
 }
 
 :root[data-theme="dark"] .projects-card__summary {
@@ -104,8 +107,9 @@
 }
 
 .projects-card__role {
-  font-size: 0.9rem;
+  font-size: var(--font-size-body-sm);
   font-weight: 600;
+  letter-spacing: 0.08em;
   color: var(--text-primary);
 }
 

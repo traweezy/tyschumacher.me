@@ -20,16 +20,18 @@ export const ExperienceSection = async () => {
       <ol className="experience-list">
         {items.map((item) => (
           <li key={`${item.company}-${item.start}`} className="experience-card">
-            <div className="experience-card__meta">
+            <div className="experience-card__meta type-body-sm">
               <span className="experience-card__company">{item.company}</span>
               <span className="experience-card__dates">
                 {formatDateRange(item.start, item.end)} · {item.location}
               </span>
             </div>
-            <h3 className="experience-card__role">{item.role}</h3>
-            <ul className="experience-card__bullets">
+            <h3 className="experience-card__role type-heading-3">{item.role}</h3>
+            <ul className="experience-card__bullets type-body measure">
               {item.bullets.map((bullet) => (
-                <li key={bullet}>{bullet}</li>
+                <li key={bullet} className="text-pretty">
+                  {bullet}
+                </li>
               ))}
             </ul>
           </li>
@@ -50,12 +52,12 @@ export const ExperienceSectionSkeleton = () => (
     <ol className="experience-list" aria-hidden>
       {Array.from({ length: 4 }).map((_, index) => (
         <li key={index} className="experience-card experience-card--pending">
-          <div className="experience-card__meta">
+          <div className="experience-card__meta type-body-sm">
             <span className="skeleton h-3 w-28 rounded-full" />
             <span className="skeleton h-3 w-32 rounded-full" />
           </div>
           <div className="skeleton h-5 w-2/3 rounded-full" />
-          <ul className="experience-card__bullets">
+          <ul className="experience-card__bullets type-body measure">
             <li>
               <span className="skeleton h-4 w-full rounded-full" />
             </li>
