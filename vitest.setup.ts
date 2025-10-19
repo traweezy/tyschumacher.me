@@ -4,8 +4,9 @@ import React from "react";
 import { vi } from "vitest";
 
 declare global {
-  // eslint-disable-next-line no-var
-  var __dispatchMatchMedia: (query: string, matches: boolean) => void;
+  interface GlobalThis {
+    __dispatchMatchMedia: (query: string, matches: boolean) => void;
+  }
 }
 
 type MatchMediaListener = (event: MediaQueryListEvent) => void;
@@ -79,11 +80,7 @@ const createMediaQueryList = (query: string, matches = false): MediaQueryList =>
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,
-  value: (query: string) =>
-    createMediaQueryList(
-      query,
-      query.includes("prefers-reduced-motion") ? false : false,
-    ),
+  value: (query: string) => createMediaQueryList(query, false),
 });
 
 Object.defineProperty(window, "scrollTo", {
@@ -91,11 +88,13 @@ Object.defineProperty(window, "scrollTo", {
   value: vi.fn(),
 });
 
-(globalThis as any).__dispatchMatchMedia = (query: string, matches: boolean) => {
+type MutableMediaQueryList = MediaQueryList & { matches: boolean };
+
+globalThis.__dispatchMatchMedia = (query: string, matches: boolean) => {
   const entry = listeners.get(query);
   const lists = mediaLists.get(query);
   lists?.forEach((list) => {
-    (list as any).matches = matches;
+    (list as MutableMediaQueryList).matches = matches;
   });
   if (!entry) return;
   entry.forEach((listener) => {
@@ -160,7 +159,9 @@ vi.mock("next/image", () => {
     priority?: boolean;
   }) => {
     const resolvedSrc = typeof src === "string" ? src : src?.src ?? "";
-    const { fill: _fill, priority: _priority, ...imgProps } = rest;
+    const { fill, priority, ...imgProps } = rest;
+    void fill;
+    void priority;
     return React.createElement("img", { src: resolvedSrc, alt, ...imgProps });
   };
 
