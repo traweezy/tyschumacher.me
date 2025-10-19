@@ -869,6 +869,7 @@ a:focus-visible {
   padding: 0.35rem 0.85rem;
   font-size: 0.875rem;
   transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+  will-change: background, border-color, color;
 }
 
 .experience-filter:hover,
@@ -882,6 +883,16 @@ a:focus-visible {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--background);
+}
+
+.experience-card[style*="width: 0px"] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .experience-filter {
+    transition: none;
+  }
 }
 
 .experience-card {

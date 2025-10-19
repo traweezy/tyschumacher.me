@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import type { ExperienceEntry } from "@/data/experience";
+import { useAccessibilityStore } from "@/state/accessibility-store";
 
 const experienceQueryKey = ["experiences"] as const;
 
@@ -34,7 +35,20 @@ type ExperienceExplorerProps = {
 
 export const ExperienceExplorer = ({ initialExperiences }: ExperienceExplorerProps) => {
   const [locationFilter, setLocationFilter] = useState("All");
-  const [listRef] = useAutoAnimate<HTMLOListElement>();
+  const prefersReducedMotion = useAccessibilityStore((state) => state.prefersReducedMotion);
+  const [listRef, enableAnimations] = useAutoAnimate<HTMLOListElement>({
+    duration: 220,
+    easing: "ease-out",
+    keyframes: [
+      { transform: "translateY(12px)", opacity: 0 },
+      { transform: "translateY(0px)", opacity: 1 },
+    ],
+    disrespectUserMotionPreference: true,
+  });
+
+  useEffect(() => {
+    enableAnimations(!prefersReducedMotion);
+  }, [prefersReducedMotion, enableAnimations]);
 
   const { data: experiences } = useQuery({
     queryKey: experienceQueryKey,
