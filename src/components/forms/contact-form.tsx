@@ -122,14 +122,14 @@ export const ContactForm = () => {
       name: "name",
       label: "Name",
       type: "text" as const,
-      placeholder: "Leslie Knope",
+      placeholder: "Philip J Fry",
       autoComplete: "name",
     },
     {
       name: "email",
       label: "Email",
       type: "email" as const,
-      placeholder: "ty.schumacher@example.com",
+      placeholder: "bender@planetexpress.com",
       autoComplete: "email",
     },
   ] satisfies Array<{
@@ -193,7 +193,7 @@ export const ContactForm = () => {
               onBlur={field.handleBlur}
               aria-invalid={field.state.meta.errors.length > 0}
               aria-describedby="contact-message-error"
-              placeholder="Share a bit about your project, stakeholders, and timeline."
+              placeholder="Tell me what you need and why it matters to the crew"
             />
             <span id="contact-message-error" className={styles.error}>
               {field.state.meta.errors[0]}
