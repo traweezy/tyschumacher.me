@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 const siteUrl = "https://tyschumacher.me";
-const title = "Tyler Schumacher — Full-stack engineer for realtime teams";
+const title = "Tyler Schumacher | Full stack engineer for realtime teams";
 const description =
-  "Principal-level engineer shipping realtime, accessible products for trading, sports, and media organizations.";
+  "Principal level engineer shipping realtime accessible products for trading sports and media organizations.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   description,
   keywords: [
     "Tyler Schumacher",
-    "Full-stack engineer",
+    "Full stack engineer",
     "React",
     "TypeScript",
     "Realtime systems",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
         url: "/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "Tyler Schumacher — Full-stack engineer",
+        alt: "Tyler Schumacher | Full stack engineer",
       },
     ],
   },
