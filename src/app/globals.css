@@ -636,7 +636,7 @@ a:focus-visible {
   display: flex;
   flex-direction: column;
   gap: clamp(2rem, 5vw, 3.5rem);
-  max-width: none;
+  width: 100%;
   align-items: flex-start;
 }
 
