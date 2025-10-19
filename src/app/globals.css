@@ -830,11 +830,11 @@ a:focus-visible {
   }
 }
 
-
-
 .experience-list {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
+  align-items: center;
 }
 
 .experience-grid {
@@ -870,6 +870,7 @@ a:focus-visible {
   font-size: 0.875rem;
   transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
   will-change: background, border-color, color;
+  cursor: pointer;
 }
 
 .experience-filter:hover,
@@ -896,6 +897,7 @@ a:focus-visible {
 }
 
 .experience-card {
+  width: 100%;
   padding: clamp(1.6rem, 2vw, 2.1rem);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
@@ -926,7 +928,6 @@ a:focus-visible {
   padding-left: 1.2rem;
   list-style: disc;
   color: var(--text-secondary);
-  max-width: var(--measure-long);
 }
 
 .experience-card__bullets li::marker {

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import type { ExperienceEntry } from "@/data/experience";
-import { useAccessibilityStore } from "@/state/accessibility-store";
+import { usePrefersReducedMotion } from "@/state/accessibility-store";
 
 const experienceQueryKey = ["experiences"] as const;
 
@@ -35,15 +35,10 @@ type ExperienceExplorerProps = {
 
 export const ExperienceExplorer = ({ initialExperiences }: ExperienceExplorerProps) => {
   const [locationFilter, setLocationFilter] = useState("All");
-  const prefersReducedMotion = useAccessibilityStore((state) => state.prefersReducedMotion);
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [listRef, enableAnimations] = useAutoAnimate<HTMLOListElement>({
-    duration: 220,
-    easing: "ease-out",
-    keyframes: [
-      { transform: "translateY(12px)", opacity: 0 },
-      { transform: "translateY(0px)", opacity: 1 },
-    ],
-    disrespectUserMotionPreference: true,
+    duration: 260,
+    easing: "cubic-bezier(0.2, 0.9, 0.38, 1)",
   });
 
   useEffect(() => {
