@@ -44,6 +44,9 @@ describe("Section components", () => {
     expect(
       screen.getByRole("heading", { name: /Let’s build resilient/i }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/reach me directly/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "tyschumacher@proton.me" })).toHaveAttribute(
+      "href",
+      "mailto:tyschumacher@proton.me",
+    );
   });
 });

@@ -1,7 +1,5 @@
 import { Section } from "@/components/layout/section";
 import { ContactForm } from "@/components/forms/contact-form";
-import { profile } from "@/data/profile";
-
 export const ContactSection = () => (
   <Section
     id="contact"
@@ -10,20 +8,10 @@ export const ContactSection = () => (
     caption="Drop a note about your team, stakeholders, and timeline. I’ll respond within two business days."
     contentClassName="contact-grid"
   >
-    <ContactForm />
-    <div className="contact-info">
-      <h3 className="contact-info__title type-heading-4 measure-short">What to expect</h3>
-      <ul className="contact-info__list type-body measure">
-        <li className="text-pretty">No spam just a thoughtful reply with next steps.</li>
-        <li className="text-pretty">
-          Happy to workshop requirements, roadmaps, or hiring plans.
-        </li>
-        <li className="text-pretty">
-          Prefer async? I keep detailed notes and Loom updates so stakeholders stay aligned.
-        </li>
-      </ul>
-      <p className="contact-info__email type-body-sm measure-short">
-        Or reach me directly at <a href={`mailto:${profile.email}`}>{profile.email}</a>.
+    <div className="contact-form-with-note">
+      <ContactForm />
+      <p className="contact-note type-body-sm measure-short">
+        Or reach me directly at <a href="mailto:tyschumacher@proton.me">tyschumacher@proton.me</a>.
       </p>
     </div>
   </Section>

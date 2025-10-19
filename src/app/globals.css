@@ -57,6 +57,7 @@ html {
   min-height: 100%;
   scroll-behavior: smooth;
   background: var(--surface-0);
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -70,6 +71,7 @@ body {
   min-height: 100vh;
   position: relative;
   isolation: isolate;
+  overflow-x: clip;
   background:
       radial-gradient(140% 160% at 10% 18%, rgba(124, 138, 255, 0.16), transparent 70%),
       radial-gradient(120% 160% at 90% 20%, rgba(204, 216, 255, 0.12), transparent 78%),
@@ -1034,49 +1036,23 @@ a:focus-visible {
 
 .contact-grid {
   display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  justify-items: center;
 }
 
-.contact-info {
-  padding: clamp(1.8rem, 2vw, 2.4rem);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  background: var(--surface-100);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.contact-info__title {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.contact-info__list {
-  list-style: disc;
-  margin: 0;
-  padding-left: 1.2rem;
+.contact-form-with-note {
   display: grid;
-  gap: 0.75rem;
+  gap: 1.25rem;
+  width: min(100%, 64rem);
+  margin: 0 auto;
+}
+
+.contact-note {
+  margin: 0;
   color: var(--text-secondary);
 }
 
-.contact-info__email {
-  color: var(--text-secondary);
-}
-
-.contact-info__email a {
-  color: var(--accent);
-}
-
-:root[data-theme="dark"] .contact-info {
-  background: linear-gradient(150deg, rgba(9, 18, 44, 0.94), rgba(44, 12, 64, 0.82));
-  border-color: rgba(56, 189, 248, 0.24);
-  color: rgba(224, 236, 255, 0.88);
-}
-
-:root[data-theme="dark"] .contact-info__email a {
+.contact-note a {
   color: var(--accent);
 }
 
