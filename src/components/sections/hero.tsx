@@ -1,6 +1,12 @@
 import { Container } from "@/components/layout/container";
 import { profile } from "@/data/profile";
 
+const HERO_FOCUS_AREAS = [
+  "Realtime platforms",
+  "Design systems leadership",
+  "Observability-first delivery",
+] as const;
+
 export const Hero = () => (
   <section id="home" className="hero">
     <Container className="hero__content">
@@ -14,13 +20,15 @@ export const Hero = () => (
         </h1>
       </div>
       <div className="hero__meta" aria-label="Focus areas">
-        <span className="hero__pill">Realtime platforms</span>
-        <span className="hero__pill">Design systems leadership</span>
-        <span className="hero__pill">Observability-first delivery</span>
+        {HERO_FOCUS_AREAS.map((focusArea) => (
+          <span key={focusArea} className="hero__pill">
+            {focusArea}
+          </span>
+        ))}
       </div>
       <div className="hero__actions">
-        <a className="hero__cta hero__cta--primary" href="#projects">
-          View projects
+        <a className="hero__cta hero__cta--primary" href="#experience">
+          View experience
         </a>
         <a className="hero__cta hero__cta--outline" href="/tyler-schumacher-resume.pdf" download>
           Download résumé
