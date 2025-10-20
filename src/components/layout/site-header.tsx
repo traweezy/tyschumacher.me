@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import avatarImage from "@/../public/images/avatar.png";
+import avatarImage from "@public/images/avatar.png";
 import { Menu, Search, X, ExternalLink, FileText, Github, Linkedin } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import {
