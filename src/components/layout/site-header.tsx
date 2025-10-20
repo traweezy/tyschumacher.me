@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import avatarImage from "@public/images/avatar.png";
 import { Menu, Search, X, ExternalLink, FileText, Github, Linkedin } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import {
@@ -114,7 +113,7 @@ export const SiteHeader = () => {
           className="group flex items-center gap-3 rounded-full bg-white/4 px-2 py-1 transition hover:bg-white/6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
         >
           <Image
-            src={avatarImage}
+            src="/images/avatar.png"
             alt="Tyler Schumacher"
             width={40}
             height={40}
