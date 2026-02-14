@@ -2,7 +2,6 @@
 
 import { useMemo } from "react";
 import { useForm } from "@tanstack/react-form";
-import { zodValidator } from "@tanstack/zod-form-adapter";
 import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -20,6 +19,27 @@ type ContactField = (typeof FORM_FIELDS)[number];
 
 const FALLBACK_ERROR_MESSAGE =
   "We couldn’t send your message right now. Please try again later.";
+
+const schemaByField = {
+  name: contactSchema.shape.name,
+  email: contactSchema.shape.email,
+  message: contactSchema.shape.message,
+} as const;
+
+const getErrorMessage = (error: unknown): string => {
+  if (typeof error === "string") {
+    return error;
+  }
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error &&
+    typeof (error as { message?: unknown }).message === "string"
+  ) {
+    return (error as { message: string }).message;
+  }
+  return "";
+};
 
 export const ContactForm = () => {
   const contactMutation = useMutation<void, Error, ContactValues>({
@@ -61,18 +81,14 @@ export const ContactForm = () => {
     },
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const form = useForm<ContactValues, any>({
+  const form = useForm({
     defaultValues: {
       name: "",
       email: "",
       message: "",
-    },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    validatorAdapter: zodValidator() as any,
+    } satisfies ContactValues,
     validators: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onSubmit: contactSchema as any,
+      onSubmit: contactSchema,
     },
     onSubmit: async ({ value, formApi }) => {
       try {
@@ -159,8 +175,7 @@ export const ContactForm = () => {
           <form.Field
             key={fieldConfig.name}
             name={fieldConfig.name}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            validators={{ onBlur: contactSchema.shape[fieldConfig.name] as any }}
+            validators={{ onBlur: schemaByField[fieldConfig.name] }}
           >
             {(field) => (
               <label className={styles.field}>
@@ -176,7 +191,7 @@ export const ContactForm = () => {
                   autoComplete={fieldConfig.autoComplete}
                 />
                 <span id={`contact-${fieldConfig.name}-error`} className={styles.error}>
-                  {field.state.meta.errors[0]}
+                  {getErrorMessage(field.state.meta.errors[0])}
                 </span>
               </label>
             )}
@@ -185,8 +200,7 @@ export const ContactForm = () => {
       </div>
       <form.Field
         name="message"
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        validators={{ onBlur: contactSchema.shape.message as any }}
+        validators={{ onBlur: schemaByField.message }}
       >
         {(field) => (
           <label className={styles.field}>
@@ -201,7 +215,7 @@ export const ContactForm = () => {
               placeholder="Tell me what you need and why it matters to the crew"
             />
             <span id="contact-message-error" className={styles.error}>
-              {field.state.meta.errors[0]}
+              {getErrorMessage(field.state.meta.errors[0])}
             </span>
           </label>
         )}

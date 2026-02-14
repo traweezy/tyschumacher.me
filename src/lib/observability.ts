@@ -53,20 +53,17 @@ export const initObservability = (): void => {
   }
 
   try {
-    const provider = new WebTracerProvider();
     const exporterUrl = process.env.NEXT_PUBLIC_OTEL_EXPORT_URL;
-
-    if (exporterUrl) {
-      provider.addSpanProcessor(
-        new BatchSpanProcessor(
+    const spanProcessor = exporterUrl
+      ? new BatchSpanProcessor(
           new OTLPTraceExporter({
             url: exporterUrl,
           }),
-        ),
-      );
-    } else {
-      provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
-    }
+        )
+      : new SimpleSpanProcessor(new ConsoleSpanExporter());
+    const provider = new WebTracerProvider({
+      spanProcessors: [spanProcessor],
+    });
 
     provider.register();
     tracerInitialized = true;

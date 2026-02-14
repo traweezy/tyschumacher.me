@@ -19,7 +19,6 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "html"],
       include: ["src/**/*.{ts,tsx}"],
-      all: true,
       thresholds: {
         statements: 80,
         branches: 80,
