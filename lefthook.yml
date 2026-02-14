@@ -1,0 +1,13 @@
+pre-commit:
+  parallel: false
+  commands:
+    lint:
+      run: pnpm lint
+    typecheck:
+      run: pnpm typecheck
+
+pre-push:
+  parallel: false
+  commands:
+    unit:
+      run: pnpm test:coverage
