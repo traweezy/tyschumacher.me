@@ -1,8 +1,9 @@
 "use client";
 
-import { ArrowUp, Github, Linkedin } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
+import { GitHubIcon, LinkedInIcon } from "@/components/ui/brand-icons";
 import { secondaryNav } from "@/data/navigation";
 
 const github = secondaryNav.find((item) => item.id === "github");
@@ -25,14 +26,14 @@ export const SiteFooter = () => {
           {github ? (
             <Button asChild variant="ghost" size="icon" aria-label="GitHub">
               <a href={github.href} target="_blank" rel="noreferrer">
-                <Github className="h-5 w-5" />
+                <GitHubIcon className="h-5 w-5" />
               </a>
             </Button>
           ) : null}
           {linkedin ? (
             <Button asChild variant="ghost" size="icon" aria-label="LinkedIn">
               <a href={linkedin.href} target="_blank" rel="noreferrer">
-                <Linkedin className="h-5 w-5" />
+                <LinkedInIcon className="h-5 w-5" />
               </a>
             </Button>
           ) : null}

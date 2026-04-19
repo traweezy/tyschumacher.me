@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { Menu, Search, X, ExternalLink, FileText, Github, Linkedin } from "lucide-react";
+import { Menu, Search, X, ExternalLink, FileText } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import {
   NavigationMenu,
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { GitHubIcon, LinkedInIcon } from "@/components/ui/brand-icons";
 import { CommandPalette } from "@/components/command/command-palette";
 import { primaryNav, secondaryNav } from "@/data/navigation";
 import {
@@ -151,9 +152,9 @@ export const SiteHeader = () => {
           {secondaryNav.map((item) => {
             const Icon =
               item.id === "github"
-                ? Github
+                ? GitHubIcon
                 : item.id === "linkedin"
-                  ? Linkedin
+                  ? LinkedInIcon
                   : FileText;
 
             const isResume = item.id === "resume";
@@ -217,9 +218,9 @@ export const SiteHeader = () => {
                   const isResume = item.id === "resume";
                   const Icon =
                     isExternal && item.id === "github"
-                      ? Github
+                      ? GitHubIcon
                       : isExternal && item.id === "linkedin"
-                        ? Linkedin
+                        ? LinkedInIcon
                         : isExternal && item.id === "resume"
                           ? FileText
                           : isExternal
