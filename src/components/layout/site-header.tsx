@@ -1,16 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Menu, Search, X, ExternalLink, FileText } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { ArrowUpRight, ExternalLink, FileText, Menu, Search, X } from "lucide-react";
 import { Container } from "@/components/layout/container";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/brand-icons";
 import { CommandPalette } from "@/components/command/command-palette";
 import { primaryNav, secondaryNav } from "@/data/navigation";
@@ -60,168 +54,179 @@ export const SiteHeader = () => {
     return () => window.removeEventListener("scroll", updateProgress);
   }, []);
 
-  const mobileLinks = useMemo(
-    () => [
-      ...primaryNav.map((item) => ({ ...item, type: "section" as const })),
-      ...secondaryNav.map((item) => ({ ...item, type: "external" as const })),
-    ],
-    [],
-  );
-
   const resumeLink = secondaryNav.find((item) => item.id === "resume");
   const socialLinks = secondaryNav.filter((item) => item.id !== "resume");
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b border-transparent backdrop-blur transition-[background,border-color,height]",
-        condensed && "border-b-[var(--border)] bg-[var(--surface-100)]",
+        "site-header sticky top-0 z-50 transition-[padding,background]",
+        condensed && "site-header--condensed",
       )}
     >
       <div className="scroll-progress" aria-hidden ref={progressRef} />
-      <Container
-        className={cn(
-          "flex h-[76px] items-center justify-between gap-4 transition-[height]",
-          condensed && "h-[58px]",
-        )}
-      >
-        <a
-          href="#home"
-          className="site-mark focus-ring"
-        >
-          <span className="site-mark__monogram" aria-hidden="true">
-            TS
-          </span>
-          <span className="site-mark__copy">
-            <span className="site-mark__name">{profile.name}</span>
-            <span className="site-mark__meta">
-              <span>Principal product engineer</span>
-              <span className="site-mark__dot" aria-hidden="true" />
-              <span>{profile.location}</span>
+      <Container className="site-header__frame">
+        <div className="site-header__shell">
+          <a href="#home" className="site-header__identity focus-ring">
+            <span className="site-header__avatar-wrap">
+              <Image
+                src="/images/avatar.png"
+                alt={`Portrait of ${profile.name}`}
+                width={48}
+                height={48}
+                priority
+                className="site-header__avatar"
+              />
             </span>
-          </span>
-        </a>
-        <nav className="hidden flex-1 md:flex" aria-label="Primary navigation">
-          <NavigationMenu>
-            <NavigationMenuList>
+            <span className="site-header__identity-copy">
+              <span className="site-header__eyebrow">{profile.location}</span>
+              <span className="site-header__title-row">
+                <span className="site-header__name">{profile.name}</span>
+                <span className="site-header__availability">
+                  <span className="site-header__availability-dot" aria-hidden="true" />
+                  Available for staff and principal roles
+                </span>
+              </span>
+              <span className="site-header__role">Principal product engineer</span>
+            </span>
+          </a>
+          <div className="hidden flex-1 items-center justify-end gap-4 lg:flex">
+            <nav className="site-header__nav" aria-label="Primary navigation">
               {primaryNav.map((item) => (
-                <NavigationMenuItem key={item.id}>
-                  <NavigationMenuLink asChild>
-                    <a
-                      href={item.href}
-                      className="nav-pill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface-0)]"
-                      title={`Go to ${item.title}`}
-                    >
-                      {item.title}
-                    </a>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              ))}
-            </NavigationMenuList>
-          </NavigationMenu>
-        </nav>
-        <div className="hidden items-center gap-2 md:flex">
-          {resumeLink ? (
-            <Button variant="outline" size="sm" asChild>
-              <a
-                href={resumeLink.href}
-                download
-                className="cursor-pointer"
-                aria-label="Download resume (PDF)"
-              >
-                Resume
-              </a>
-            </Button>
-          ) : null}
-          {socialLinks.map((item) => {
-            const Icon =
-              item.id === "github"
-                ? GitHubIcon
-                : item.id === "linkedin"
-                  ? LinkedInIcon
-                  : FileText;
-
-            return (
-              <Button key={item.id} variant="ghost" size="icon" asChild>
-                <a
-                  href={item.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`Visit ${item.title}`}
-                  className="cursor-pointer"
-                  data-tooltip={`Visit ${item.title}`}
-                >
-                  <Icon className="h-5 w-5" />
+                <a key={item.id} href={item.href} className="site-header__nav-link">
+                  {item.title}
                 </a>
-              </Button>
-            );
-          })}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setCommandOpen(true)}
-            aria-label="Open command palette"
-            data-tooltip="Command palette"
-            className="cursor-pointer"
-          >
-            <Search className="h-5 w-5" />
-          </Button>
-        </div>
-        <div className="flex items-center gap-2 md:hidden">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setCommandOpen(true)}
-            aria-label="Open command palette"
-            data-tooltip="Command palette"
-            className="cursor-pointer"
-          >
-            <Search className="h-5 w-5" />
-          </Button>
-          <Sheet open={isMobileNavOpen} onOpenChange={setMobileNavOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label={isMobileNavOpen ? "Close navigation" : "Open navigation"}
+              ))}
+            </nav>
+            <div className="site-header__actions">
+              <button
+                type="button"
+                className="site-header__command"
+                onClick={() => setCommandOpen(true)}
+                aria-label="Open command palette"
               >
-                {isMobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
-              <nav className="mt-8 flex flex-col gap-4" aria-label="Mobile navigation">
-                {mobileLinks.map((item) => {
-                  const isExternal = item.type === "external";
-                  const isResume = item.id === "resume";
-                  const Icon =
-                    isExternal && item.id === "github"
-                      ? GitHubIcon
-                      : isExternal && item.id === "linkedin"
-                        ? LinkedInIcon
-                        : isExternal && item.id === "resume"
-                          ? FileText
-                          : isExternal
-                            ? ExternalLink
-                            : null;
+                <Search className="h-4 w-4" />
+                <span>Search</span>
+                <span className="site-header__shortcut" aria-hidden="true">
+                  ⌘K
+                </span>
+              </button>
+              <div className="site-header__socials" aria-label="External links">
+                {socialLinks.map((item) => {
+                  const Icon = item.id === "github" ? GitHubIcon : LinkedInIcon;
+
                   return (
-                    <SheetClose asChild key={item.id}>
-                      <a
-                        href={item.href}
-                        className="nav-sheet-item"
-                        target={isExternal && !isResume ? "_blank" : undefined}
-                        rel={isExternal && !isResume ? "noreferrer" : undefined}
-                        download={isResume ? true : undefined}
-                        title={`Go to ${item.title}`}
-                      >
-                        {item.title}
-                        {Icon ? <Icon className="ml-2 h-4 w-4" /> : null}
-                      </a>
-                    </SheetClose>
+                    <a
+                      key={item.id}
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`Visit ${item.title}`}
+                      className="site-header__social"
+                      data-tooltip={`Visit ${item.title}`}
+                    >
+                      <Icon className="h-4 w-4" />
+                    </a>
                   );
                 })}
-              </nav>
-            </SheetContent>
-          </Sheet>
+              </div>
+              {resumeLink ? (
+                <a
+                  href={resumeLink.href}
+                  download
+                  className="site-header__resume"
+                  aria-label="Download resume (PDF)"
+                >
+                  <span>Resume</span>
+                  <ArrowUpRight className="h-4 w-4" />
+                </a>
+              ) : null}
+            </div>
+          </div>
+          <div className="flex items-center gap-2 lg:hidden">
+            <button
+              type="button"
+              onClick={() => setCommandOpen(true)}
+              aria-label="Open command palette"
+              className="site-header__icon-button"
+            >
+              <Search className="h-5 w-5" />
+            </button>
+            <Sheet open={isMobileNavOpen} onOpenChange={setMobileNavOpen}>
+              <SheetTrigger asChild>
+                <button
+                  type="button"
+                  className="site-header__icon-button"
+                  aria-label={isMobileNavOpen ? "Close navigation" : "Open navigation"}
+                >
+                  {isMobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                </button>
+              </SheetTrigger>
+              <SheetContent className="site-header__sheet">
+                <div className="site-header__sheet-card">
+                  <div className="site-header__sheet-profile">
+                    <div className="site-header__sheet-avatar-wrap">
+                      <Image
+                        src="/images/avatar.png"
+                        alt={`Portrait of ${profile.name}`}
+                        width={56}
+                        height={56}
+                        className="site-header__avatar"
+                      />
+                    </div>
+                    <div className="site-header__sheet-copy">
+                      <p className="site-header__sheet-name">{profile.name}</p>
+                      <p className="site-header__sheet-role">Principal product engineer</p>
+                      <p className="site-header__sheet-meta">{profile.location}</p>
+                    </div>
+                  </div>
+                  <nav className="site-header__sheet-section" aria-label="Mobile navigation">
+                    <p className="site-header__sheet-label type-eyebrow">Navigate</p>
+                    <div className="site-header__sheet-links">
+                      {primaryNav.map((item) => (
+                        <SheetClose asChild key={item.id}>
+                          <a href={item.href} className="site-header__sheet-link">
+                            <span>{item.title}</span>
+                          </a>
+                        </SheetClose>
+                      ))}
+                    </div>
+                  </nav>
+                  <div className="site-header__sheet-section">
+                    <p className="site-header__sheet-label type-eyebrow">Elsewhere</p>
+                    <div className="site-header__sheet-links">
+                      {secondaryNav.map((item) => {
+                        const isResume = item.id === "resume";
+                        const Icon =
+                          item.id === "github"
+                            ? GitHubIcon
+                            : item.id === "linkedin"
+                              ? LinkedInIcon
+                              : isResume
+                                ? FileText
+                                : ExternalLink;
+
+                        return (
+                          <SheetClose asChild key={item.id}>
+                            <a
+                              href={item.href}
+                              className="site-header__sheet-link"
+                              target={isResume ? undefined : "_blank"}
+                              rel={isResume ? undefined : "noreferrer"}
+                              download={isResume ? true : undefined}
+                            >
+                              <span>{item.title}</span>
+                              <Icon className="h-4 w-4" />
+                            </a>
+                          </SheetClose>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </Container>
       <CommandPalette />

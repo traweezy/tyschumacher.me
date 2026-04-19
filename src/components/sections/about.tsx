@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import { Section } from "@/components/layout/section";
 import { TechnologyIcon } from "@/components/ui/technology-icons";
 import { profile } from "@/data/profile";
-import { skillItems } from "@/data/skills";
+import { buildPriorityItems, coreToolItems } from "@/data/skills";
 
 const approachPillars = [
   {
@@ -47,30 +47,54 @@ export const AboutSection = () => (
         ))}
       </ol>
     </div>
-    <div className="about-card about-card--tools">
-      <div className="about-meta">
-        <p className="about-meta__label type-eyebrow">Tool stack</p>
-        <p className="about-meta__value type-body">
-          The stack changes with the job, but this is the set I reach for most often when I need to ship fast and keep the work dependable.
-        </p>
-      </div>
-      <div className="about-skills">
-        {skillItems.map((skill) => (
-          <span
-            key={skill.name}
-            className="about-skill"
-            style={{ "--skill-accent": skill.accent } as CSSProperties}
-          >
-            <span className="about-skill__mark" aria-hidden="true">
-              {skill.icon ? (
-                <TechnologyIcon name={skill.icon} className="about-skill__icon" />
-              ) : (
-                <span className="about-skill__mono">{skill.mark}</span>
-              )}
+    <div className="about-stack">
+      <div className="about-card about-card--tools">
+        <div className="about-meta">
+          <p className="about-meta__label type-eyebrow">Core tools</p>
+          <p className="about-meta__value type-body">
+            These are the tools I reach for most when the product needs to move quickly without the system turning fragile.
+          </p>
+        </div>
+        <div className="about-skills">
+          {coreToolItems.map((skill) => (
+            <span
+              key={skill.name}
+              className="about-skill"
+              style={{ "--skill-accent": skill.accent } as CSSProperties}
+            >
+              <span className="about-skill__mark" aria-hidden="true">
+                {skill.icon ? (
+                  <TechnologyIcon name={skill.icon} className="about-skill__icon" />
+                ) : (
+                  <span className="about-skill__mono">{skill.mark}</span>
+                )}
+              </span>
+              <span className="about-skill__label">{skill.name}</span>
             </span>
-            <span className="about-skill__label">{skill.name}</span>
-          </span>
-        ))}
+          ))}
+        </div>
+      </div>
+      <div className="about-card about-card--focus">
+        <div className="about-meta">
+          <p className="about-meta__label type-eyebrow">Build priorities</p>
+          <p className="about-meta__value type-body">
+            These are not tools. They are the standards I keep pushing on while the product is being designed, built, and shipped.
+          </p>
+        </div>
+        <div className="about-skills about-skills--priority">
+          {buildPriorityItems.map((skill) => (
+            <span
+              key={skill.name}
+              className="about-skill about-skill--priority"
+              style={{ "--skill-accent": skill.accent } as CSSProperties}
+            >
+              <span className="about-skill__mark" aria-hidden="true">
+                <span className="about-skill__mono">{skill.mark}</span>
+              </span>
+              <span className="about-skill__label">{skill.name}</span>
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   </Section>
