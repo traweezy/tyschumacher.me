@@ -22,8 +22,8 @@ describe("Section components", () => {
   it("lists key skills and approach pillars in the about section", () => {
     render(<AboutSection />);
 
-    expect(screen.getByRole("heading", { name: /Start where trust can break/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Give the team clear signals/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Start with the failure point/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Make the system legible/i })).toBeInTheDocument();
     skills.forEach((skill) => {
       expect(screen.getAllByText(skill).length).toBeGreaterThan(0);
     });

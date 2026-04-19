@@ -308,7 +308,7 @@ test.describe("Home experience", () => {
 
     await expect(aboutRegion.getByText(profile.bio[0])).toBeVisible();
     await expect(aboutRegion.getByText(profile.bio[1])).toBeVisible();
-    await expect(aboutRegion.getByText(/Start where trust can break/i)).toBeVisible();
+    await expect(aboutRegion.getByText(/Start with the failure point/i)).toBeVisible();
 
     const skillChips = aboutRegion.locator(".about-skill");
     await expect(skillChips).toHaveCount(skills.length);

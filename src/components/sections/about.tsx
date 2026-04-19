@@ -6,19 +6,19 @@ import { buildPriorityItems, coreToolItems } from "@/data/skills";
 
 const approachPillars = [
   {
-    title: "Start where trust can break",
+    title: "Start with the failure point",
     body:
-      "I like to begin with the part of the product that can confuse people or create the most damage. Once that moment feels clear, the rest tends to come together faster.",
+      "I begin where confusion, money movement, or operational risk can compound. Once that moment is clear, the rest of the product usually gets easier to shape.",
   },
   {
-    title: "Give the team clear signals",
+    title: "Make the system legible",
     body:
-      "The product should make sense to the person using it, and the system should make sense to the people supporting it. Logs, metrics, and release checks need to be useful, not ceremonial.",
+      "The interface should read clearly for the user, and the internals should read clearly for the team supporting it. Instrumentation and release checks need to help, not decorate.",
   },
   {
-    title: "Turn loose ideas into momentum",
+    title: "Turn ambiguity into sequence",
     body:
-      "Most projects start with half-formed ideas and a lot of opinions. I help shape the sequence so product, design, and engineering can move without dragging each other around.",
+      "A lot of work starts with partial requirements and competing instincts. I turn that into a sequence the team can ship without stepping on itself.",
   },
 ] as const;
 
@@ -26,7 +26,7 @@ export const AboutSection = () => (
   <Section
     id="about"
     label="Approach"
-    headline="I design for the person carrying the risk"
+    headline="I make the risky part easier to understand"
     caption={profile.bio[0]}
     overline={profile.bio[1]}
     contentClassName="about-grid"
@@ -50,9 +50,9 @@ export const AboutSection = () => (
     <div className="about-stack">
       <div className="about-card about-card--tools">
         <div className="about-meta">
-          <p className="about-meta__label type-eyebrow">Core tools</p>
+          <p className="about-meta__label type-eyebrow">Tool stack</p>
           <p className="about-meta__value type-body">
-            These are the tools I reach for most when the product needs to move quickly without the system turning fragile.
+            These are the tools I use most when the work needs to move quickly without making the system harder to operate later.
           </p>
         </div>
         <div className="about-skills">
@@ -63,11 +63,7 @@ export const AboutSection = () => (
               style={{ "--skill-accent": skill.accent } as CSSProperties}
             >
               <span className="about-skill__mark" aria-hidden="true">
-                {skill.icon ? (
-                  <TechnologyIcon name={skill.icon} className="about-skill__icon" />
-                ) : (
-                  <span className="about-skill__mono">{skill.mark}</span>
-                )}
+                <TechnologyIcon name={skill.icon} className="about-skill__icon" />
               </span>
               <span className="about-skill__label">{skill.name}</span>
             </span>
@@ -76,9 +72,9 @@ export const AboutSection = () => (
       </div>
       <div className="about-card about-card--focus">
         <div className="about-meta">
-          <p className="about-meta__label type-eyebrow">Build priorities</p>
+          <p className="about-meta__label type-eyebrow">What I optimize for</p>
           <p className="about-meta__value type-body">
-            These are not tools. They are the standards I keep pushing on while the product is being designed, built, and shipped.
+            These are the qualities I keep protecting while the product is being designed, built, and released.
           </p>
         </div>
         <div className="about-skills about-skills--priority">
@@ -89,7 +85,7 @@ export const AboutSection = () => (
               style={{ "--skill-accent": skill.accent } as CSSProperties}
             >
               <span className="about-skill__mark" aria-hidden="true">
-                <span className="about-skill__mono">{skill.mark}</span>
+                <TechnologyIcon name={skill.icon} className="about-skill__icon" />
               </span>
               <span className="about-skill__label">{skill.name}</span>
             </span>
