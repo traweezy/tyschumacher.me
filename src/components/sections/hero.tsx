@@ -62,8 +62,8 @@ export const Hero = () => (
                 <dd>{profile.location}</dd>
               </div>
               <div className="hero__fact">
-                <dt>Looking for</dt>
-                <dd>{profile.availability}</dd>
+                <dt>Known for</dt>
+                <dd>{profile.workingStyle}</dd>
               </div>
             </dl>
           </div>

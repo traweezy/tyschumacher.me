@@ -128,13 +128,13 @@ export const SiteHeader = () => {
   return (
     <header
       className={cn(
-        "site-header sticky top-0 z-50 transition-[padding,background]",
+        "site-header sticky top-0 z-50",
         condensed && "site-header--condensed",
       )}
     >
       <div className="scroll-progress" aria-hidden ref={progressRef} />
       <Container className="site-header__frame">
-        <div className="site-header__shell">
+        <div className="site-header__bar">
           <a href="#home" className="site-header__identity focus-ring">
             <span className="site-header__avatar-wrap">
               <Image
@@ -147,17 +147,15 @@ export const SiteHeader = () => {
               />
             </span>
             <span className="site-header__identity-copy">
-              <span className="site-header__name-row">
-                <span className="site-header__name">{profile.name}</span>
-                <span className="site-header__status">
-                  <span className="site-header__availability-dot" aria-hidden="true" />
-                  Staff + principal roles
-                </span>
+              <span className="site-header__name">{profile.name}</span>
+              <span className="site-header__identity-meta">
+                <span>{profile.role}</span>
+                <span className="site-header__meta-dot" aria-hidden="true" />
+                <span>{profile.location}</span>
               </span>
-              <span className="site-header__role">Principal product engineer</span>
             </span>
           </a>
-          <div className="hidden min-w-0 flex-1 items-center justify-between gap-6 lg:flex">
+          <div className="site-header__desktop">
             <nav className="site-header__nav" aria-label="Primary navigation">
               {primaryNav.map((item) => (
                 <a
@@ -176,12 +174,12 @@ export const SiteHeader = () => {
             <div className="site-header__actions">
               <button
                 type="button"
-                className="site-header__command"
+                className="site-header__utility"
                 onClick={() => setCommandOpen(true)}
                 aria-label="Open command palette"
               >
                 <Search className="h-4 w-4" />
-                <span className="site-header__command-label">Jump</span>
+                <span>Search</span>
                 <span className="site-header__shortcut" aria-hidden="true">
                   ⌘K
                 </span>
@@ -190,7 +188,7 @@ export const SiteHeader = () => {
                 <a
                   href={resumeLink.href}
                   download
-                  className="site-header__resume"
+                  className="site-header__utility site-header__utility--primary"
                   aria-label="Download resume (PDF)"
                 >
                   <span>Resume</span>
@@ -199,7 +197,7 @@ export const SiteHeader = () => {
               ) : null}
             </div>
           </div>
-          <div className="site-header__mobile-actions flex items-center lg:hidden">
+          <div className="site-header__mobile-actions">
             <button
               type="button"
               onClick={() => setCommandOpen(true)}
@@ -235,14 +233,13 @@ export const SiteHeader = () => {
                       />
                     </div>
                     <div className="site-header__sheet-copy">
-                      <p className="site-header__sheet-status">Available for staff and principal roles</p>
                       <p className="site-header__sheet-name">{profile.name}</p>
-                      <p className="site-header__sheet-role">Principal product engineer</p>
+                      <p className="site-header__sheet-role">{profile.role}</p>
                       <p className="site-header__sheet-meta">{profile.location}</p>
                     </div>
                   </div>
                   <nav className="site-header__sheet-section" aria-label="Mobile navigation">
-                    <p className="site-header__sheet-label type-eyebrow">Navigate</p>
+                    <p className="site-header__sheet-label type-eyebrow">Sections</p>
                     <div className="site-header__sheet-links">
                       {primaryNav.map((item, index) => (
                         <SheetClose asChild key={item.id}>

@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef } from "react";
-import { fireEvent, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { SiteHeader } from "@/components/layout/site-header";
 import { primaryNav } from "@/data/navigation";
@@ -84,6 +84,7 @@ describe("SiteHeader", () => {
     expect(navigation).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Experience/i })).toBeInTheDocument();
     expect(screen.getByRole("img", { name: /portrait of tyler schumacher/i })).toBeInTheDocument();
+    expect(screen.queryByText(/staff and principal roles/i)).not.toBeInTheDocument();
   });
 
   test("opens command palette via keyboard shortcut", async () => {
@@ -159,15 +160,19 @@ describe("SiteHeader", () => {
   test("opens the mobile sheet with semantic copy and external links", async () => {
     renderWithProviders(<SiteHeader />);
 
-    fireEvent.click(screen.getByRole("button", { name: /Open navigation/i }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: /Open navigation/i }));
+    });
 
-    expect(await screen.findByRole("dialog", { name: /Site navigation/i })).toBeInTheDocument();
+    const dialog = await screen.findByRole("dialog", { name: /Site navigation/i });
+    expect(dialog).toBeInTheDocument();
     expect(screen.getByText(/Site navigation/i)).toBeInTheDocument();
     expect(
       screen.getByText(/Browse page sections, external profiles, and the resume download./i),
     ).toBeInTheDocument();
-    expect(screen.getByRole("navigation", { name: /Mobile navigation/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /GitHub/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Resume/i })).toBeInTheDocument();
+    expect(within(dialog).getByRole("navigation", { name: /Mobile navigation/i })).toBeInTheDocument();
+    expect(within(dialog).getByText(/Buffalo, NY/i)).toBeInTheDocument();
+    expect(within(dialog).getByRole("link", { name: /GitHub/i })).toBeInTheDocument();
+    expect(within(dialog).getByRole("link", { name: /Resume/i })).toBeInTheDocument();
   });
 });

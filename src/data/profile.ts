@@ -1,5 +1,6 @@
 export const profile = {
   name: "Tyler Schumacher",
+  role: "Principal product engineer",
   location: "Buffalo, NY",
   email: "tyschumacher@proton.me",
   headline: "Builds software that stays clear under pressure.",
@@ -9,6 +10,6 @@ export const profile = {
     "Good software stays readable when the room gets loud.",
     "Most of my work sits where product calls, system reliability, and delivery execution meet.",
   ],
-  availability:
-    "Open to staff and principal roles that need product judgment, steady execution, and strong engineering taste.",
+  workingStyle:
+    "Turns product ambiguity into clear interfaces, reliable systems, and delivery plans a team can actually execute.",
 };
