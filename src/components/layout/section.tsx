@@ -28,28 +28,34 @@ export const Section = ({
     className={cn("scroll-mt-24 py-20 sm:py-24", className)}
   >
     <Container>
-      <header className="mb-12 flex max-w-3xl flex-col gap-3">
-        <p
-          id={`${id}-label`}
-          className="type-eyebrow text-[var(--accent)]"
-        >
-          {label}
-        </p>
-        <h2 className="type-heading-2 text-balance">
-          {headline}
-        </h2>
-        {caption ? (
-          <p className="type-body-lg measure text-pretty text-[var(--text-secondary)]">
-            {caption}
-          </p>
-        ) : null}
-        {overline ? (
-          <p className="type-body-sm measure-medium text-[var(--text-secondary)]">
-            {overline}
-          </p>
-        ) : null}
-      </header>
-      <div className={cn("flex flex-col gap-10", contentClassName)}>{children}</div>
+      <div className="section-shell">
+        <header className="section-header">
+          <div className="section-header__meta">
+            <p
+              id={`${id}-label`}
+              className="section-header__label type-eyebrow"
+            >
+              {label}
+            </p>
+            {overline ? (
+              <p className="section-header__overline type-body-sm text-[var(--text-secondary)]">
+                {overline}
+              </p>
+            ) : null}
+          </div>
+          <div className="section-header__content">
+            <h2 className="type-heading-2 text-balance">
+              {headline}
+            </h2>
+            {caption ? (
+              <p className="type-body-lg measure text-pretty text-[var(--text-secondary)]">
+                {caption}
+              </p>
+            ) : null}
+          </div>
+        </header>
+        <div className={cn("flex flex-col gap-10", contentClassName)}>{children}</div>
+      </div>
     </Container>
   </section>
 );

@@ -3,8 +3,9 @@ import React from "react";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("next/font/google", () => ({
-  Geist: () => ({ variable: "font-geist" }),
+  Fraunces: () => ({ variable: "font-fraunces" }),
   Geist_Mono: () => ({ variable: "font-mono" }),
+  Manrope: () => ({ variable: "font-manrope" }),
 }));
 
 vi.mock("./providers", () => ({
@@ -54,7 +55,7 @@ describe("RootLayout metadata", () => {
     } else {
       expect(firstImage.url).toBe("/og-image.svg");
     }
-    expect(viewport.themeColor).toBe("#020009");
+    expect(viewport.themeColor).toBe("#f4ecdf");
   });
 });
 

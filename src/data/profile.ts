@@ -2,13 +2,13 @@ export const profile = {
   name: "Tyler Schumacher",
   location: "Buffalo, NY",
   email: "tyschumacher@proton.me",
-  headline: "Principal-level engineer for realtime product teams.",
+  headline: "Builds calm software for high-pressure teams.",
   subhead:
-    "I design and ship operator-facing software for trading, sportsbook, and media teams where latency, clarity, and reliability all matter on the same screen.",
+    "Principal-level product engineer for trading, sportsbook, and media teams where latency, clarity, and reliability all need to hold up in the same moment.",
   bio: [
-    "More than a decade building products for finance, sports, and media teams has taught me that the best interfaces are calm under pressure and the best systems explain themselves when they fail.",
-    "I like ambiguous, high-leverage work: aligning product, design, and engineering around the operating moments that matter most, then shipping with measurable guardrails.",
+    "The best interfaces stay legible when the room gets louder. The best systems explain themselves when something breaks.",
+    "I like product-critical work that sits between design decisions, platform reliability, and delivery execution, then turning it into a plan a team can actually ship.",
   ],
   availability:
-    "Open to principal and staff roles where product judgment, systems reliability, and cross-functional leadership are all part of the job.",
+    "Open to principal and staff roles that need product judgment, systems reliability, and cross-functional execution in the same seat.",
 };

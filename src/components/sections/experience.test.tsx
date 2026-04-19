@@ -50,7 +50,11 @@ describe("ExperienceSection", () => {
 
     renderWithProviders(await ExperienceSection());
 
-    expect(screen.getByRole("heading", { name: /high leverage work/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: /experience across live products, trading systems, and delivery platforms/i,
+      }),
+    ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "All" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Remote" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "New York, NY" })).toBeInTheDocument();

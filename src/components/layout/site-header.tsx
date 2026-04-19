@@ -111,21 +111,21 @@ export const SiteHeader = () => {
       >
         <a
           href="#home"
-          className="group flex items-center gap-3 rounded-full bg-white/4 px-2 py-1 transition hover:bg-white/6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+          className="group flex items-center gap-3 rounded-full border border-[var(--border-strong)] bg-[var(--surface-100)] px-2 py-1.5 shadow-[0_18px_42px_-34px_var(--shadow-color)] transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:bg-[var(--surface-200)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
         >
           <Image
             src="/images/avatar.png"
             alt="Tyler Schumacher"
             width={40}
             height={40}
-            className="h-10 w-10 rounded-full border border-white/60 shadow-sm ring-1 ring-black/5 transition group-hover:scale-105"
+            className="h-10 w-10 rounded-full border border-[var(--border-strong)] shadow-sm ring-1 ring-black/5 transition group-hover:scale-105"
           />
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-semibold tracking-[0.18em] uppercase text-[var(--text-primary)] transition group-hover:text-[var(--accent)]">
               Tyler Schumacher
             </span>
             <span className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-[var(--text-secondary)]">
-              Principal Engineer
+              Product Engineer
             </span>
           </div>
         </a>

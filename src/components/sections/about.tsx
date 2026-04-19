@@ -4,17 +4,17 @@ import { skills } from "@/data/skills";
 
 const approachPillars = [
   {
-    title: "Design for operators",
+    title: "Start with the operating moment",
     body:
-      "I work backwards from the busiest screen and the riskiest workflow. Traders, editors, and support teams need software that stays legible when the pace picks up.",
+      "I work backwards from the busiest screen and the riskiest workflow. Traders, editors, and support teams need software that stays readable when the pace picks up.",
   },
   {
-    title: "Make failure visible",
+    title: "Make failure instructive",
     body:
       "Observability, rollout safety, and supportability belong in the product definition. I prefer systems that explain what changed, what broke, and what to do next.",
   },
   {
-    title: "Lead through ambiguity",
+    title: "Turn ambiguity into sequence",
     body:
       "The highest-leverage work is usually cross-functional and underspecified. I like turning that into concrete shipping plans with product, design, data, and engineering in the room.",
   },
@@ -24,7 +24,7 @@ export const AboutSection = () => (
   <Section
     id="about"
     label="Approach"
-    headline="I work at the seam between interface quality and systems reliability"
+    headline="I design for the person carrying the risk"
     caption={profile.bio[0]}
     overline={profile.bio[1]}
     contentClassName="about-grid"
@@ -35,10 +35,10 @@ export const AboutSection = () => (
         <p className="type-body text-[var(--text-secondary)]">{pillar.body}</p>
       </div>
     ))}
-    <div className="about-card">
+    <div className="about-card about-card--tools">
       <p className="about-meta__label type-eyebrow">Tools I Reach For</p>
       <p className="about-meta__value type-body">
-        TypeScript, React, Next.js, Go, Node.js, PostgreSQL, observability tooling, and release pipelines that keep teams confident in production.
+        TypeScript, React, Next.js, Go, Node.js, PostgreSQL, observability tooling, and delivery systems that keep teams confident in production.
       </p>
       <div className="about-skills">
         {skills.map((skill) => (

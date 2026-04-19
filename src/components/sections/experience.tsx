@@ -2,9 +2,9 @@ import { getExperiences } from "@/lib/content";
 import { Section } from "@/components/layout/section";
 import { ExperienceExplorer } from "@/components/sections/experience-explorer";
 
-export const experienceHeadline = "High leverage work across trading, sports, and media";
+export const experienceHeadline = "Experience across live products, trading systems, and delivery platforms";
 export const experienceCaption =
-  "Explore engagements across locations and teams, filtering to the contexts that matter most.";
+  "The strongest proof on this site is the work itself: teams, constraints, and outcomes across finance, sports, and media.";
 
 export const ExperienceSection = async () => {
   const items = await getExperiences();

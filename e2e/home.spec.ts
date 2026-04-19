@@ -23,21 +23,21 @@ test.describe("Home experience", () => {
     await expect(focusAreas).toHaveCount(3);
     await expect(focusAreas.first()).toHaveText(/12\+ years across finance, sports, and media/i);
 
-    const viewWork = page.getByRole("link", { name: /See selected work/i });
-    await expect(viewWork).toHaveAttribute("href", "#projects");
+    const viewExperience = page.getByRole("link", { name: /Review experience/i });
+    await expect(viewExperience).toHaveAttribute("href", "#experience");
 
     await expect(page.getByRole("link", { name: /Start a conversation/i })).toHaveAttribute(
       "href",
       "#contact",
     );
 
-    await expect(page.getByRole("region", { name: /Work/i })).toBeVisible();
+    await expect(page.locator("#projects")).toHaveCount(0);
 
     await page
       .getByRole("navigation", { name: /primary/i })
-      .getByRole("link", { name: /^Work$/i })
+      .getByRole("link", { name: /^Experience$/i })
       .click();
-    await expect(page.locator("#projects")).toBeVisible();
+    await expect(page.locator("#experience")).toBeVisible();
   });
 
   test("condenses header and updates scroll progress fallback when CSS animation timeline is unavailable", async ({
@@ -308,7 +308,7 @@ test.describe("Home experience", () => {
 
     await expect(aboutRegion.getByText(profile.bio[0])).toBeVisible();
     await expect(aboutRegion.getByText(profile.bio[1])).toBeVisible();
-    await expect(aboutRegion.getByText(/Design for operators/i)).toBeVisible();
+    await expect(aboutRegion.getByText(/Start with the operating moment/i)).toBeVisible();
 
     const skillChips = aboutRegion.locator(".about-skill");
     await expect(skillChips).toHaveCount(skills.length);

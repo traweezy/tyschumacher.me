@@ -1,11 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fraunces, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { SiteHeader } from "@/components/layout/site-header";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
   display: "swap",
 });
@@ -17,9 +23,9 @@ const geistMono = Geist_Mono({
 });
 
 const siteUrl = "https://tyschumacher.me";
-const title = "Tyler Schumacher | Principal engineer for realtime product teams";
+const title = "Tyler Schumacher | Builds calm software for high-pressure teams";
 const description =
-  "Principal-level engineer shipping operator-facing software for trading, sportsbook, and media teams that need reliability, speed, and interface clarity.";
+  "Principal-level product engineer shipping calm, reliable software for trading, sportsbook, and media teams under pressure.";
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -50,10 +56,11 @@ export const metadata: Metadata = {
   keywords: [
     "Tyler Schumacher",
     "Principal engineer",
+    "Product engineer",
     "React",
     "TypeScript",
-    "Realtime systems",
-    "Operator tooling",
+    "Operator-facing software",
+    "High-pressure products",
   ],
   openGraph: {
     type: "website",
@@ -66,7 +73,7 @@ export const metadata: Metadata = {
         url: "/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "Tyler Schumacher | Principal engineer for realtime product teams",
+        alt: "Tyler Schumacher | Builds calm software for high-pressure teams",
       },
     ],
   },
@@ -86,7 +93,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#020009",
+  themeColor: "#f4ecdf",
 };
 
 export default function RootLayout({
@@ -95,19 +102,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dark" data-motion="safe">
+    <html lang="en" data-theme="light" data-motion="safe">
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <div className="cosmic-background" aria-hidden="true">
-          <div className="cosmic-background__layer cosmic-background__layer--nebula" />
-          <div className="cosmic-background__layer cosmic-background__layer--grid" />
-          <div className="cosmic-background__layer cosmic-background__layer--stars" />
-        </div>
+      <body className={`${manrope.variable} ${fraunces.variable} ${geistMono.variable}`}>
         <Providers>
           <a href="#main-content" className="skip-link">
             Skip to content
