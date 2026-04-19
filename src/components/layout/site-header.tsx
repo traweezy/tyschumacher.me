@@ -155,8 +155,8 @@ export const SiteHeader = () => {
               </span>
             </span>
           </a>
-          <div className="site-header__desktop">
-            <nav className="site-header__nav" aria-label="Primary navigation">
+          <nav className="site-header__desktop-nav" aria-label="Primary navigation">
+            <div className="site-header__nav">
               {primaryNav.map((item) => (
                 <a
                   key={item.id}
@@ -170,32 +170,32 @@ export const SiteHeader = () => {
                   {item.title}
                 </a>
               ))}
-            </nav>
-            <div className="site-header__actions">
-              <button
-                type="button"
-                className="site-header__utility"
-                onClick={() => setCommandOpen(true)}
-                aria-label="Open command palette"
-              >
-                <Search className="h-4 w-4" />
-                <span>Search</span>
-                <span className="site-header__shortcut" aria-hidden="true">
-                  ⌘K
-                </span>
-              </button>
-              {resumeLink ? (
-                <a
-                  href={resumeLink.href}
-                  download
-                  className="site-header__utility site-header__utility--primary"
-                  aria-label="Download resume (PDF)"
-                >
-                  <span>Resume</span>
-                  <ArrowUpRight className="h-4 w-4" />
-                </a>
-              ) : null}
             </div>
+          </nav>
+          <div className="site-header__actions">
+            <button
+              type="button"
+              className="site-header__utility"
+              onClick={() => setCommandOpen(true)}
+              aria-label="Open command palette"
+            >
+              <Search className="h-4 w-4" />
+              <span>Search</span>
+              <span className="site-header__shortcut" aria-hidden="true">
+                ⌘K
+              </span>
+            </button>
+            {resumeLink ? (
+              <a
+                href={resumeLink.href}
+                download
+                className="site-header__utility site-header__utility--primary"
+                aria-label="Download resume (PDF)"
+              >
+                <span>Resume</span>
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            ) : null}
           </div>
           <div className="site-header__mobile-actions">
             <button
