@@ -23,9 +23,9 @@ const geistMono = Geist_Mono({
 });
 
 const siteUrl = "https://tyschumacher.me";
-const title = "Tyler Schumacher | Builds calm software for high-pressure teams";
+const title = "Tyler Schumacher | Software that stays clear under pressure";
 const description =
-  "Principal-level product engineer shipping calm, reliable software for trading, sportsbook, and media teams under pressure.";
+  "Principal product engineer for trading, sportsbook, and media teams. I build calm interfaces, reliable systems, and delivery paths that hold up under pressure.";
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -59,8 +59,8 @@ export const metadata: Metadata = {
     "Product engineer",
     "React",
     "TypeScript",
-    "Operator-facing software",
-    "High-pressure products",
+    "Operator software",
+    "Systems reliability",
   ],
   openGraph: {
     type: "website",
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
         url: "/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "Tyler Schumacher | Builds calm software for high-pressure teams",
+        alt: "Tyler Schumacher | Software that stays clear under pressure",
       },
     ],
   },

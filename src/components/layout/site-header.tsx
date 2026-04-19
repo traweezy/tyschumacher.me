@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import { Menu, Search, X, ExternalLink, FileText } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import {
@@ -15,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/brand-icons";
 import { CommandPalette } from "@/components/command/command-palette";
 import { primaryNav, secondaryNav } from "@/data/navigation";
+import { profile } from "@/data/profile";
 import {
   useIsMobileNavOpen,
   useSetCommandOpen,
@@ -26,7 +26,6 @@ const scrollThreshold = 64;
 
 export const SiteHeader = () => {
   const [condensed, setCondensed] = useState(false);
-  const [, setActiveId] = useState<string>("home");
   const isMobileNavOpen = useIsMobileNavOpen();
   const setMobileNavOpen = useSetMobileNavOpen();
   const setCommandOpen = useSetCommandOpen();
@@ -61,32 +60,6 @@ export const SiteHeader = () => {
     return () => window.removeEventListener("scroll", updateProgress);
   }, []);
 
-  useEffect(() => {
-    const sections = primaryNav
-      .map((item) => document.querySelector(item.href))
-      .filter((el): el is Element => Boolean(el));
-    if (!sections.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible.length > 0) {
-          const id = visible[0].target.getAttribute("id");
-          if (id) setActiveId(id);
-        }
-      },
-      {
-        rootMargin: "-45% 0px -45% 0px",
-        threshold: [0, 0.25, 0.5, 0.75, 1],
-      },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
-
   const mobileLinks = useMemo(
     () => [
       ...primaryNav.map((item) => ({ ...item, type: "section" as const })),
@@ -94,6 +67,9 @@ export const SiteHeader = () => {
     ],
     [],
   );
+
+  const resumeLink = secondaryNav.find((item) => item.id === "resume");
+  const socialLinks = secondaryNav.filter((item) => item.id !== "resume");
 
   return (
     <header
@@ -105,29 +81,25 @@ export const SiteHeader = () => {
       <div className="scroll-progress" aria-hidden ref={progressRef} />
       <Container
         className={cn(
-          "flex h-[88px] items-center justify-between gap-6 transition-[height]",
-          condensed && "h-[64px]",
+          "flex h-[76px] items-center justify-between gap-4 transition-[height]",
+          condensed && "h-[58px]",
         )}
       >
         <a
           href="#home"
-          className="group flex items-center gap-3 rounded-full border border-[var(--border-strong)] bg-[var(--surface-100)] px-2 py-1.5 shadow-[0_18px_42px_-34px_var(--shadow-color)] transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:bg-[var(--surface-200)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+          className="site-mark focus-ring"
         >
-          <Image
-            src="/images/avatar.png"
-            alt="Tyler Schumacher"
-            width={40}
-            height={40}
-            className="h-10 w-10 rounded-full border border-[var(--border-strong)] shadow-sm ring-1 ring-black/5 transition group-hover:scale-105"
-          />
-          <div className="flex flex-col leading-tight">
-            <span className="text-sm font-semibold tracking-[0.18em] uppercase text-[var(--text-primary)] transition group-hover:text-[var(--accent)]">
-              Tyler Schumacher
+          <span className="site-mark__monogram" aria-hidden="true">
+            TS
+          </span>
+          <span className="site-mark__copy">
+            <span className="site-mark__name">{profile.name}</span>
+            <span className="site-mark__meta">
+              <span>Principal product engineer</span>
+              <span className="site-mark__dot" aria-hidden="true" />
+              <span>{profile.location}</span>
             </span>
-            <span className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-[var(--text-secondary)]">
-              Product Engineer
-            </span>
-          </div>
+          </span>
         </a>
         <nav className="hidden flex-1 md:flex" aria-label="Primary navigation">
           <NavigationMenu>
@@ -149,7 +121,19 @@ export const SiteHeader = () => {
           </NavigationMenu>
         </nav>
         <div className="hidden items-center gap-2 md:flex">
-          {secondaryNav.map((item) => {
+          {resumeLink ? (
+            <Button variant="outline" size="sm" asChild>
+              <a
+                href={resumeLink.href}
+                download
+                className="cursor-pointer"
+                aria-label="Download resume (PDF)"
+              >
+                Resume
+              </a>
+            </Button>
+          ) : null}
+          {socialLinks.map((item) => {
             const Icon =
               item.id === "github"
                 ? GitHubIcon
@@ -157,22 +141,15 @@ export const SiteHeader = () => {
                   ? LinkedInIcon
                   : FileText;
 
-            const isResume = item.id === "resume";
-
             return (
               <Button key={item.id} variant="ghost" size="icon" asChild>
                 <a
                   href={item.href}
-                  target={isResume ? undefined : "_blank"}
-                  rel={isResume ? undefined : "noreferrer"}
-                  download={isResume ? true : undefined}
-                  aria-label={
-                    isResume ? "Download resume (PDF)" : `Visit ${item.title}`
-                  }
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Visit ${item.title}`}
                   className="cursor-pointer"
-                  data-tooltip={
-                    isResume ? "Download resume" : `Visit ${item.title}`
-                  }
+                  data-tooltip={`Visit ${item.title}`}
                 >
                   <Icon className="h-5 w-5" />
                 </a>

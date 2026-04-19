@@ -25,7 +25,7 @@ export const Section = ({
   <section
     id={id}
     aria-labelledby={`${id}-label`}
-    className={cn("scroll-mt-24 py-20 sm:py-24", className)}
+    className={cn("scroll-mt-20 py-16 sm:py-20", className)}
   >
     <Container>
       <div className="section-shell">

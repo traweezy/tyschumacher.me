@@ -1,22 +1,24 @@
+import type { CSSProperties } from "react";
 import { Section } from "@/components/layout/section";
+import { TechnologyIcon } from "@/components/ui/technology-icons";
 import { profile } from "@/data/profile";
-import { skills } from "@/data/skills";
+import { skillItems } from "@/data/skills";
 
 const approachPillars = [
   {
-    title: "Start with the operating moment",
+    title: "Start with the moment that matters",
     body:
-      "I work backwards from the busiest screen and the riskiest workflow. Traders, editors, and support teams need software that stays readable when the pace picks up.",
+      "I begin with the screen that carries the most risk. If that moment stays clear, the rest of the product usually gets better too.",
   },
   {
-    title: "Make failure instructive",
+    title: "Make the system explain itself",
     body:
-      "Observability, rollout safety, and supportability belong in the product definition. I prefer systems that explain what changed, what broke, and what to do next.",
+      "Logs, metrics, release safety, and support tooling should tell the team what changed and what to do next without guesswork.",
   },
   {
-    title: "Turn ambiguity into sequence",
+    title: "Turn uncertainty into a plan",
     body:
-      "The highest-leverage work is usually cross-functional and underspecified. I like turning that into concrete shipping plans with product, design, data, and engineering in the room.",
+      "The work usually starts messy. I like getting product, design, and engineering pointed at the same sequence so the team can move.",
   },
 ] as const;
 
@@ -29,21 +31,44 @@ export const AboutSection = () => (
     overline={profile.bio[1]}
     contentClassName="about-grid"
   >
-    {approachPillars.map((pillar) => (
-      <div key={pillar.title} className="about-card">
-        <h3 className="about-card__title type-heading-4 measure-short">{pillar.title}</h3>
-        <p className="type-body text-[var(--text-secondary)]">{pillar.body}</p>
-      </div>
-    ))}
+    <div className="about-card about-card--sequence">
+      <p className="about-lead__kicker type-eyebrow">How I usually work</p>
+      <ol className="about-sequence">
+        {approachPillars.map((pillar, index) => (
+          <li key={pillar.title} className="about-sequence__item">
+            <span className="about-sequence__index" aria-hidden="true">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <div className="about-sequence__content">
+              <h3 className="about-card__title type-heading-4 measure-short">{pillar.title}</h3>
+              <p className="type-body text-[var(--text-secondary)]">{pillar.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
     <div className="about-card about-card--tools">
-      <p className="about-meta__label type-eyebrow">Tools I Reach For</p>
-      <p className="about-meta__value type-body">
-        TypeScript, React, Next.js, Go, Node.js, PostgreSQL, observability tooling, and delivery systems that keep teams confident in production.
-      </p>
+      <div className="about-meta">
+        <p className="about-meta__label type-eyebrow">Tool stack</p>
+        <p className="about-meta__value type-body">
+          The stack changes with the job, but this is the set I reach for most often when I need to ship fast and keep the work dependable.
+        </p>
+      </div>
       <div className="about-skills">
-        {skills.map((skill) => (
-          <span key={skill} className="about-skill">
-            {skill}
+        {skillItems.map((skill) => (
+          <span
+            key={skill.name}
+            className="about-skill"
+            style={{ "--skill-accent": skill.accent } as CSSProperties}
+          >
+            <span className="about-skill__mark" aria-hidden="true">
+              {skill.icon ? (
+                <TechnologyIcon name={skill.icon} className="about-skill__icon" />
+              ) : (
+                <span className="about-skill__mono">{skill.mark}</span>
+              )}
+            </span>
+            <span className="about-skill__label">{skill.name}</span>
           </span>
         ))}
       </div>

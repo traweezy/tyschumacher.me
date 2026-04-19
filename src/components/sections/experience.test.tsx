@@ -52,7 +52,7 @@ describe("ExperienceSection", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: /experience across live products, trading systems, and delivery platforms/i,
+        name: /experience in trading, sportsbook, and media products/i,
       }),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "All" })).toBeInTheDocument();

@@ -2,9 +2,21 @@ import { Container } from "@/components/layout/container";
 import { profile } from "@/data/profile";
 
 const HERO_PROOF_POINTS = [
-  "12+ years across finance, sports, and media",
-  "<120ms live surfaces for trading workflows",
-  "47% faster release lead time on platform delivery",
+  {
+    detail: "finance, sportsbook, media",
+    label: "Experience",
+    value: "12+ years",
+  },
+  {
+    detail: "live trading surfaces",
+    label: "Latency",
+    value: "<120ms",
+  },
+  {
+    detail: "faster release lead time",
+    label: "Delivery",
+    value: "47%",
+  },
 ] as const;
 
 export const Hero = () => (
@@ -39,18 +51,18 @@ export const Hero = () => (
         </div>
         <aside className="hero__rail" aria-label="Working profile">
           <div className="hero__rail-card">
-            <p className="hero__rail-label type-eyebrow">Working Profile</p>
+            <p className="hero__rail-label type-eyebrow">At a glance</p>
             <dl className="hero__facts">
               <div className="hero__fact">
                 <dt>Focus</dt>
-                <dd>Operator-facing product work where UI quality and system behavior fail together.</dd>
+                <dd>Operator software where interface quality and system behavior have to hold up together.</dd>
               </div>
               <div className="hero__fact">
                 <dt>Base</dt>
                 <dd>{profile.location}</dd>
               </div>
               <div className="hero__fact">
-                <dt>Now</dt>
+                <dt>Looking for</dt>
                 <dd>{profile.availability}</dd>
               </div>
             </dl>
@@ -59,9 +71,11 @@ export const Hero = () => (
       </div>
       <div className="hero__meta" aria-label="Proof points">
         {HERO_PROOF_POINTS.map((proofPoint) => (
-          <span key={proofPoint} className="hero__pill">
-            {proofPoint}
-          </span>
+          <div key={proofPoint.label} className="hero__stat">
+            <span className="hero__stat-label">{proofPoint.label}</span>
+            <strong className="hero__stat-value">{proofPoint.value}</strong>
+            <span className="hero__stat-detail">{proofPoint.detail}</span>
+          </div>
         ))}
       </div>
     </Container>

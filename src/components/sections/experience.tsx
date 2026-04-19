@@ -2,9 +2,9 @@ import { getExperiences } from "@/lib/content";
 import { Section } from "@/components/layout/section";
 import { ExperienceExplorer } from "@/components/sections/experience-explorer";
 
-export const experienceHeadline = "Experience across live products, trading systems, and delivery platforms";
+export const experienceHeadline = "Experience in trading, sportsbook, and media products";
 export const experienceCaption =
-  "The strongest proof on this site is the work itself: teams, constraints, and outcomes across finance, sports, and media.";
+  "A quick scan of the teams, constraints, and outcomes behind the work.";
 
 export const ExperienceSection = async () => {
   const items = await getExperiences();

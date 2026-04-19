@@ -5,7 +5,7 @@ type ContainerProps = PropsWithChildren<HTMLAttributes<HTMLDivElement>>;
 
 export const Container = ({ className, children, ...props }: ContainerProps) => (
   <div
-    className={cn("mx-auto w-full max-w-[84rem] px-5 sm:px-8 lg:px-12", className)}
+    className={cn("mx-auto w-full max-w-[78rem] px-4 sm:px-6 lg:px-8", className)}
     {...props}
   >
     {children}
