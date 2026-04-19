@@ -6,19 +6,19 @@ import { buildPriorityItems, coreToolItems } from "@/data/skills";
 
 const approachPillars = [
   {
-    title: "Start with the moment that matters",
+    title: "Start where trust can break",
     body:
-      "I begin with the screen that carries the most risk. If that moment stays clear, the rest of the product usually gets better too.",
+      "I like to begin with the part of the product that can confuse people or create the most damage. Once that moment feels clear, the rest tends to come together faster.",
   },
   {
-    title: "Make the system explain itself",
+    title: "Give the team clear signals",
     body:
-      "Logs, metrics, release safety, and support tooling should tell the team what changed and what to do next without guesswork.",
+      "The product should make sense to the person using it, and the system should make sense to the people supporting it. Logs, metrics, and release checks need to be useful, not ceremonial.",
   },
   {
-    title: "Turn uncertainty into a plan",
+    title: "Turn loose ideas into momentum",
     body:
-      "The work usually starts messy. I like getting product, design, and engineering pointed at the same sequence so the team can move.",
+      "Most projects start with half-formed ideas and a lot of opinions. I help shape the sequence so product, design, and engineering can move without dragging each other around.",
   },
 ] as const;
 
@@ -32,7 +32,7 @@ export const AboutSection = () => (
     contentClassName="about-grid"
   >
     <div className="about-card about-card--sequence">
-      <p className="about-lead__kicker type-eyebrow">How I usually work</p>
+      <p className="about-lead__kicker type-eyebrow">How I work</p>
       <ol className="about-sequence">
         {approachPillars.map((pillar, index) => (
           <li key={pillar.title} className="about-sequence__item">
