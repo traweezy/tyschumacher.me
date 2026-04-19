@@ -63,7 +63,7 @@ describe("ProjectsSection", () => {
     render(<ProjectsSectionSkeleton />);
 
     expect(
-      screen.getByRole("region", { name: /projects/i }),
+      screen.getByRole("region", { name: /work/i }),
     ).toBeInTheDocument();
     expect(
       screen.getAllByRole("article", { hidden: true }),

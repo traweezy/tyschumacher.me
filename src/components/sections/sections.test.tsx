@@ -9,19 +9,21 @@ import { skills } from "@/data/skills";
 import { renderWithProviders } from "@/test-utils/render-with-providers";
 
 describe("Section components", () => {
-  it("renders hero with focus areas", () => {
+  it("renders hero with proof points", () => {
     render(<Hero />);
 
     expect(screen.getByRole("heading", { name: /Tyler Schumacher/i })).toBeInTheDocument();
     expect(
-      screen.getByText(/Full[-\s]Stack engineer building realtime, high performance products\./i),
+      screen.getByText(/Principal-level engineer for realtime product teams\./i),
     ).toBeInTheDocument();
-    expect(screen.getByText(/Realtime platforms/i)).toBeInTheDocument();
+    expect(screen.getByText(/12\+ years across finance, sports, and media/i)).toBeInTheDocument();
   });
 
-  it("lists key skills in the about section", () => {
+  it("lists key skills and approach pillars in the about section", () => {
     render(<AboutSection />);
 
+    expect(screen.getByRole("heading", { name: /Design for operators/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Make failure visible/i })).toBeInTheDocument();
     skills.forEach((skill) => {
       expect(screen.getByText(skill)).toBeInTheDocument();
     });
@@ -42,7 +44,7 @@ describe("Section components", () => {
     renderWithProviders(<ContactSection />);
 
     expect(
-      screen.getByRole("heading", { name: /Let’s build resilient/i }),
+      screen.getByRole("heading", { name: /Need a product engineer who can work across interface/i }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /send message/i }),

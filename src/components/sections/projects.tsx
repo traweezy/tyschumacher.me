@@ -6,9 +6,9 @@ import styles from "@/components/projects/projects-grid.module.css";
 import { PROJECT_SLOTS } from "@/components/projects/layout";
 
 export const projectsHeadline =
-  "Recent work that blends realtime UX with resilient delivery";
+  "Selected work from live, high-pressure product environments";
 export const projectsCaption =
-  "Curated highlights spanning trading, sports, and platform initiatives built to survive stress tests and deliver measurable outcomes.";
+  "A few representative systems: trader tooling, rollout pipelines, live sports platforms, and analytics products built for teams that cannot afford confusion at the moment of use.";
 
 export const ProjectsSection = async () => {
   const data = await getProjects();
@@ -28,7 +28,7 @@ export const ProjectsSection = async () => {
   return (
     <Section
       id="projects"
-      label="Projects"
+      label="Work"
       headline={projectsHeadline}
       caption={projectsCaption}
       contentClassName={styles["projects-grid-wrapper"]}
@@ -58,7 +58,7 @@ const placeholderCards = PROJECT_SLOTS;
 export const ProjectsSectionSkeleton = () => (
   <Section
     id="projects"
-    label="Projects"
+    label="Work"
     headline={projectsHeadline}
     caption={projectsCaption}
     contentClassName={styles["projects-grid-wrapper"]}

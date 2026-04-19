@@ -106,6 +106,17 @@
   color: rgba(236, 244, 255, 0.78);
 }
 
+.projects-card__description {
+  color: var(--text-secondary);
+  font-size: var(--font-size-body-sm);
+  line-height: 1.7;
+  max-width: var(--measure-medium);
+}
+
+:root[data-theme="dark"] .projects-card__description {
+  color: rgba(220, 231, 255, 0.68);
+}
+
 .projects-card__role {
   font-size: var(--font-size-body-sm);
   font-weight: 600;

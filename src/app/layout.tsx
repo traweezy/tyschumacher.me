@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 const siteUrl = "https://tyschumacher.me";
-const title = "Tyler Schumacher | Full stack engineer for realtime teams";
+const title = "Tyler Schumacher | Principal engineer for realtime product teams";
 const description =
-  "Principal level engineer shipping realtime accessible products for trading sports and media organizations.";
+  "Principal-level engineer shipping operator-facing software for trading, sportsbook, and media teams that need reliability, speed, and interface clarity.";
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -49,11 +49,11 @@ export const metadata: Metadata = {
   description,
   keywords: [
     "Tyler Schumacher",
-    "Full stack engineer",
+    "Principal engineer",
     "React",
     "TypeScript",
     "Realtime systems",
-    "Design systems",
+    "Operator tooling",
   ],
   openGraph: {
     type: "website",
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
         url: "/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "Tyler Schumacher | Full stack engineer",
+        alt: "Tyler Schumacher | Principal engineer for realtime product teams",
       },
     ],
   },

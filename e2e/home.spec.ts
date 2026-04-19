@@ -21,20 +21,23 @@ test.describe("Home experience", () => {
 
     const focusAreas = page.locator(".hero__pill");
     await expect(focusAreas).toHaveCount(3);
-    await expect(focusAreas.first()).toHaveText(/Realtime platforms/i);
+    await expect(focusAreas.first()).toHaveText(/12\+ years across finance, sports, and media/i);
 
-    const viewExperience = page.getByRole("link", { name: /View experience/i });
-    await expect(viewExperience).toHaveAttribute("href", "#experience");
+    const viewWork = page.getByRole("link", { name: /See selected work/i });
+    await expect(viewWork).toHaveAttribute("href", "#projects");
 
-    const resumeLink = page.getByRole("link", { name: /^Download resume$/i });
-    await expect(resumeLink).toHaveAttribute("download", "");
-    await expect(resumeLink).toHaveAttribute("href", "/tyler-schumacher-resume.pdf");
+    await expect(page.getByRole("link", { name: /Start a conversation/i })).toHaveAttribute(
+      "href",
+      "#contact",
+    );
+
+    await expect(page.getByRole("region", { name: /Work/i })).toBeVisible();
 
     await page
       .getByRole("navigation", { name: /primary/i })
-      .getByRole("link", { name: /^Experience$/i })
+      .getByRole("link", { name: /^Work$/i })
       .click();
-    await expect(page.locator("#experience")).toBeVisible();
+    await expect(page.locator("#projects")).toBeVisible();
   });
 
   test("condenses header and updates scroll progress fallback when CSS animation timeline is unavailable", async ({
@@ -105,7 +108,7 @@ test.describe("Home experience", () => {
     const dialog = page.getByRole("dialog", { name: /command palette/i });
     await expect(dialog).toHaveAttribute("data-state", "open");
     await expect(dialog.getByText(/Quick actions/i)).toBeVisible();
-    await dialog.getByRole("option", { name: /About/i }).click();
+    await dialog.getByRole("option", { name: /Approach/i }).click();
     await expect(page.locator("#about")).toBeVisible();
   });
 
@@ -297,14 +300,15 @@ test.describe("Home experience", () => {
     }
   });
 
-  test("displays about section skills and profile context", async ({ page }) => {
+  test("displays approach section skills and profile context", async ({ page }) => {
     await page.goto("/");
 
-    const aboutRegion = page.getByRole("region", { name: /About/i });
+    const aboutRegion = page.getByRole("region", { name: /Approach/i });
     await expect(aboutRegion).toBeVisible();
 
     await expect(aboutRegion.getByText(profile.bio[0])).toBeVisible();
     await expect(aboutRegion.getByText(profile.bio[1])).toBeVisible();
+    await expect(aboutRegion.getByText(/Design for operators/i)).toBeVisible();
 
     const skillChips = aboutRegion.locator(".about-skill");
     await expect(skillChips).toHaveCount(skills.length);
@@ -421,7 +425,7 @@ test.describe("Mobile navigation", () => {
       await expect(mobileNav.getByRole("link", { name: item.title })).toBeVisible();
     }
 
-    await mobileNav.getByRole("link", { name: /About/i }).click();
+    await mobileNav.getByRole("link", { name: /Approach/i }).click();
 
     await expect(mobileNav).not.toBeVisible();
 

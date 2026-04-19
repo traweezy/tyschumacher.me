@@ -6,6 +6,11 @@ vi.mock("@/components/sections/hero", () => ({
   Hero: () => <div>Hero section</div>,
 }));
 
+vi.mock("@/components/sections/projects", () => ({
+  ProjectsSection: () => <div>Projects content</div>,
+  ProjectsSectionSkeleton: () => <div>Loading projects</div>,
+}));
+
 vi.mock("@/components/sections/experience", () => ({
   ExperienceSection: () => <div>Experience content</div>,
   ExperienceSectionSkeleton: () => <div>Loading experience</div>,
@@ -31,6 +36,7 @@ describe("Home page", () => {
     render(<Home />);
 
     expect(screen.getByText("Hero section")).toBeInTheDocument();
+    expect(screen.getByText("Projects content")).toBeInTheDocument();
     expect(screen.getByText("Experience content")).toBeInTheDocument();
     expect(screen.getByText("About content")).toBeInTheDocument();
     expect(screen.getByText("Contact content")).toBeInTheDocument();

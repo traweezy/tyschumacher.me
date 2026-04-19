@@ -43,6 +43,7 @@ export const ProjectsGrid = ({ projects }: ProjectsGridProps) => (
             />
           </div>
           <p className={styles["projects-card__summary"]}>{project.summary}</p>
+          <p className={styles["projects-card__description"]}>{project.description}</p>
           <p className={styles["projects-card__role"]}>{project.role}</p>
           {tech.length > 0 ? (
             <div className={styles["projects-card__tech"]}>

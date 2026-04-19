@@ -2,12 +2,13 @@ export const profile = {
   name: "Tyler Schumacher",
   location: "Buffalo, NY",
   email: "tyschumacher@proton.me",
-  headline: "Full Stack engineer building realtime, high performance products.",
+  headline: "Principal-level engineer for realtime product teams.",
   subhead:
-    "I help product squads ship delightful, resilient experiences while balancing accessibility, performance, and observability from day one.",
+    "I design and ship operator-facing software for trading, sportsbook, and media teams where latency, clarity, and reliability all matter on the same screen.",
   bio: [
-    "Full Stack engineer with more than a decade of experience across sports, finance, and media platforms. I’ve shipped trading surfaces, live event tooling, and experimentation platforms that keep teams confident in production.",
-    "I love partnering with design, data, and operations to turn ambiguous problems into systems people trust on their busiest days.",
+    "More than a decade building products for finance, sports, and media teams has taught me that the best interfaces are calm under pressure and the best systems explain themselves when they fail.",
+    "I like ambiguous, high-leverage work: aligning product, design, and engineering around the operating moments that matter most, then shipping with measurable guardrails.",
   ],
-  availability: "Open to principal and staff engineering roles and cross functional leadership opportunities.",
+  availability:
+    "Open to principal and staff roles where product judgment, systems reliability, and cross-functional leadership are all part of the job.",
 };

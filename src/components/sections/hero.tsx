@@ -1,10 +1,10 @@
 import { Container } from "@/components/layout/container";
 import { profile } from "@/data/profile";
 
-const HERO_FOCUS_AREAS = [
-  "Realtime platforms",
-  "Design systems leadership",
-  "Observability first delivery",
+const HERO_PROOF_POINTS = [
+  "12+ years across finance, sports, and media",
+  "<120ms live surfaces for trading workflows",
+  "47% faster release lead time on platform delivery",
 ] as const;
 
 export const Hero = () => (
@@ -18,29 +18,32 @@ export const Hero = () => (
           {profile.name}
           <span className="hero__title-tagline">{profile.headline}</span>
         </h1>
+        <p className="type-body-lg measure text-[var(--text-secondary)]">{profile.subhead}</p>
       </div>
-      <div className="hero__meta" aria-label="Focus areas">
-        {HERO_FOCUS_AREAS.map((focusArea) => (
-          <span key={focusArea} className="hero__pill">
-            {focusArea}
+      <div className="hero__meta" aria-label="Proof points">
+        {HERO_PROOF_POINTS.map((proofPoint) => (
+          <span key={proofPoint} className="hero__pill">
+            {proofPoint}
           </span>
         ))}
       </div>
+      <p className="measure-medium text-sm leading-7 text-[var(--text-secondary)]">
+        {profile.availability}
+      </p>
       <div className="hero__actions">
         <a
           className="hero__cta hero__cta--primary"
-          href="#experience"
-          data-observe-click="hero.view_experience"
+          href="#projects"
+          data-observe-click="hero.view_projects"
         >
-          View experience
+          See selected work
         </a>
         <a
           className="hero__cta hero__cta--outline"
-          href="/tyler-schumacher-resume.pdf"
-          download
-          data-observe-click="hero.download_resume"
+          href="#contact"
+          data-observe-click="hero.contact"
         >
-          Download resume
+          Start a conversation
         </a>
       </div>
     </Container>

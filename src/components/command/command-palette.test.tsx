@@ -37,7 +37,7 @@ describe("CommandPalette", () => {
     const scrollSpy = vi.spyOn(HTMLElement.prototype, "scrollIntoView");
 
     renderWithProviders(<CommandPalette />);
-    fireEvent.click(await screen.findByRole("option", { name: /^About$/i }));
+    fireEvent.click(await screen.findByRole("option", { name: /^Approach$/i }));
 
     expect(scrollSpy).toHaveBeenCalledWith({ behavior: "smooth", block: "start" });
     expect(useUIStore.getState().isCommandOpen).toBe(false);
