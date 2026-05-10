@@ -1,5 +1,11 @@
 import type { ComponentPropsWithoutRef } from "react";
-import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { SiteHeader } from "@/components/layout/site-header";
 import { primaryNav } from "@/data/navigation";
@@ -7,10 +13,7 @@ import { useUIStore } from "@/state/ui-store";
 import { renderWithProviders } from "@/test-utils/render-with-providers";
 
 vi.mock("next/image", () => ({
-  default: ({
-    alt,
-    ...props
-  }: ComponentPropsWithoutRef<"img">) => (
+  default: ({ alt, ...props }: ComponentPropsWithoutRef<"img">) => (
     // eslint-disable-next-line @next/next/no-img-element
     <img alt={alt} {...props} />
   ),
@@ -35,7 +38,10 @@ class MockIntersectionObserver {
   }
 
   trigger(entries: MockIntersectionEntry[]) {
-    this.callback(entries as IntersectionObserverEntry[], this as unknown as IntersectionObserver);
+    this.callback(
+      entries as IntersectionObserverEntry[],
+      this as unknown as IntersectionObserver,
+    );
   }
 }
 
@@ -70,6 +76,9 @@ describe("SiteHeader", () => {
   afterEach(() => {
     MockIntersectionObserver.instances = [];
     useUIStore.setState({ isCommandOpen: false, isMobileNavOpen: false });
+    document.documentElement.dataset.theme = "civic-light";
+    document.documentElement.dataset.themeMode = "light";
+    window.localStorage.removeItem("tyschumacher:theme-preview");
     window.history.replaceState({}, "", "/");
     Object.defineProperty(globalThis, "CSS", {
       configurable: true,
@@ -82,9 +91,40 @@ describe("SiteHeader", () => {
     renderWithProviders(<SiteHeader />);
     const navigation = screen.getByRole("navigation", { name: /primary/i });
     expect(navigation).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Experience/i })).toBeInTheDocument();
-    expect(screen.getByRole("img", { name: /portrait of tyler schumacher/i })).toBeInTheDocument();
-    expect(screen.queryByText(/staff and principal roles/i)).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Experience/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: /portrait of tyler schumacher/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(/staff and principal roles/i),
+    ).not.toBeInTheDocument();
+  });
+
+  test("applies the temporary theme preview from the app bar", () => {
+    renderWithProviders(<SiteHeader />);
+
+    const themePicker = screen.getAllByRole("combobox", {
+      name: /preview theme/i,
+    })[0]!;
+    const modePicker = screen.getAllByRole("combobox", {
+      name: /preview theme mode/i,
+    })[0]!;
+
+    fireEvent.change(themePicker, { target: { value: "market" } });
+
+    expect(document.documentElement).toHaveAttribute(
+      "data-theme",
+      "market-light",
+    );
+    fireEvent.change(modePicker, { target: { value: "dark" } });
+
+    expect(document.documentElement).toHaveAttribute(
+      "data-theme",
+      "market-dark",
+    );
+    expect(document.documentElement).toHaveAttribute("data-theme-mode", "dark");
   });
 
   test("opens command palette via keyboard shortcut", async () => {
@@ -98,7 +138,10 @@ describe("SiteHeader", () => {
     renderHeaderWithSections();
 
     await waitFor(() =>
-      expect(screen.getByRole("link", { name: /Approach/i })).toHaveAttribute("aria-current", "location"),
+      expect(screen.getByRole("link", { name: /Approach/i })).toHaveAttribute(
+        "aria-current",
+        "location",
+      ),
     );
 
     const observer = MockIntersectionObserver.instances[0];
@@ -119,7 +162,10 @@ describe("SiteHeader", () => {
     ]);
 
     await waitFor(() =>
-      expect(screen.getByRole("link", { name: /Experience/i })).toHaveAttribute("aria-current", "location"),
+      expect(screen.getByRole("link", { name: /Experience/i })).toHaveAttribute(
+        "aria-current",
+        "location",
+      ),
     );
   });
 
@@ -153,7 +199,9 @@ describe("SiteHeader", () => {
     expect(progress?.style.getPropertyValue("--progress-scale")).toBe("0.2");
     expect(screen.getByRole("banner")).toHaveClass("site-header--condensed");
 
-    fireEvent.click(screen.getAllByRole("button", { name: /Open command palette/i })[0]!);
+    fireEvent.click(
+      screen.getAllByRole("button", { name: /Open command palette/i })[0]!,
+    );
     expect(await screen.findByText(/Quick actions/i)).toBeInTheDocument();
   });
 
@@ -164,15 +212,25 @@ describe("SiteHeader", () => {
       fireEvent.click(screen.getByRole("button", { name: /Open navigation/i }));
     });
 
-    const dialog = await screen.findByRole("dialog", { name: /Site navigation/i });
+    const dialog = await screen.findByRole("dialog", {
+      name: /Site navigation/i,
+    });
     expect(dialog).toBeInTheDocument();
     expect(screen.getByText(/Site navigation/i)).toBeInTheDocument();
     expect(
-      screen.getByText(/Browse page sections, external profiles, and the resume download./i),
+      screen.getByText(
+        /Browse page sections, external profiles, and the resume download./i,
+      ),
     ).toBeInTheDocument();
-    expect(within(dialog).getByRole("navigation", { name: /Mobile navigation/i })).toBeInTheDocument();
+    expect(
+      within(dialog).getByRole("navigation", { name: /Mobile navigation/i }),
+    ).toBeInTheDocument();
     expect(within(dialog).getByText(/Buffalo, NY/i)).toBeInTheDocument();
-    expect(within(dialog).getByRole("link", { name: /GitHub/i })).toBeInTheDocument();
-    expect(within(dialog).getByRole("link", { name: /Resume/i })).toBeInTheDocument();
+    expect(
+      within(dialog).getByRole("link", { name: /GitHub/i }),
+    ).toBeInTheDocument();
+    expect(
+      within(dialog).getByRole("link", { name: /Resume/i }),
+    ).toBeInTheDocument();
   });
 });

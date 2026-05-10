@@ -6,9 +6,9 @@
   z-index: 1200;
   width: min(560px, calc(100vw - 2.5rem));
   border-radius: 24px;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  background: rgba(15, 23, 42, 0.92);
-  color: #f8fafc;
+  border: 1px solid var(--border-strong);
+  background: var(--panel-gradient);
+  color: var(--text-primary);
   backdrop-filter: blur(28px);
   box-shadow: 0 48px 120px -60px rgba(2, 6, 23, 0.65);
 }
@@ -18,7 +18,7 @@
   align-items: center;
   gap: 0.9rem;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  border-bottom: 1px solid var(--border);
 }
 
 .input {
@@ -37,7 +37,7 @@
   border: 1px solid rgba(148, 163, 184, 0.35);
   border-radius: 999px;
   padding: 0.35rem 0.65rem;
-  color: rgba(226, 232, 240, 0.75);
+  color: var(--text-secondary);
 }
 
 .list {
@@ -56,7 +56,7 @@
   font-size: 0.75rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba(148, 163, 184, 0.6);
+  color: var(--text-secondary);
   padding: 0.6rem 0.4rem 0.2rem;
 }
 
@@ -74,11 +74,11 @@
 
 .item[data-selected="true"],
 .item:hover {
-  background: rgba(99, 102, 241, 0.16);
+  background: var(--accent-soft);
 }
 
 .empty {
   padding: 1.25rem;
   text-align: center;
-  color: rgba(148, 163, 184, 0.75);
+  color: var(--text-secondary);
 }

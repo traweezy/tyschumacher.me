@@ -4,7 +4,7 @@
   padding: clamp(1.3rem, 1.7vw, 1.8rem);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
-  background: var(--surface-100);
+  background: var(--panel-gradient);
   box-shadow: 0 22px 60px -48px var(--shadow-color);
   width: 100%;
 }
@@ -36,10 +36,12 @@
   padding: 0.72rem 0.9rem;
   border-radius: 14px;
   border: 1px solid var(--border);
-  background: var(--surface-0);
+  background: var(--input-bg);
   color: var(--text-primary);
   font: inherit;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .field input:focus-visible,
@@ -72,5 +74,9 @@
 }
 
 :root[data-theme="dark"] .form {
-  background: linear-gradient(150deg, rgba(8, 18, 44, 0.9), rgba(36, 12, 64, 0.82));
+  background: linear-gradient(
+    150deg,
+    rgba(8, 18, 44, 0.9),
+    rgba(36, 12, 64, 0.82)
+  );
 }

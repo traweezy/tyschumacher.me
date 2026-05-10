@@ -8,6 +8,10 @@ vi.mock("next/font/google", () => ({
   Manrope: () => ({ variable: "font-manrope" }),
 }));
 
+vi.mock("next/script", () => ({
+  default: () => null,
+}));
+
 vi.mock("./providers", () => ({
   Providers: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
@@ -41,8 +45,8 @@ describe("RootLayout metadata", () => {
 
     const openGraphImages = metadata.openGraph?.images;
     const firstImage = Array.isArray(openGraphImages)
-      ? openGraphImages[0] ?? null
-      : openGraphImages ?? null;
+      ? (openGraphImages[0] ?? null)
+      : (openGraphImages ?? null);
 
     if (!firstImage) {
       throw new Error("Expected Open Graph image.");
@@ -55,7 +59,10 @@ describe("RootLayout metadata", () => {
     } else {
       expect(firstImage.url).toBe("/og-image.svg");
     }
-    expect(viewport.themeColor).toBe("#f4ecdf");
+    expect(viewport.themeColor).toEqual([
+      { media: "(prefers-color-scheme: light)", color: "#f5f7f5" },
+      { media: "(prefers-color-scheme: dark)", color: "#08110f" },
+    ]);
   });
 });
 
@@ -70,10 +77,9 @@ describe("RootLayout component", () => {
       </RootLayout>,
     );
 
-    expect(screen.getByRole("link", { name: /skip to content/i })).toHaveAttribute(
-      "href",
-      "#main-content",
-    );
+    expect(
+      screen.getByRole("link", { name: /skip to content/i }),
+    ).toHaveAttribute("href", "#main-content");
     expect(screen.getByText("Global header")).toBeInTheDocument();
     expect(screen.getByRole("main")).toHaveTextContent("Page content");
   });

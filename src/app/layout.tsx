@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist_Mono, Manrope } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { Providers } from "./providers";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -93,7 +94,10 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f4ecdf",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f5f7f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#08110f" },
+  ],
 };
 
 export default function RootLayout({
@@ -102,14 +106,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="light" data-motion="safe">
+    <html
+      lang="en"
+      data-theme="civic-light"
+      data-theme-mode="light"
+      data-motion="safe"
+    >
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
+        <Script src="/theme-preview.js" strategy="beforeInteractive" />
       </head>
-      <body className={`${manrope.variable} ${fraunces.variable} ${geistMono.variable}`}>
+      <body
+        className={`${manrope.variable} ${fraunces.variable} ${geistMono.variable}`}
+      >
         <Providers>
           <a href="#main-content" className="skip-link">
             Skip to content
