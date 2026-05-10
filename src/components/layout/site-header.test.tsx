@@ -78,7 +78,6 @@ describe("SiteHeader", () => {
     useUIStore.setState({ isCommandOpen: false, isMobileNavOpen: false });
     document.documentElement.dataset.theme = "civic-light";
     document.documentElement.dataset.themeMode = "light";
-    window.localStorage.removeItem("tyschumacher:theme-preview");
     window.history.replaceState({}, "", "/");
     Object.defineProperty(globalThis, "CSS", {
       configurable: true,
@@ -102,29 +101,28 @@ describe("SiteHeader", () => {
     ).not.toBeInTheDocument();
   });
 
-  test("applies the temporary theme preview from the app bar", () => {
+  test("applies the temporary Civic theme mode from the app bar", () => {
     renderWithProviders(<SiteHeader />);
 
-    const themePicker = screen.getAllByRole("combobox", {
-      name: /preview theme/i,
-    })[0]!;
-    const modePicker = screen.getAllByRole("combobox", {
-      name: /preview theme mode/i,
-    })[0]!;
+    expect(
+      screen.queryByRole("combobox", { name: /preview theme/i }),
+    ).not.toBeInTheDocument();
+    const lightMode = screen.getByRole("button", { name: /light theme mode/i });
+    const darkMode = screen.getByRole("button", { name: /dark theme mode/i });
 
-    fireEvent.change(themePicker, { target: { value: "market" } });
-
+    expect(lightMode).toHaveAttribute("aria-pressed", "true");
     expect(document.documentElement).toHaveAttribute(
       "data-theme",
-      "market-light",
+      "civic-light",
     );
-    fireEvent.change(modePicker, { target: { value: "dark" } });
+    fireEvent.click(darkMode);
 
     expect(document.documentElement).toHaveAttribute(
       "data-theme",
-      "market-dark",
+      "civic-dark",
     );
     expect(document.documentElement).toHaveAttribute("data-theme-mode", "dark");
+    expect(darkMode).toHaveAttribute("aria-pressed", "true");
   });
 
   test("opens command palette via keyboard shortcut", async () => {

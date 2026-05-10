@@ -1,16 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, type ChangeEvent } from "react";
-import {
-  ArrowUpRight,
-  FileText,
-  Menu,
-  Palette,
-  Search,
-  SunMoon,
-  X,
-} from "lucide-react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { ArrowUpRight, FileText, Menu, Search, SunMoon, X } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import {
   Sheet,
@@ -34,64 +26,29 @@ import { cn } from "@/lib/utils";
 const scrollThreshold = 64;
 type PrimaryNavId = (typeof primaryNav)[number]["id"];
 
-const themeConceptOptions = [
-  { id: "current", label: "Current" },
-  { id: "market", label: "Market Console" },
-  { id: "broadcast", label: "Broadcast Control" },
-  { id: "civic", label: "Civic Systems" },
-  { id: "signal", label: "Signal Zine" },
-  { id: "ledger", label: "Ledger Desk" },
-  { id: "editorial", label: "Editorial Grid" },
-  { id: "alloy", label: "Alloy Lab" },
-  { id: "prism", label: "Prism Data" },
-  { id: "terminal", label: "Terminal Bloom" },
-  { id: "alpine", label: "Alpine Ops" },
-  { id: "mono", label: "Mono Contrast" },
-] as const;
-
 const themeModeOptions = [
   { id: "light", label: "Light" },
   { id: "dark", label: "Dark" },
 ] as const;
 
-type ThemeConceptId = (typeof themeConceptOptions)[number]["id"];
 type ThemeModeId = (typeof themeModeOptions)[number]["id"];
 
-const defaultThemeConcept: ThemeConceptId = "civic";
 const defaultThemeMode: ThemeModeId = "light";
-
-const isThemeConceptId = (value: string | null): value is ThemeConceptId =>
-  themeConceptOptions.some((option) => option.id === value);
 
 const isThemeModeId = (value: string | null): value is ThemeModeId =>
   themeModeOptions.some((option) => option.id === value);
 
-const getThemeAttribute = (
-  concept: ThemeConceptId,
-  mode: ThemeModeId,
-): string => (concept === "current" ? mode : `${concept}-${mode}`);
-
-const applyThemePreview = (
-  concept: ThemeConceptId,
-  mode: ThemeModeId,
-): void => {
-  document.documentElement.dataset.theme = getThemeAttribute(concept, mode);
+const applyThemeMode = (mode: ThemeModeId): void => {
+  document.documentElement.dataset.theme = `civic-${mode}`;
   document.documentElement.dataset.themeMode = mode;
 };
 
-const readPreviewConcept = (fallback: ThemeConceptId): ThemeConceptId => {
-  const select = document.querySelector<HTMLSelectElement>(
-    "[data-theme-preview-select]",
-  );
-  const value = select?.value ?? null;
-  return isThemeConceptId(value) ? value : fallback;
-};
-
 const readPreviewMode = (fallback: ThemeModeId): ThemeModeId => {
-  const select = document.querySelector<HTMLSelectElement>(
-    "[data-theme-mode-select]",
-  );
-  const value = select?.value ?? null;
+  if (typeof document === "undefined") {
+    return fallback;
+  }
+
+  const value = document.documentElement.dataset.themeMode ?? null;
   return isThemeModeId(value) ? value : fallback;
 };
 
@@ -100,33 +57,42 @@ export const SiteHeader = () => {
   const [activeSection, setActiveSection] = useState<PrimaryNavId>(
     primaryNav[0].id,
   );
-  const [previewConcept, setPreviewConcept] =
-    useState<ThemeConceptId>(defaultThemeConcept);
-  const [previewMode, setPreviewMode] = useState<ThemeModeId>(defaultThemeMode);
+  const [previewMode, setPreviewMode] = useState<ThemeModeId>(() =>
+    readPreviewMode(defaultThemeMode),
+  );
   const isMobileNavOpen = useIsMobileNavOpen();
   const setMobileNavOpen = useSetMobileNavOpen();
   const setCommandOpen = useSetCommandOpen();
   const progressRef = useRef<HTMLDivElement | null>(null);
+  const hasManualModeOverrideRef = useRef(false);
 
-  const handleThemeConceptChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const nextConcept = event.currentTarget.value;
-    if (!isThemeConceptId(nextConcept)) {
-      return;
-    }
-
-    setPreviewConcept(nextConcept);
-    applyThemePreview(nextConcept, readPreviewMode(previewMode));
-  };
-
-  const handleThemeModeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const nextMode = event.currentTarget.value;
+  const handleThemeModeClick = (event: MouseEvent<HTMLButtonElement>) => {
+    const nextMode = event.currentTarget.dataset.themeModeToggle ?? null;
     if (!isThemeModeId(nextMode)) {
       return;
     }
 
+    hasManualModeOverrideRef.current = true;
     setPreviewMode(nextMode);
-    applyThemePreview(readPreviewConcept(previewConcept), nextMode);
+    applyThemeMode(nextMode);
   };
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleSystemModeChange = (event: MediaQueryListEvent) => {
+      if (hasManualModeOverrideRef.current) {
+        return;
+      }
+
+      const nextMode = event.matches ? "dark" : "light";
+      setPreviewMode(nextMode);
+      applyThemeMode(nextMode);
+    };
+
+    mediaQuery.addEventListener("change", handleSystemModeChange);
+    return () =>
+      mediaQuery.removeEventListener("change", handleSystemModeChange);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -440,40 +406,31 @@ export const SiteHeader = () => {
         </div>
         <div
           className="site-header__preview-bar"
-          aria-label="Temporary theme previews"
+          aria-label="Theme mode controls"
         >
-          <label className="site-header__theme-picker">
-            <Palette className="h-4 w-4" aria-hidden="true" />
-            <span className="site-header__theme-label">Theme</span>
-            <select
-              aria-label="Preview theme"
-              data-theme-preview-select
-              defaultValue={previewConcept}
-              onChange={handleThemeConceptChange}
-            >
-              {themeConceptOptions.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="site-header__theme-picker site-header__theme-picker--mode">
+          <div
+            className="site-header__theme-picker site-header__theme-mode-toggle"
+            role="group"
+            aria-label="Theme mode"
+          >
             <SunMoon className="h-4 w-4" aria-hidden="true" />
             <span className="site-header__theme-label">Mode</span>
-            <select
-              aria-label="Preview theme mode"
-              data-theme-mode-select
-              defaultValue={previewMode}
-              onChange={handleThemeModeChange}
-            >
+            <span className="site-header__theme-mode-options">
               {themeModeOptions.map((option) => (
-                <option key={option.id} value={option.id}>
+                <button
+                  key={option.id}
+                  type="button"
+                  className="site-header__theme-mode-option"
+                  data-theme-mode-toggle={option.id}
+                  aria-label={`${option.label} theme mode`}
+                  aria-pressed={previewMode === option.id}
+                  onClick={handleThemeModeClick}
+                >
                   {option.label}
-                </option>
+                </button>
               ))}
-            </select>
-          </label>
+            </span>
+          </div>
         </div>
       </Container>
       <CommandPalette />
