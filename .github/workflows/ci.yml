@@ -87,6 +87,8 @@ jobs:
       - typecheck
       - unit-tests
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
     env:
       CI: true
     steps:
@@ -109,8 +111,8 @@ jobs:
       - name: Build application
         run: pnpm build
 
-      - name: Install Playwright browsers
-        run: pnpm playwright:install
+      - name: Verify Playwright
+        run: pnpm exec playwright --version
 
       - name: End-to-end tests
         run: pnpm test:e2e
