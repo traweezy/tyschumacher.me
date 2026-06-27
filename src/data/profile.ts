@@ -1,3 +1,14 @@
+type Profile = {
+  name: string;
+  role: string;
+  location: string;
+  email: string;
+  headline: string;
+  subhead: string;
+  bio: readonly [string, string];
+  workingStyle: string;
+};
+
 export const profile = {
   name: "Tyler Schumacher",
   role: "Principal product engineer",
@@ -12,4 +23,4 @@ export const profile = {
   ],
   workingStyle:
     "Turns product ambiguity into clear interfaces, reliable systems, and delivery plans a team can actually execute.",
-};
+} satisfies Profile;

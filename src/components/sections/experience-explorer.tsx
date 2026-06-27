@@ -28,9 +28,10 @@ export const ExperienceExplorer = ({
   const experiences = initialExperiences;
 
   const availableLocations = useMemo(() => {
-    const locations = experiences.map(
-      (experience) => experience.location.split(" · ")[0],
-    );
+    const locations = experiences.map((experience) => {
+      const [location] = experience.location.split(" · ");
+      return location ?? experience.location;
+    });
     return ["All", ...dedupe(locations)];
   }, [experiences]);
 

@@ -10,6 +10,17 @@ export const projectsHeadline =
 export const projectsCaption =
   "A few representative systems: trader tooling, rollout pipelines, live sports platforms, and analytics products built for teams that cannot afford confusion at the moment of use.";
 
+const getRequiredStyle = (
+  className: string | undefined,
+  key: string,
+): string => {
+  if (!className) {
+    throw new Error(`Missing CSS module class: ${key}`);
+  }
+
+  return className;
+};
+
 export const ProjectsSection = async () => {
   const data = await getProjects();
   const slots = [...PROJECT_SLOTS];
@@ -23,10 +34,22 @@ export const ProjectsSection = async () => {
     (slot, index) => `${slot.id}-${slotSeed}-${index}`,
   );
 
-  const projectsWithLayout = projectsToShow.map((project, index) => ({
-    ...project,
-    layout: shuffledSlots[index],
-  }));
+  const projectsWithLayout = projectsToShow.map((project, index) => {
+    const layout = shuffledSlots.at(index);
+
+    if (!layout) {
+      throw new Error(`Missing project layout slot for ${project.slug}`);
+    }
+
+    return {
+      ...project,
+      layout,
+    };
+  });
+  const projectsGridWrapper = getRequiredStyle(
+    styles["projects-grid-wrapper"],
+    "projects-grid-wrapper",
+  );
 
   return (
     <Section
@@ -34,7 +57,7 @@ export const ProjectsSection = async () => {
       label="Work"
       headline={projectsHeadline}
       caption={projectsCaption}
-      contentClassName={styles["projects-grid-wrapper"]}
+      contentClassName={projectsGridWrapper}
     >
       <ProjectsGrid projects={projectsWithLayout} />
     </Section>
@@ -64,42 +87,49 @@ const shuffleByDeterministicWeight = <T,>(
 
 const placeholderCards = PROJECT_SLOTS;
 
-export const ProjectsSectionSkeleton = () => (
-  <Section
-    id="projects"
-    label="Work"
-    headline={projectsHeadline}
-    caption={projectsCaption}
-    contentClassName={styles["projects-grid-wrapper"]}
-  >
-    <div className={styles["projects-bento-grid"]} aria-hidden>
-      {placeholderCards.map((slot) => (
-        <article
-          key={slot.id}
-          className={clsx(
-            styles["projects-card"],
-            styles[`tone-${slot.tone}`],
-            styles[`area-${slot.area}`],
-            styles["projects-card--pending"],
-          )}
-        >
-          <div className={styles["projects-card__header"]}>
-            <span className="skeleton h-3 w-16 rounded-full" />
-            <span className="skeleton h-6 w-2/3 rounded-full" />
-          </div>
-          <div className={clsx(styles["projects-card__media"], "skeleton")} />
-          <span className="skeleton block h-4 w-11/12 rounded-full" />
-          <span className="skeleton block h-4 w-8/12 rounded-full" />
-          <div className={styles["projects-card__tech"]}>
-            <span className="skeleton h-6 w-20 rounded-full" />
-            <span className="skeleton h-6 w-16 rounded-full" />
-            <span className="skeleton h-6 w-24 rounded-full" />
-          </div>
-          <div className={styles["projects-card__cta"]}>
-            <span className="skeleton h-4 w-28 rounded-full" />
-          </div>
-        </article>
-      ))}
-    </div>
-  </Section>
-);
+export const ProjectsSectionSkeleton = () => {
+  const projectsGridWrapper = getRequiredStyle(
+    styles["projects-grid-wrapper"],
+    "projects-grid-wrapper",
+  );
+
+  return (
+    <Section
+      id="projects"
+      label="Work"
+      headline={projectsHeadline}
+      caption={projectsCaption}
+      contentClassName={projectsGridWrapper}
+    >
+      <div className={styles["projects-bento-grid"]} aria-hidden>
+        {placeholderCards.map((slot) => (
+          <article
+            key={slot.id}
+            className={clsx(
+              styles["projects-card"],
+              styles[`tone-${slot.tone}`],
+              styles[`area-${slot.area}`],
+              styles["projects-card--pending"],
+            )}
+          >
+            <div className={styles["projects-card__header"]}>
+              <span className="skeleton h-3 w-16 rounded-full" />
+              <span className="skeleton h-6 w-2/3 rounded-full" />
+            </div>
+            <div className={clsx(styles["projects-card__media"], "skeleton")} />
+            <span className="skeleton block h-4 w-11/12 rounded-full" />
+            <span className="skeleton block h-4 w-8/12 rounded-full" />
+            <div className={styles["projects-card__tech"]}>
+              <span className="skeleton h-6 w-20 rounded-full" />
+              <span className="skeleton h-6 w-16 rounded-full" />
+              <span className="skeleton h-6 w-24 rounded-full" />
+            </div>
+            <div className={styles["projects-card__cta"]}>
+              <span className="skeleton h-4 w-28 rounded-full" />
+            </div>
+          </article>
+        ))}
+      </div>
+    </Section>
+  );
+};
