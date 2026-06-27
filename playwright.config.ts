@@ -11,13 +11,29 @@ export default defineConfig({
   reporter: [["list"], ["html", { open: "never" }]],
   use: {
     baseURL,
-    trace: "on-first-retry",
+    trace: "retain-on-failure",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
   },
   projects: [
     {
       name: "chromium",
+      testMatch: /.*home\.spec\.ts/,
+      use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      name: "mobile-chrome",
+      testMatch: /.*mobile\.spec\.ts/,
+      use: { ...devices["Pixel 10"] },
+    },
+    {
+      name: "chromium-dark",
+      testMatch: /.*dark\.spec\.ts/,
+      use: { ...devices["Desktop Chrome"], colorScheme: "dark" },
+    },
+    {
+      name: "chromium-reduced-motion",
+      testMatch: /.*reduced-motion\.spec\.ts/,
       use: { ...devices["Desktop Chrome"] },
     },
   ],
