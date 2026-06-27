@@ -23,9 +23,9 @@ export const projects: Project[] = [
     slug: "signal-stack",
     name: "Signal Stack",
     summary:
-      "Observability platform translating telemetry into actionable signals with <120ms fan out.",
+      "Observability workspace that turns noisy telemetry into the next useful action.",
     description:
-      "Multi tenant ingest and diagnostics for Caesars Sportsbook, pairing stream analytics with auto remediation runbooks. Trading teams trust it to surface anomalies before the odds move.",
+      "Multi-tenant ingest and diagnostics for sportsbook teams, pairing stream analytics with runbooks that show what changed and what to check next.",
     role: "Principal Engineer",
     tech: ["React 19", "WebSockets", "Go", "ClickHouse", "OpenTelemetry"],
     year: "2024",
@@ -42,9 +42,9 @@ export const projects: Project[] = [
     slug: "game-state-studio",
     name: "GameState Studio",
     summary:
-      "Low latency content orchestration for live sports overlays across mobile, web, and OTT.",
+      "Content orchestration for live sports overlays across mobile, web, and OTT.",
     description:
-      "Authored workflows that let editors stage, localize, and launch interactive experiences in minutes not hours. Deterministic rollouts kept parity across 12 broadcast partners.",
+      "Built workflows that let editors stage, localize, and launch interactive experiences without waiting on release work for every change.",
     role: "Lead Frontend Architect",
     tech: ["Next.js", "GraphQL", "Redis", "Tailwind v4"],
     year: "2023",
@@ -58,9 +58,9 @@ export const projects: Project[] = [
     slug: "relay-hub",
     name: "RelayHub",
     summary:
-      "Edge scheduling system coordinating 3k+ stadium devices with deterministic timing.",
+      "Scheduling tools for stadium devices, sponsor moments, and event-day operations.",
     description:
-      "Built fan engagement tooling that choreographs light shows, push messaging, and sponsor activations without missing the beat. Offline first sync and backpressure kept ops calm.",
+      "Built fan engagement tooling for light shows, push messaging, and sponsor activations. Offline-first sync and backpressure kept the operator view useful when connectivity got uneven.",
     role: "Engineering Lead",
     tech: ["Go", "gRPC", "Kubernetes", "Vue 3"],
     year: "2022",
@@ -74,9 +74,9 @@ export const projects: Project[] = [
     slug: "aurora-pipeline",
     name: "Aurora Build Pipeline",
     summary:
-      "Reproducible release train for cross platform sportsbook apps with SBOM guarantees.",
+      "Release pipeline for sportsbook apps with traceable artifacts and safer rollouts.",
     description:
-      "Automated artifact provenance, compliance checks, and feature flag rollouts. Release lead time fell 47% while accessibility budgets and localization gates stayed green.",
+      "Automated artifact provenance, compliance checks, and feature flag rollout steps so teams could see what shipped, why it shipped, and how to back it out.",
     role: "Principal Developer",
     tech: ["Nx", "Docker", "CycloneDX", "Azure DevOps"],
     year: "2021",
@@ -90,9 +90,9 @@ export const projects: Project[] = [
     slug: "insight-kit",
     name: "Insight Kit",
     summary:
-      "Privacy first analytics modules with differential privacy for regulated teams.",
+      "Analytics modules that make privacy and product questions visible together.",
     description:
-      "Shipped data contracts, redaction tooling, and Slack first insights so marketing and compliance share a single playbook. Reduced reporting toil 32% by automating weekly digests.",
+      "Shipped data contracts, redaction tooling, and Slack-first summaries so marketing and compliance could work from the same facts.",
     role: "Senior Full Stack Developer",
     tech: ["TypeScript", "Node.js", "ClickHouse", "Zod"],
     year: "2020",
@@ -106,9 +106,9 @@ export const projects: Project[] = [
     slug: "playbook-lab",
     name: "Playbook Lab",
     summary:
-      "Experimentation toolkit helping product squads ship, measure, and iterate safely.",
+      "Experimentation toolkit for teams that need to ship, measure, and learn safely.",
     description:
-      "Balanced rapid experiments with guardrails: feature toggles, canary analysis, and telemetry budgets. Teams modeled impact before rollout and kept p95 performance under budget.",
+      "Paired feature toggles, canary checks, and telemetry budgets so product teams could understand rollout risk before widening an experiment.",
     role: "Staff Engineer",
     tech: ["React Server Components", "Zustand", "PostgreSQL", "Vitest"],
     year: "2019",

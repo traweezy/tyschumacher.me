@@ -25,9 +25,9 @@ const geistMono = Geist_Mono({
 });
 
 const siteUrl = "https://tyschumacher.me";
-const title = "Tyler Schumacher | Software that stays clear under pressure";
+const title = "Tyler Schumacher | Software for teams that work live";
 const description =
-  "Principal product engineer for trading, sportsbook, and media teams. I build calm interfaces, reliable systems, and delivery paths that hold up under pressure.";
+  "I build web tools for trading, sportsbook, and operations teams where the screen has to be clear and the system has to be trustworthy.";
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -75,7 +75,7 @@ export const metadata: Metadata = {
         url: "/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "Tyler Schumacher | Software that stays clear under pressure",
+        alt: "Tyler Schumacher | Software for teams that work live",
       },
     ],
   },
@@ -96,8 +96,8 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f5f7f5" },
-    { media: "(prefers-color-scheme: dark)", color: "#08110f" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f5fb" },
+    { media: "(prefers-color-scheme: dark)", color: "#070813" },
   ],
 };
 

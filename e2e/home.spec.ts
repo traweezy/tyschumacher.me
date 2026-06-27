@@ -23,9 +23,11 @@ test.describe("Home experience", () => {
     const skipLink = page.getByRole("link", { name: /Skip to content/i });
     await expect(skipLink).toHaveAttribute("href", "#main-content");
 
-    const focusAreas = page.locator(".hero__stat");
+    const focusAreas = page.locator(".hero__principle");
     await expect(focusAreas).toHaveCount(3);
-    await expect(focusAreas.first()).toContainText(/12\+ years/i);
+    await expect(focusAreas.first()).toContainText(
+      /Screens for decisions in motion/i,
+    );
 
     const viewExperience = page.getByRole("link", {
       name: /Review experience/i,
@@ -372,7 +374,7 @@ test.describe("Home experience", () => {
     await expect(aboutRegion.getByText(profile.bio[0])).toBeVisible();
     await expect(aboutRegion.getByText(profile.bio[1])).toBeVisible();
     await expect(
-      aboutRegion.getByText(/Start with the failure point/i),
+      aboutRegion.getByText(/Find the pressure point/i),
     ).toBeVisible();
 
     const skillChips = aboutRegion.locator(".about-skill");

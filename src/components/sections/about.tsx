@@ -5,16 +5,16 @@ import { buildPriorityItems, coreToolItems } from "@/data/skills";
 
 const approachPillars = [
   {
-    title: "Start with the failure point",
-    body: "I begin where confusion, money movement, or operational risk can compound. Once that moment is clear, the rest of the product usually gets easier to shape.",
+    title: "Find the pressure point",
+    body: "I start with the moment where a user can lose time, money, or confidence. Once that moment is clear, the product has a real center.",
   },
   {
-    title: "Make the system legible",
-    body: "The interface should read clearly for the user, and the internals should read clearly for the team supporting it. Instrumentation and release checks need to help, not decorate.",
+    title: "Make the work readable",
+    body: "The screen should make sense to the person using it, and the internals should make sense to the team supporting it.",
   },
   {
-    title: "Turn ambiguity into sequence",
-    body: "A lot of work starts with partial requirements and competing instincts. I turn that into a sequence the team can ship without stepping on itself.",
+    title: "Put the build in order",
+    body: "A lot of work starts with partial requirements and competing instincts. I turn that into a path the team can ship without guessing.",
   },
 ] as const;
 
@@ -22,7 +22,7 @@ export const AboutSection = () => (
   <Section
     id="about"
     label="Approach"
-    headline="I make the risky part easier to understand"
+    headline="I care most about the parts people rely on"
     caption={profile.bio[0]}
     overline={profile.bio[1]}
     contentClassName="about-grid"
@@ -52,8 +52,8 @@ export const AboutSection = () => (
         <div className="about-meta">
           <p className="about-meta__label type-eyebrow">Tool stack</p>
           <p className="about-meta__value type-body">
-            These are the tools I use most when the work needs to move quickly
-            without making the system harder to operate later.
+            The stack changes by problem, but these are the tools I reach for
+            when the work needs to move without becoming harder to run later.
           </p>
         </div>
         <div className="about-skills">
@@ -78,7 +78,7 @@ export const AboutSection = () => (
         <div className="about-meta">
           <p className="about-meta__label type-eyebrow">What I optimize for</p>
           <p className="about-meta__value type-body">
-            These are the qualities I keep protecting while the product is being
+            These are the tradeoffs I keep visible while the product is being
             designed, built, and released.
           </p>
         </div>

@@ -1,14 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import {
-  useEffect,
-  useEffectEvent,
-  useRef,
-  useState,
-  type MouseEvent,
-} from "react";
-import { ArrowUpRight, FileText, Menu, Search, SunMoon, X } from "lucide-react";
+  ArrowUpRight,
+  FileText,
+  Menu,
+  Moon,
+  Search,
+  Sun,
+  X,
+} from "lucide-react";
 import { Container } from "@/components/layout/container";
 import {
   Sheet,
@@ -55,7 +57,18 @@ const readPreviewMode = (fallback: ThemeModeId): ThemeModeId => {
   }
 
   const value = document.documentElement.dataset.themeMode ?? null;
-  return isThemeModeId(value) ? value : fallback;
+  if (isThemeModeId(value)) {
+    return value;
+  }
+
+  if (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  ) {
+    return "dark";
+  }
+
+  return fallback;
 };
 
 export const SiteHeader = () => {
@@ -81,16 +94,16 @@ export const SiteHeader = () => {
     applyThemeMode(nextMode);
   });
 
-  const handleThemeModeClick = (event: MouseEvent<HTMLButtonElement>) => {
-    const nextMode = event.currentTarget.dataset.themeModeToggle ?? null;
-    if (!isThemeModeId(nextMode)) {
-      return;
-    }
-
+  const handleThemeModeToggle = () => {
+    const nextMode = previewMode === "dark" ? "light" : "dark";
     hasManualModeOverrideRef.current = true;
     setPreviewMode(nextMode);
     applyThemeMode(nextMode);
   };
+
+  useEffect(() => {
+    applyThemeMode(previewMode);
+  }, [previewMode]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -193,6 +206,9 @@ export const SiteHeader = () => {
 
   const resumeLink = secondaryNav.find((item) => item.id === "resume");
   const socialLinks = secondaryNav.filter((item) => item.id !== "resume");
+  const nextThemeMode = previewMode === "dark" ? "light" : "dark";
+  const themeToggleLabel = `Switch to ${nextThemeMode} theme`;
+  const ThemeToggleIcon = previewMode === "dark" ? Sun : Moon;
 
   return (
     <header
@@ -250,6 +266,16 @@ export const SiteHeader = () => {
           <div className="site-header__actions">
             <button
               type="button"
+              className="site-header__icon-button site-header__theme-toggle"
+              data-theme-mode-toggle
+              onClick={handleThemeModeToggle}
+              aria-label={themeToggleLabel}
+              aria-pressed={previewMode === "dark"}
+            >
+              <ThemeToggleIcon className="h-4 w-4" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
               className="site-header__utility"
               onClick={() => setCommandOpen(true)}
               aria-label="Open command palette"
@@ -273,6 +299,16 @@ export const SiteHeader = () => {
             ) : null}
           </div>
           <div className="site-header__mobile-actions">
+            <button
+              type="button"
+              onClick={handleThemeModeToggle}
+              aria-label={themeToggleLabel}
+              aria-pressed={previewMode === "dark"}
+              data-theme-mode-toggle
+              className="site-header__icon-button site-header__theme-toggle"
+            >
+              <ThemeToggleIcon className="h-5 w-5" aria-hidden="true" />
+            </button>
             <button
               type="button"
               onClick={() => setCommandOpen(true)}
@@ -414,34 +450,6 @@ export const SiteHeader = () => {
                 </div>
               </SheetContent>
             </Sheet>
-          </div>
-        </div>
-        <div
-          className="site-header__preview-bar"
-          aria-label="Theme mode controls"
-        >
-          <div
-            className="site-header__theme-picker site-header__theme-mode-toggle"
-            role="group"
-            aria-label="Theme mode"
-          >
-            <SunMoon className="h-4 w-4" aria-hidden="true" />
-            <span className="site-header__theme-label">Mode</span>
-            <span className="site-header__theme-mode-options">
-              {themeModeOptions.map((option) => (
-                <button
-                  key={option.id}
-                  type="button"
-                  className="site-header__theme-mode-option"
-                  data-theme-mode-toggle={option.id}
-                  aria-label={`${option.label} theme mode`}
-                  aria-pressed={previewMode === option.id}
-                  onClick={handleThemeModeClick}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </span>
           </div>
         </div>
       </Container>

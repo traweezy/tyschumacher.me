@@ -64,8 +64,8 @@ describe("RootLayout metadata", () => {
       expect(firstImage.url).toBe("/og-image.svg");
     }
     expect(viewport.themeColor).toEqual([
-      { media: "(prefers-color-scheme: light)", color: "#f5f7f5" },
-      { media: "(prefers-color-scheme: dark)", color: "#08110f" },
+      { media: "(prefers-color-scheme: light)", color: "#f7f5fb" },
+      { media: "(prefers-color-scheme: dark)", color: "#070813" },
     ]);
   });
 });

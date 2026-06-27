@@ -15,10 +15,19 @@
   const syncControls = () => {
     document.querySelectorAll("[data-theme-mode-toggle]").forEach((button) => {
       if (button instanceof HTMLButtonElement) {
+        const configuredMode = button.dataset.themeModeToggle;
+        const nextMode = state.mode === "dark" ? "light" : "dark";
         button.setAttribute(
           "aria-pressed",
-          String(button.dataset.themeModeToggle === state.mode),
+          String(
+            modes.has(configuredMode)
+              ? configuredMode === state.mode
+              : state.mode === "dark",
+          ),
         );
+        if (!modes.has(configuredMode)) {
+          button.setAttribute("aria-label", `Switch to ${nextMode} theme`);
+        }
       }
     });
   };
@@ -30,13 +39,19 @@
     }
 
     const button = target.closest("[data-theme-mode-toggle]");
-    const mode =
+    const requestedMode =
       button instanceof HTMLButtonElement
         ? button.dataset.themeModeToggle
         : null;
-    if (!modes.has(mode)) {
+    if (!(button instanceof HTMLButtonElement)) {
       return;
     }
+
+    const mode = modes.has(requestedMode)
+      ? requestedMode
+      : state.mode === "dark"
+        ? "light"
+        : "dark";
 
     hasManualModeOverride = true;
     state.mode = mode;

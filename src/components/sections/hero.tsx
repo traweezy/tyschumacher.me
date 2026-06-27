@@ -1,21 +1,24 @@
 import { Container } from "@/components/layout/container";
 import { profile } from "@/data/profile";
 
-const HERO_PROOF_POINTS = [
+const HERO_WORKING_NOTES = [
   {
-    detail: "finance, sportsbook, media",
-    label: "Experience",
-    value: "12+ years",
+    detail:
+      "Trading desks, event teams, and operators need state they can read quickly.",
+    label: "Live work",
+    title: "Screens for decisions in motion",
   },
   {
-    detail: "live trading surfaces",
-    label: "Latency",
-    value: "<120ms",
+    detail:
+      "I care about telemetry, rollback paths, and code that is boring to operate.",
+    label: "Readable systems",
+    title: "Behavior teams can explain",
   },
   {
-    detail: "faster release lead time",
-    label: "Delivery",
-    value: "47%",
+    detail:
+      "The best UI work starts with watching where the real workflow gets stuck.",
+    label: "Product sense",
+    title: "Tools shaped by the user",
   },
 ] as const;
 
@@ -56,13 +59,13 @@ export const Hero = () => (
         </div>
         <aside className="hero__rail" aria-label="Working profile">
           <div className="hero__rail-card">
-            <p className="hero__rail-label type-eyebrow">At a glance</p>
+            <p className="hero__rail-label type-eyebrow">Working profile</p>
             <dl className="hero__facts">
               <div className="hero__fact">
                 <dt>Focus</dt>
                 <dd>
-                  Operator software where interface quality and system behavior
-                  have to hold up together.
+                  Interfaces for trading, sportsbook, and internal teams making
+                  time-sensitive decisions.
                 </dd>
               </div>
               <div className="hero__fact">
@@ -77,12 +80,12 @@ export const Hero = () => (
           </div>
         </aside>
       </div>
-      <div className="hero__meta" aria-label="Proof points">
-        {HERO_PROOF_POINTS.map((proofPoint) => (
-          <div key={proofPoint.label} className="hero__stat">
-            <span className="hero__stat-label">{proofPoint.label}</span>
-            <strong className="hero__stat-value">{proofPoint.value}</strong>
-            <span className="hero__stat-detail">{proofPoint.detail}</span>
+      <div className="hero__principles" aria-label="Working principles">
+        {HERO_WORKING_NOTES.map((note) => (
+          <div key={note.label} className="hero__principle">
+            <span className="hero__principle-label">{note.label}</span>
+            <strong className="hero__principle-title">{note.title}</strong>
+            <span className="hero__principle-detail">{note.detail}</span>
           </div>
         ))}
       </div>

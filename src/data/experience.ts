@@ -14,10 +14,10 @@ export const experiences: ExperienceEntry[] = [
     start: "Dec 2021",
     location: "Jersey City, NJ · Remote",
     bullets: [
-      "Architected Go services that unify live data providers and concurrent processing so betting surfaces refresh in under 120 milliseconds for millions of fans.",
-      "Shipped immersive React experiences for live odds, trader tooling, and internal analytics using virtualization and accessibility patterns that keep fatigue low during peak events.",
-      "Channeled FullStory insights and trader interviews into design sprints that reduced critical UX friction points release over release.",
-      "Mentored engineers and drove agile rituals that raised code quality while keeping cross functional delivery humming.",
+      "Built Go services that normalize live data providers and keep betting surfaces current through large event traffic.",
+      "Built React screens for live odds, trader tools, and internal analytics, using virtualization and accessible patterns for long event windows.",
+      "Used FullStory sessions and trader feedback to turn friction into concrete design and backlog changes.",
+      "Mentored engineers, reviewed designs, and kept delivery rituals focused on decisions instead of ceremony.",
     ],
   },
   {
@@ -27,9 +27,9 @@ export const experiences: ExperienceEntry[] = [
     end: "Dec 2021",
     location: "New York, NY",
     bullets: [
-      "Engineered Node.js and Java services for a high volume trading platform, tuning throughput and compliance for real time financial workflows.",
-      "Reimagined legacy Flash workbenches as modular React suites that modernized the trader experience and unlocked rapid iteration.",
-      "Refined GitLab CI pipelines and Kubernetes deployments so teams shipped confidently with measurable reliability gains.",
+      "Built Node.js and Java services for a high-volume trading platform, tuning throughput and compliance paths for real-time workflows.",
+      "Moved legacy Flash workbenches into modular React tools so traders could work in a modern interface and teams could iterate faster.",
+      "Improved GitLab CI and Kubernetes deployment paths so releases were easier to reason about and recover.",
     ],
   },
   {
@@ -39,8 +39,8 @@ export const experiences: ExperienceEntry[] = [
     end: "Dec 2017",
     location: "New York, NY",
     bullets: [
-      "Delivered trading research portals for global banks, balancing accessibility, compliance, and performance targets without interrupting go live schedules.",
-      "Partnered with product and legal teams in discovery workshops, translating complex requirements into elegant, buildable web experiences.",
+      "Built trading research portals for global banks while balancing accessibility, compliance, and performance requirements.",
+      "Worked with product and legal teams to turn complex requirements into screens and services engineers could actually build.",
     ],
   },
   {
@@ -50,8 +50,8 @@ export const experiences: ExperienceEntry[] = [
     end: "Jun 2017",
     location: "Buffalo, NY",
     bullets: [
-      "Built responsive React and Node.js applications for hospitality and retail brands, crafting design systems that stayed consistent across campaigns.",
-      "Implemented analytics and SEO foundations that boosted organic discovery while giving stakeholders clear signals for roadmap planning.",
+      "Built responsive React and Node.js apps for hospitality and retail brands, with reusable UI patterns for campaign work.",
+      "Added analytics and SEO foundations so stakeholders could see what was working and plan the next round.",
     ],
   },
 ];

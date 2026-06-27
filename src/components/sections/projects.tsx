@@ -5,10 +5,9 @@ import { ProjectsGrid } from "@/components/projects/projects-grid";
 import styles from "@/components/projects/projects-grid.module.css";
 import { PROJECT_SLOTS } from "@/components/projects/layout";
 
-export const projectsHeadline =
-  "Selected work from live, high-pressure product environments";
+export const projectsHeadline = "Selected work from live product environments";
 export const projectsCaption =
-  "A few representative systems: trader tooling, rollout pipelines, live sports platforms, and analytics products built for teams that cannot afford confusion at the moment of use.";
+  "A few representative systems: trader tooling, rollout pipelines, live sports platforms, and analytics products built for teams that need the next step to be clear.";
 
 const getRequiredStyle = (
   className: string | undefined,

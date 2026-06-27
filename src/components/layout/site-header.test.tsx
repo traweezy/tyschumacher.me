@@ -101,28 +101,34 @@ describe("SiteHeader", () => {
     ).not.toBeInTheDocument();
   });
 
-  test("applies the temporary Civic theme mode from the app bar", () => {
+  test("toggles the Civic theme mode from the app bar", () => {
     renderWithProviders(<SiteHeader />);
 
     expect(
       screen.queryByRole("combobox", { name: /preview theme/i }),
     ).not.toBeInTheDocument();
-    const lightMode = screen.getByRole("button", { name: /light theme mode/i });
-    const darkMode = screen.getByRole("button", { name: /dark theme mode/i });
+    expect(
+      screen.queryByRole("group", { name: /theme mode/i }),
+    ).not.toBeInTheDocument();
+    const darkModeToggles = screen.getAllByRole("button", {
+      name: /switch to dark theme/i,
+    });
 
-    expect(lightMode).toHaveAttribute("aria-pressed", "true");
+    expect(darkModeToggles[0]).toHaveAttribute("aria-pressed", "false");
     expect(document.documentElement).toHaveAttribute(
       "data-theme",
       "civic-light",
     );
-    fireEvent.click(darkMode);
+    fireEvent.click(darkModeToggles[0]!);
 
     expect(document.documentElement).toHaveAttribute(
       "data-theme",
       "civic-dark",
     );
     expect(document.documentElement).toHaveAttribute("data-theme-mode", "dark");
-    expect(darkMode).toHaveAttribute("aria-pressed", "true");
+    expect(
+      screen.getAllByRole("button", { name: /switch to light theme/i })[0],
+    ).toHaveAttribute("aria-pressed", "true");
   });
 
   test("opens command palette via keyboard shortcut", async () => {

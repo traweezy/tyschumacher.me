@@ -9,7 +9,7 @@ test.describe("Dark mode preference", () => {
     await expect(root).toHaveAttribute("data-theme-mode", "dark");
 
     await expect(
-      page.getByRole("button", { name: /Dark theme mode/i }),
+      page.getByRole("button", { name: /Switch to light theme/i }).first(),
     ).toHaveAttribute("aria-pressed", "true");
   });
 });

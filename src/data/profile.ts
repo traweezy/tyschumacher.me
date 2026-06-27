@@ -14,13 +14,13 @@ export const profile = {
   role: "Principal product engineer",
   location: "Buffalo, NY",
   email: "tyschumacher@proton.me",
-  headline: "Builds software that stays clear under pressure.",
+  headline: "Software for teams that work live.",
   subhead:
-    "Principal product engineer for trading, sportsbook, and media teams. I build the interface, the system, and the delivery path together.",
+    "I build web tools for trading, sportsbook, and operations teams where the screen has to be clear and the system has to be trustworthy.",
   bio: [
-    "Good software stays readable when the room gets loud.",
-    "Most of my work sits where product calls, system reliability, and delivery execution meet.",
+    "I like interfaces that make the next move obvious.",
+    "Most of my work sits between product pressure, system behavior, and the people who need both to hold up.",
   ],
   workingStyle:
-    "Turns product ambiguity into clear interfaces, reliable systems, and delivery plans a team can actually execute.",
+    "I turn unclear product pressure into tools, services, and release paths teams can operate without guesswork.",
 } satisfies Profile;
