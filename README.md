@@ -4,7 +4,7 @@ Personal site built with Next.js 16 (beta, App Router), React 19.2, and Tailwind
 
 ## Requirements
 
-- Node 20.9+
+- Node 24.x
 - [`pnpm`](https://pnpm.io/) (single package manager for this repo)
 
 Install dependencies:
