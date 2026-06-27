@@ -12,6 +12,47 @@ const replaceDocument = (handler: ProxyHandler<Document>) => {
 };
 
 describe("runViewTransition", () => {
+  it("does not animate when reduced motion is preferred", () => {
+    const callback = vi.fn();
+    const originalMatchMedia = window.matchMedia;
+    const startViewTransition = vi.fn();
+    const restoreDocument = replaceDocument({
+      get(target, prop, receiver) {
+        if (prop === "startViewTransition") {
+          return startViewTransition;
+        }
+        return Reflect.get(target, prop, receiver);
+      },
+      has(target, prop) {
+        if (prop === "startViewTransition") {
+          return true;
+        }
+        return Reflect.has(target, prop);
+      },
+    });
+
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: (query: string) =>
+        ({
+          matches: query === "(prefers-reduced-motion: reduce)",
+          media: query,
+        }) as MediaQueryList,
+    });
+
+    try {
+      runViewTransition(callback);
+      expect(callback).toHaveBeenCalledTimes(1);
+      expect(startViewTransition).not.toHaveBeenCalled();
+    } finally {
+      restoreDocument();
+      Object.defineProperty(window, "matchMedia", {
+        writable: true,
+        value: originalMatchMedia,
+      });
+    }
+  });
+
   it("invokes callback immediately when transitions are unavailable", () => {
     const callback = vi.fn();
     const restoreDocument = replaceDocument({
