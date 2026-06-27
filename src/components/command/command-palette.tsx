@@ -2,7 +2,7 @@
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Command as CommandPrimitive } from "cmdk";
-import { useEffect, useMemo } from "react";
+import { useEffect, useEffectEvent, useMemo } from "react";
 import { Search, ExternalLink } from "lucide-react";
 import type { Route } from "next";
 import { useRouter } from "next/navigation";
@@ -23,17 +23,17 @@ export const CommandPalette = () => {
   const isOpen = useIsCommandOpen();
   const setCommandOpen = useSetCommandOpen();
   const toggleCommandOpen = useToggleCommandOpen();
+  const handleCommandShortcut = useEffectEvent((event: KeyboardEvent) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      toggleCommandOpen();
+    }
+  });
 
   useEffect(() => {
-    const handler = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
-        event.preventDefault();
-        toggleCommandOpen();
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [toggleCommandOpen]);
+    window.addEventListener("keydown", handleCommandShortcut);
+    return () => window.removeEventListener("keydown", handleCommandShortcut);
+  }, []);
 
   const quickActions = useMemo(
     () => [

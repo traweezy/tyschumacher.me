@@ -1,7 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, type MouseEvent } from "react";
+import {
+  useEffect,
+  useEffectEvent,
+  useRef,
+  useState,
+  type MouseEvent,
+} from "react";
 import { ArrowUpRight, FileText, Menu, Search, SunMoon, X } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import {
@@ -65,6 +71,15 @@ export const SiteHeader = () => {
   const setCommandOpen = useSetCommandOpen();
   const progressRef = useRef<HTMLDivElement | null>(null);
   const hasManualModeOverrideRef = useRef(false);
+  const handleSystemModePreference = useEffectEvent((matches: boolean) => {
+    if (hasManualModeOverrideRef.current) {
+      return;
+    }
+
+    const nextMode = matches ? "dark" : "light";
+    setPreviewMode(nextMode);
+    applyThemeMode(nextMode);
+  });
 
   const handleThemeModeClick = (event: MouseEvent<HTMLButtonElement>) => {
     const nextMode = event.currentTarget.dataset.themeModeToggle ?? null;
@@ -80,13 +95,7 @@ export const SiteHeader = () => {
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleSystemModeChange = (event: MediaQueryListEvent) => {
-      if (hasManualModeOverrideRef.current) {
-        return;
-      }
-
-      const nextMode = event.matches ? "dark" : "light";
-      setPreviewMode(nextMode);
-      applyThemeMode(nextMode);
+      handleSystemModePreference(event.matches);
     };
 
     mediaQuery.addEventListener("change", handleSystemModeChange);

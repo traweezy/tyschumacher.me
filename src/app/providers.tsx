@@ -1,6 +1,11 @@
 "use client";
 
-import React, { useEffect, useState, type ReactNode } from "react";
+import React, {
+  useEffect,
+  useEffectEvent,
+  useState,
+  type ReactNode,
+} from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   usePrefersReducedMotion,
@@ -15,25 +20,25 @@ type ProvidersProps = {
 const useInitializePreferences = (): void => {
   const setPrefersReducedMotion = useSetPrefersReducedMotion();
   const prefersReducedMotion = usePrefersReducedMotion();
+  const handleMotionPreference = useEffectEvent((matches: boolean) => {
+    setPrefersReducedMotion(matches);
+  });
 
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
     }
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const handleMotionChange = (matches: boolean) => {
-      setPrefersReducedMotion(matches);
-    };
-    handleMotionChange(motionQuery.matches);
+    handleMotionPreference(motionQuery.matches);
     const listener = (event: MediaQueryListEvent) =>
-      handleMotionChange(event.matches);
+      handleMotionPreference(event.matches);
     if ("addEventListener" in motionQuery) {
       motionQuery.addEventListener("change", listener);
       return () => motionQuery.removeEventListener("change", listener);
     }
     (motionQuery as MediaQueryList).addListener(listener);
     return () => (motionQuery as MediaQueryList).removeListener(listener);
-  }, [setPrefersReducedMotion]);
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
