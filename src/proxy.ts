@@ -11,7 +11,7 @@ const generateNonce = (): string => {
   return btoa(str);
 };
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const nonce = generateNonce();
   const cspHeader = [
     "default-src 'self'",
