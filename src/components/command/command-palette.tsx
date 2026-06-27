@@ -13,6 +13,7 @@ import {
   useToggleCommandOpen,
 } from "@/state/ui-store";
 import { runViewTransition } from "@/lib/view-transitions";
+import { cn } from "@/lib/utils";
 import styles from "./command-palette.module.css";
 
 const sections = primaryNav.filter((item) => item.href.startsWith("#"));
@@ -80,7 +81,12 @@ export const CommandPalette = () => {
         />
         <kbd className={styles.shortcut}>⌘K</kbd>
       </div>
-      <CommandPrimitive.List className={styles.list}>
+      <CommandPrimitive.List
+        className={cn(
+          styles.list,
+          "scrollbar-thin scrollbar-gutter-stable scrollbar-thumb-[var(--border-strong)] scrollbar-track-transparent",
+        )}
+      >
         <CommandPrimitive.Empty className={styles.empty}>
           Nothing found. Try another keyword.
         </CommandPrimitive.Empty>

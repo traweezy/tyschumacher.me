@@ -70,7 +70,7 @@ export const CommandList = forwardRef<
   <CommandPrimitive.List
     ref={ref}
     className={cn(
-      "max-h-[420px] overflow-y-auto overflow-x-hidden pt-2 text-sm",
+      "scrollbar-thin scrollbar-gutter-stable scrollbar-thumb-[var(--border-strong)] scrollbar-track-transparent max-h-[420px] overflow-y-auto overflow-x-hidden pt-2 text-sm",
       className,
     )}
     {...props}
