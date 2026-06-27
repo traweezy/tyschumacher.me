@@ -1,6 +1,6 @@
 ## Overview
 
-Personal site built with Next.js 16 (beta, App Router), React 19.2, and Tailwind v4. The project highlights realtime-focused engineering work and ships with a hardened UI surface (accessible navigation, contact form, command palette, etc.).
+Personal site built with Next.js 16 (App Router), React 19.2, and Tailwind v4. The project highlights realtime-focused engineering work and ships with a hardened UI surface (accessible navigation, contact form, command palette, etc.).
 
 ## Requirements
 
@@ -23,7 +23,7 @@ Visit [http://localhost:3000](http://localhost:3000) to view the site during dev
 
 ## Production build
 
-`pnpm build` runs `next build --webpack` for now. Turbopack’s production pipeline currently fails on this project (Next.js 16.0.0-beta.0 reports missing modules for `/` and `/api/experience`). Re-enable Turbopack builds with `pnpm exec next build --turbo` once the upstream fix ships.
+`pnpm build` runs `next build` with the default Next.js 16 production pipeline.
 
 ## Environment
 
@@ -46,6 +46,7 @@ pnpm test:coverage
 Additional checks:
 
 ```bash
+pnpm format:check # Prettier + Tailwind class ordering
 pnpm typecheck   # strict TypeScript
 pnpm lint        # ESLint CLI (Next.js 16 removes `next lint`)
 pnpm test:e2e    # Playwright end-to-end suite (requires a build)
@@ -83,11 +84,10 @@ The UI boots a lightweight OpenTelemetry tracer in the browser. By default spans
 - `src/lib` – Shared utilities (content loading, view transitions, etc.).
 - `src/state` – Zustand stores for UI and accessibility preferences.
 - `src/test-utils` – Helpers reused across tests (e.g., provider wrapper).
-- `src/app/api/experience` – JSON endpoint powering the experience filters.
 - `e2e/` – Playwright end-to-end specs.
 
 ## Deployment
 
-The app targets standard Next.js build workflows (e.g., `pnpm build` → `next build`). Provision the `RESEND_API_KEY` secret in each environment to keep the contact form functional. All other content is static. Continuous integration should run `pnpm lint`, `pnpm typecheck`, `pnpm vitest run --coverage`, and `pnpm build` to respect the repo’s quality gates.
+The app targets standard Next.js build workflows (e.g., `pnpm build` → `next build`). Provision the `RESEND_API_KEY` secret in each environment to keep the contact form functional. All other content is static. Continuous integration runs `pnpm format:check`, `pnpm lint`, `pnpm typecheck`, `pnpm test:coverage`, `pnpm build`, and Playwright to respect the repo’s quality gates.
 
-Vercel currently supports Node 24.x, 22.x, and 20.x for deployments, with 24.x as the default. Keep the Vercel project on Node 24.x until Vercel adds Node 26 support; the package engine range allows both the Vercel runtime and the Node 26 local/CI runtime.
+Local development and the standard CI jobs use Node 26.x. Vercel currently supports Node 24.x, 22.x, and 20.x for deployments, with 24.x as the default. Keep the Vercel project on Node 24.x until Vercel adds Node 26 support; the package engine range allows both the Vercel runtime and the Node 26 local/CI runtime, and CI includes a `vercel-node24` compatibility job that runs typecheck, coverage, and the production build on Node 24.x.
