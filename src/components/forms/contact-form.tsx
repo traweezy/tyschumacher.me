@@ -21,6 +21,57 @@ type ContactSubmission = {
   values: ContactValues;
 };
 
+type ContactInputFieldConfig = {
+  autoComplete: string;
+  control: "input";
+  label: string;
+  name: "name" | "email";
+  placeholder: string;
+  type: "text" | "email";
+  validator: typeof contactFieldSchemas.name | typeof contactFieldSchemas.email;
+};
+
+type ContactTextareaFieldConfig = {
+  control: "textarea";
+  label: string;
+  name: "message";
+  placeholder: string;
+  rows: number;
+  validator: typeof contactFieldSchemas.message;
+};
+
+const contactInputFields = [
+  {
+    autoComplete: "name",
+    control: "input",
+    label: "Name",
+    name: "name",
+    placeholder: "Jordan Lee",
+    type: "text",
+    validator: contactFieldSchemas.name,
+  },
+  {
+    autoComplete: "email",
+    control: "input",
+    label: "Email",
+    name: "email",
+    placeholder: "jordan@company.com",
+    type: "email",
+    validator: contactFieldSchemas.email,
+  },
+] satisfies ContactInputFieldConfig[];
+
+const contactTextareaFields = [
+  {
+    control: "textarea",
+    label: "How can I help?",
+    name: "message",
+    placeholder: "Share the context, the problem, and what good looks like.",
+    rows: 5,
+    validator: contactFieldSchemas.message,
+  },
+] satisfies ContactTextareaFieldConfig[];
+
 const getErrorMessage = (error: unknown): string => {
   if (typeof error === "string") {
     return error;
@@ -147,29 +198,6 @@ export const ContactForm = () => {
     contactMutation.isSuccess,
   ]);
 
-  const textInputs = [
-    {
-      name: "name",
-      label: "Name",
-      type: "text" as const,
-      placeholder: "Jordan Lee",
-      autoComplete: "name",
-    },
-    {
-      name: "email",
-      label: "Email",
-      type: "email" as const,
-      placeholder: "jordan@company.com",
-      autoComplete: "email",
-    },
-  ] satisfies Array<{
-    name: keyof ContactValues;
-    label: string;
-    type: "text" | "email";
-    placeholder: string;
-    autoComplete: string;
-  }>;
-
   return (
     <form
       onSubmit={(event) => {
@@ -180,11 +208,11 @@ export const ContactForm = () => {
       noValidate
     >
       <div className={styles.row}>
-        {textInputs.map((fieldConfig) => (
+        {contactInputFields.map((fieldConfig) => (
           <form.Field
             key={fieldConfig.name}
             name={fieldConfig.name}
-            validators={{ onBlur: contactFieldSchemas[fieldConfig.name] }}
+            validators={{ onBlur: fieldConfig.validator }}
           >
             {(field) => (
               <label className={styles.field}>
@@ -210,28 +238,34 @@ export const ContactForm = () => {
           </form.Field>
         ))}
       </div>
-      <form.Field
-        name="message"
-        validators={{ onBlur: contactFieldSchemas.message }}
-      >
-        {(field) => (
-          <label className={styles.field}>
-            <span>How can I help?</span>
-            <textarea
-              rows={5}
-              value={field.state.value}
-              onChange={(event) => field.handleChange(event.target.value)}
-              onBlur={field.handleBlur}
-              aria-invalid={field.state.meta.errors.length > 0}
-              aria-describedby="contact-message-error"
-              placeholder="Share the context, the problem, and what good looks like."
-            />
-            <span id="contact-message-error" className={styles.error}>
-              {getErrorMessage(field.state.meta.errors[0])}
-            </span>
-          </label>
-        )}
-      </form.Field>
+      {contactTextareaFields.map((fieldConfig) => (
+        <form.Field
+          key={fieldConfig.name}
+          name={fieldConfig.name}
+          validators={{ onBlur: fieldConfig.validator }}
+        >
+          {(field) => (
+            <label className={styles.field}>
+              <span>{fieldConfig.label}</span>
+              <textarea
+                rows={fieldConfig.rows}
+                value={field.state.value}
+                onChange={(event) => field.handleChange(event.target.value)}
+                onBlur={field.handleBlur}
+                aria-invalid={field.state.meta.errors.length > 0}
+                aria-describedby={`contact-${fieldConfig.name}-error`}
+                placeholder={fieldConfig.placeholder}
+              />
+              <span
+                id={`contact-${fieldConfig.name}-error`}
+                className={styles.error}
+              >
+                {getErrorMessage(field.state.meta.errors[0])}
+              </span>
+            </label>
+          )}
+        </form.Field>
+      ))}
       <Button type="submit" size="lg" disabled={contactMutation.isPending}>
         {contactMutation.isPending ? "Sending…" : "Send message"}
       </Button>
