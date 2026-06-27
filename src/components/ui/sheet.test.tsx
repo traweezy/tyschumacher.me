@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { Dialog as DialogPrimitive } from "radix-ui";
 import { describe, expect, it } from "vitest";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { Dialog as DialogPrimitive } from "radix-ui";
 import { Command as CommandPrimitive } from "cmdk";
 import { useEffect, useEffectEvent, useMemo } from "react";
 import { Search, ExternalLink } from "lucide-react";

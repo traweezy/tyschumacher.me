@@ -1,4 +1,4 @@
-import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
+import { NavigationMenu as NavigationMenuPrimitive } from "radix-ui";
 import { forwardRef } from "react";
 import type { ComponentPropsWithoutRef, ElementRef } from "react";
 import { cn } from "@/lib/utils";
