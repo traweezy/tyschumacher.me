@@ -39,7 +39,7 @@ export const SiteFooter = () => {
           ) : null}
           <Button asChild variant="outline" size="sm" className="gap-2">
             <a href="#home" aria-label="Back to top">
-              <ArrowUp className="h-4 w-4" />
+              <ArrowUp className="h-4 w-4" aria-hidden="true" />
               Back to top
             </a>
           </Button>

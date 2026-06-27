@@ -74,7 +74,7 @@ export const CommandPalette = () => {
         Search sections and resources across the site.
       </DialogPrimitive.Description>
       <div className={styles.header}>
-        <Search className="h-4 w-4" />
+        <Search className="h-4 w-4" aria-hidden="true" />
         <CommandPrimitive.Input
           placeholder="Jump to a section or open a resource…"
           className={styles.input}
@@ -103,7 +103,10 @@ export const CommandPalette = () => {
             >
               <span>{item.title}</span>
               {item.type === "external" ? (
-                <ExternalLink className="h-3.5 w-3.5 opacity-70" />
+                <ExternalLink
+                  className="h-3.5 w-3.5 opacity-70"
+                  aria-hidden="true"
+                />
               ) : null}
             </CommandPrimitive.Item>
           ))}

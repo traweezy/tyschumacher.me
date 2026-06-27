@@ -254,7 +254,7 @@ export const SiteHeader = () => {
               onClick={() => setCommandOpen(true)}
               aria-label="Open command palette"
             >
-              <Search className="h-4 w-4" />
+              <Search className="h-4 w-4" aria-hidden="true" />
               <span>Search</span>
               <span className="site-header__shortcut" aria-hidden="true">
                 ⌘K
@@ -268,7 +268,7 @@ export const SiteHeader = () => {
                 aria-label="Download resume (PDF)"
               >
                 <span>Resume</span>
-                <ArrowUpRight className="h-4 w-4" />
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </a>
             ) : null}
           </div>
@@ -279,7 +279,7 @@ export const SiteHeader = () => {
               aria-label="Open command palette"
               className="site-header__icon-button"
             >
-              <Search className="h-5 w-5" />
+              <Search className="h-5 w-5" aria-hidden="true" />
             </button>
             <Sheet open={isMobileNavOpen} onOpenChange={setMobileNavOpen}>
               <SheetTrigger asChild>
@@ -291,9 +291,9 @@ export const SiteHeader = () => {
                   }
                 >
                   {isMobileNavOpen ? (
-                    <X className="h-5 w-5" />
+                    <X className="h-5 w-5" aria-hidden="true" />
                   ) : (
-                    <Menu className="h-5 w-5" />
+                    <Menu className="h-5 w-5" aria-hidden="true" />
                   )}
                 </button>
               </SheetTrigger>
@@ -349,7 +349,10 @@ export const SiteHeader = () => {
                               </span>
                               <span>{item.title}</span>
                             </span>
-                            <ArrowUpRight className="h-4 w-4" />
+                            <ArrowUpRight
+                              className="h-4 w-4"
+                              aria-hidden="true"
+                            />
                           </a>
                         </SheetClose>
                       ))}
@@ -381,7 +384,7 @@ export const SiteHeader = () => {
                                 </span>
                                 <span>{item.title}</span>
                               </span>
-                              <Icon className="h-4 w-4" />
+                              <Icon className="h-4 w-4" aria-hidden="true" />
                             </a>
                           </SheetClose>
                         );
@@ -402,7 +405,7 @@ export const SiteHeader = () => {
                               </span>
                               <span>{resumeLink.title}</span>
                             </span>
-                            <FileText className="h-4 w-4" />
+                            <FileText className="h-4 w-4" aria-hidden="true" />
                           </a>
                         </SheetClose>
                       ) : null}
