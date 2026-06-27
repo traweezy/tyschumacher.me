@@ -1,11 +1,25 @@
 import { z } from "zod";
 
 export const CONTACT_FIELDS = ["name", "email", "message"] as const;
+const CONTACT_IDEMPOTENCY_KEY_PREFIX = "contact/";
+const CONTACT_IDEMPOTENCY_KEY_PATTERN = /^contact\/[A-Za-z0-9._:-]+$/;
 
 export type ContactField = (typeof CONTACT_FIELDS)[number];
 
 export const isContactField = (field: string): field is ContactField =>
   CONTACT_FIELDS.includes(field as ContactField);
+
+export const createContactIdempotencyKey = (): string => {
+  const token =
+    typeof globalThis.crypto?.randomUUID === "function"
+      ? globalThis.crypto.randomUUID()
+      : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+
+  return `${CONTACT_IDEMPOTENCY_KEY_PREFIX}${token}`;
+};
+
+export const isContactIdempotencyKey = (value: string): boolean =>
+  value.length <= 256 && CONTACT_IDEMPOTENCY_KEY_PATTERN.test(value);
 
 export const contactSchema = z.object({
   name: z

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   contactFieldSchemas,
   contactSchema,
+  createContactIdempotencyKey,
   isContactField,
   type ContactValues,
 } from "@/lib/contact";
@@ -14,6 +15,11 @@ import styles from "./contact-form.module.css";
 
 const FALLBACK_ERROR_MESSAGE =
   "We couldn’t send your message right now. Please try again later.";
+
+type ContactSubmission = {
+  idempotencyKey: string;
+  values: ContactValues;
+};
 
 const getErrorMessage = (error: unknown): string => {
   if (typeof error === "string") {
@@ -31,11 +37,14 @@ const getErrorMessage = (error: unknown): string => {
 };
 
 export const ContactForm = () => {
-  const contactMutation = useMutation<void, Error, ContactValues>({
-    mutationFn: async (values: ContactValues) => {
+  const contactMutation = useMutation<void, Error, ContactSubmission>({
+    mutationFn: async ({ idempotencyKey, values }: ContactSubmission) => {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Idempotency-Key": idempotencyKey,
+        },
         body: JSON.stringify(values),
       });
 
@@ -85,7 +94,10 @@ export const ContactForm = () => {
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        await contactMutation.mutateAsync(value);
+        await contactMutation.mutateAsync({
+          idempotencyKey: createContactIdempotencyKey(),
+          values: value,
+        });
       } catch (error) {
         const typedError = error as Error & {
           fieldErrors?: Array<{ field: string; message: string }>;

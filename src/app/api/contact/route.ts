@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { contactSchema, getContactValidationErrors } from "@/lib/contact";
+import {
+  contactSchema,
+  createContactIdempotencyKey,
+  getContactValidationErrors,
+  isContactIdempotencyKey,
+} from "@/lib/contact";
 
 const resendApiKey = process.env.RESEND_API_KEY;
 const resend =
@@ -26,6 +31,16 @@ const escapeHtml = (value: string): string =>
     }
   });
 
+const getResendIdempotencyKey = (request: Request): string | null => {
+  const idempotencyKey = request.headers.get("Idempotency-Key")?.trim();
+
+  if (idempotencyKey && !isContactIdempotencyKey(idempotencyKey)) {
+    return null;
+  }
+
+  return idempotencyKey ?? createContactIdempotencyKey();
+};
+
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -50,6 +65,15 @@ export async function POST(request: Request) {
     );
   }
 
+  const idempotencyKey = getResendIdempotencyKey(request);
+
+  if (!idempotencyKey) {
+    return NextResponse.json(
+      { message: "Invalid idempotency key." },
+      { status: 400 },
+    );
+  }
+
   if (!resend) {
     console.error("RESEND_API_KEY is not configured.");
     return NextResponse.json(
@@ -67,21 +91,35 @@ export async function POST(request: Request) {
     const htmlMessage = escapeHtml(message);
     const htmlName = escapeHtml(name);
 
-    await resend.emails.send({
-      from: "Tyler Schumacher <noreply@tyschumacher.me>",
-      to: "tyschumacher@proton.me",
-      replyTo: email,
-      subject: `New message from ${name}`,
-      text: [`Name: ${name}`, `Email: ${email}`, "", message].join("\n"),
-      html: `
-        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: #101736;">
-          <p><strong>Name:</strong> ${htmlName}</p>
-          <p><strong>Email:</strong> ${htmlEmail}</p>
-          <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-          <p style="white-space: pre-wrap; margin: 0;">${htmlMessage}</p>
-        </div>
-      `,
-    });
+    const result = await resend.emails.send(
+      {
+        from: "Tyler Schumacher <noreply@tyschumacher.me>",
+        to: "tyschumacher@proton.me",
+        replyTo: email,
+        subject: `New message from ${name}`,
+        text: [`Name: ${name}`, `Email: ${email}`, "", message].join("\n"),
+        html: `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: #101736;">
+            <p><strong>Name:</strong> ${htmlName}</p>
+            <p><strong>Email:</strong> ${htmlEmail}</p>
+            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
+            <p style="white-space: pre-wrap; margin: 0;">${htmlMessage}</p>
+          </div>
+        `,
+      },
+      { idempotencyKey },
+    );
+
+    if (result.error || !result.data) {
+      console.error("Unable to send contact email", result.error);
+      return NextResponse.json(
+        {
+          message:
+            "We couldn’t send your message right now. Please try again or email tyschumacher@proton.me directly.",
+        },
+        { status: 502 },
+      );
+    }
 
     return NextResponse.json({ message: "Message sent." });
   } catch (error) {

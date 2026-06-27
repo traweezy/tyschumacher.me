@@ -4,7 +4,9 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ContactForm } from "@/components/forms/contact-form";
 
-const createFetchMock = (response: Partial<Response> & { json?: () => Promise<unknown> }) =>
+const createFetchMock = (
+  response: Partial<Response> & { json?: () => Promise<unknown> },
+) =>
   vi.fn().mockResolvedValue({
     ok: true,
     json: async () => ({}),
@@ -36,17 +38,30 @@ describe("ContactForm", () => {
     renderWithProviders(<ContactForm />);
 
     await userEvent.type(screen.getByLabelText(/Name/i), "Philip J Fry");
-    await userEvent.type(screen.getByLabelText(/Email/i), "fry@planetexpress.com");
+    await userEvent.type(
+      screen.getByLabelText(/Email/i),
+      "fry@planetexpress.com",
+    );
     await userEvent.type(
       screen.getByLabelText(/How can I help/i),
       "Deliver a package to Luna Park",
     );
 
-    await userEvent.click(screen.getByRole("button", { name: /send message/i }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /send message/i }),
+    );
 
     await waitFor(() => expect(fetchMock).toHaveBeenCalled());
+    const requestInit = fetchMock.mock.calls[0]?.[1] as RequestInit | undefined;
+    expect(requestInit?.headers).toEqual(
+      expect.objectContaining({
+        "Idempotency-Key": expect.stringMatching(/^contact\//),
+      }),
+    );
     expect(
-      await screen.findByText(/Thanks! I’ll reach out within two business days./i),
+      await screen.findByText(
+        /Thanks! I’ll reach out within two business days./i,
+      ),
     ).toBeInTheDocument();
   });
 
@@ -78,7 +93,9 @@ describe("ContactForm", () => {
       "Deliver a package to the Slurm factory",
     );
 
-    await userEvent.click(screen.getByRole("button", { name: /send message/i }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /send message/i }),
+    );
 
     await waitFor(() => expect(fetchMock).toHaveBeenCalled());
     expect(
