@@ -4,7 +4,7 @@ Personal site built with Next.js 16 (beta, App Router), React 19.2, and Tailwind
 
 ## Requirements
 
-- Node 24.x
+- Node 26.x for local development and CI
 - [`pnpm`](https://pnpm.io/) (single package manager for this repo)
 
 Install dependencies:
@@ -89,3 +89,5 @@ The UI boots a lightweight OpenTelemetry tracer in the browser. By default spans
 ## Deployment
 
 The app targets standard Next.js build workflows (e.g., `pnpm build` → `next build`). Provision the `RESEND_API_KEY` secret in each environment to keep the contact form functional. All other content is static. Continuous integration should run `pnpm lint`, `pnpm typecheck`, `pnpm vitest run --coverage`, and `pnpm build` to respect the repo’s quality gates.
+
+Vercel currently supports Node 24.x, 22.x, and 20.x for deployments, with 24.x as the default. Keep the Vercel project on Node 24.x until Vercel adds Node 26 support; the package engine range allows both the Vercel runtime and the Node 26 local/CI runtime.

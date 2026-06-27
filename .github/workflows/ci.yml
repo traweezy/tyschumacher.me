@@ -23,7 +23,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: 26.x
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
@@ -47,7 +47,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: 26.x
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
@@ -71,7 +71,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: 26.x
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
@@ -88,7 +88,7 @@ jobs:
       - unit-tests
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.59.1-noble
+      image: mcr.microsoft.com/playwright:v1.61.1-noble
     env:
       CI: true
     steps:
@@ -101,7 +101,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: 26.x
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
