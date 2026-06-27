@@ -61,6 +61,10 @@ const attachClickInstrumentation = (): void => {
 };
 
 const createSpanProcessor = (): SpanProcessor | null => {
+  if (process.env.NODE_ENV === "test") {
+    return null;
+  }
+
   const exporterUrl = getTelemetryExportUrl();
 
   if (exporterUrl) {

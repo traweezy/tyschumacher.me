@@ -37,7 +37,7 @@ Without the key the `/api/contact` endpoint responds with a `503` and the form s
 
 ## Quality gates
 
-Colocated tests live next to the code they validate and the Vitest runner is preconfigured with jsdom, Next.js shims, and global providers. Run the full suite with coverage (≈96% statements) before shipping:
+Colocated tests live next to the code they validate and the Vitest runner is preconfigured with jsdom, Next.js shims, and global providers. Run the full suite with coverage before shipping:
 
 ```bash
 pnpm test:coverage
@@ -49,6 +49,7 @@ Additional checks:
 pnpm format:check # Prettier + Tailwind class ordering
 pnpm typecheck   # strict TypeScript
 pnpm lint        # ESLint CLI (Next.js 16 removes `next lint`)
+pnpm test:diagnostics # Vitest async leak detector for flaky/leaky test debugging
 pnpm test:e2e    # Playwright end-to-end suite (requires a build)
 # If you configure an OTLP endpoint (NEXT_PUBLIC_OTEL_EXPORT_URL), collect E2E coverage + spans:
 pnpm build && pnpm test:e2e:coverage

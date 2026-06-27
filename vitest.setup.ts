@@ -1,11 +1,12 @@
 import "@testing-library/jest-dom/vitest";
 
 import React from "react";
-import { vi } from "vitest";
+import { afterEach, vi } from "vitest";
 
 declare global {
   interface GlobalThis {
     __dispatchMatchMedia: (query: string, matches: boolean) => void;
+    __TANSTACK_EVENT_TARGET__?: EventTarget;
   }
 }
 
@@ -35,6 +36,24 @@ const createStorage = () => {
 };
 
 const localStorageMock = createStorage();
+
+const tanstackEventTarget = new EventTarget();
+tanstackEventTarget.addEventListener("tanstack-connect", () => {
+  tanstackEventTarget.dispatchEvent(
+    new CustomEvent("tanstack-connect-success"),
+  );
+});
+
+Object.defineProperty(globalThis, "__TANSTACK_EVENT_TARGET__", {
+  configurable: true,
+  value: tanstackEventTarget,
+});
+
+if (process.env.VITEST_ASYNC_LEAK_DIAGNOSTICS === "true") {
+  afterEach(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 350));
+  });
+}
 
 Object.defineProperty(window, "localStorage", {
   writable: true,

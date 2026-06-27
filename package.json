@@ -17,6 +17,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:diagnostics": "VITEST_ASYNC_LEAK_DIAGNOSTICS=true vitest run --detect-async-leaks",
     "test:e2e": "playwright test",
     "test:e2e:coverage": "playwright test --coverage",
     "playwright:install": "playwright install --with-deps",
