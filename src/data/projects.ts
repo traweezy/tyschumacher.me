@@ -22,7 +22,8 @@ export const projects: Project[] = [
   {
     slug: "signal-stack",
     name: "Signal Stack",
-    summary: "Observability platform translating telemetry into actionable signals with <120ms fan out.",
+    summary:
+      "Observability platform translating telemetry into actionable signals with <120ms fan out.",
     description:
       "Multi tenant ingest and diagnostics for Caesars Sportsbook, pairing stream analytics with auto remediation runbooks. Trading teams trust it to surface anomalies before the odds move.",
     role: "Principal Engineer",
@@ -40,7 +41,8 @@ export const projects: Project[] = [
   {
     slug: "game-state-studio",
     name: "GameState Studio",
-    summary: "Low latency content orchestration for live sports overlays across mobile, web, and OTT.",
+    summary:
+      "Low latency content orchestration for live sports overlays across mobile, web, and OTT.",
     description:
       "Authored workflows that let editors stage, localize, and launch interactive experiences in minutes not hours. Deterministic rollouts kept parity across 12 broadcast partners.",
     role: "Lead Frontend Architect",
@@ -55,7 +57,8 @@ export const projects: Project[] = [
   {
     slug: "relay-hub",
     name: "RelayHub",
-    summary: "Edge scheduling system coordinating 3k+ stadium devices with deterministic timing.",
+    summary:
+      "Edge scheduling system coordinating 3k+ stadium devices with deterministic timing.",
     description:
       "Built fan engagement tooling that choreographs light shows, push messaging, and sponsor activations without missing the beat. Offline first sync and backpressure kept ops calm.",
     role: "Engineering Lead",
@@ -70,7 +73,8 @@ export const projects: Project[] = [
   {
     slug: "aurora-pipeline",
     name: "Aurora Build Pipeline",
-    summary: "Reproducible release train for cross platform sportsbook apps with SBOM guarantees.",
+    summary:
+      "Reproducible release train for cross platform sportsbook apps with SBOM guarantees.",
     description:
       "Automated artifact provenance, compliance checks, and feature flag rollouts. Release lead time fell 47% while accessibility budgets and localization gates stayed green.",
     role: "Principal Developer",
@@ -85,7 +89,8 @@ export const projects: Project[] = [
   {
     slug: "insight-kit",
     name: "Insight Kit",
-    summary: "Privacy first analytics modules with differential privacy for regulated teams.",
+    summary:
+      "Privacy first analytics modules with differential privacy for regulated teams.",
     description:
       "Shipped data contracts, redaction tooling, and Slack first insights so marketing and compliance share a single playbook. Reduced reporting toil 32% by automating weekly digests.",
     role: "Senior Full Stack Developer",
@@ -100,7 +105,8 @@ export const projects: Project[] = [
   {
     slug: "playbook-lab",
     name: "Playbook Lab",
-    summary: "Experimentation toolkit helping product squads ship, measure, and iterate safely.",
+    summary:
+      "Experimentation toolkit helping product squads ship, measure, and iterate safely.",
     description:
       "Balanced rapid experiments with guardrails: feature toggles, canary analysis, and telemetry budgets. Teams modeled impact before rollout and kept p95 performance under budget.",
     role: "Staff Engineer",

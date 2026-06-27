@@ -22,7 +22,11 @@ describe("Badge", () => {
       </>,
     );
 
-    expect(screen.getByTestId("outline")).toHaveClass("border-[var(--border-strong)]");
-    expect(screen.getByTestId("subtle")).toHaveClass("bg-[var(--background-muted)]");
+    expect(screen.getByTestId("outline")).toHaveClass(
+      "border-[var(--border-strong)]",
+    );
+    expect(screen.getByTestId("subtle")).toHaveClass(
+      "bg-[var(--background-muted)]",
+    );
   });
 });

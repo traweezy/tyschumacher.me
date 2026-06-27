@@ -30,7 +30,9 @@ export const ProjectsGrid = ({ projects }: ProjectsGridProps) => (
           )}
         >
           <header className={styles["projects-card__header"]}>
-            <span className={styles["projects-card__eyebrow"]}>{project.year}</span>
+            <span className={styles["projects-card__eyebrow"]}>
+              {project.year}
+            </span>
             <h3 className={styles["projects-card__title"]}>{project.name}</h3>
           </header>
           <div className={styles["projects-card__media"]}>
@@ -43,7 +45,9 @@ export const ProjectsGrid = ({ projects }: ProjectsGridProps) => (
             />
           </div>
           <p className={styles["projects-card__summary"]}>{project.summary}</p>
-          <p className={styles["projects-card__description"]}>{project.description}</p>
+          <p className={styles["projects-card__description"]}>
+            {project.description}
+          </p>
           <p className={styles["projects-card__role"]}>{project.role}</p>
           {tech.length > 0 ? (
             <div className={styles["projects-card__tech"]}>
@@ -57,15 +61,22 @@ export const ProjectsGrid = ({ projects }: ProjectsGridProps) => (
           {primaryLink ? (
             <div className={styles["projects-card__cta"]}>
               {primaryLink.href === "#" ? (
-                <span className={styles["projects-card__link"]} aria-disabled="true">
+                <span
+                  className={styles["projects-card__link"]}
+                  aria-disabled="true"
+                >
                   {primaryLink.label}
                 </span>
               ) : (
                 <a
                   href={primaryLink.href}
                   className={styles["projects-card__link"]}
-                  target={isExternalLink(primaryLink.href) ? "_blank" : undefined}
-                  rel={isExternalLink(primaryLink.href) ? "noreferrer" : undefined}
+                  target={
+                    isExternalLink(primaryLink.href) ? "_blank" : undefined
+                  }
+                  rel={
+                    isExternalLink(primaryLink.href) ? "noreferrer" : undefined
+                  }
                 >
                   {primaryLink.label}
                 </a>

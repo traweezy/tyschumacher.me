@@ -2,7 +2,10 @@ import { Suspense } from "react";
 import { connection } from "next/server";
 import { Hero } from "@/components/sections/hero";
 import { AboutSection } from "@/components/sections/about";
-import { ExperienceSection, ExperienceSectionSkeleton } from "@/components/sections/experience";
+import {
+  ExperienceSection,
+  ExperienceSectionSkeleton,
+} from "@/components/sections/experience";
 import { ContactSection } from "@/components/sections/contact";
 import { SiteFooter } from "@/components/layout/site-footer";
 

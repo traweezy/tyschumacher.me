@@ -16,19 +16,20 @@ describe("SiteFooter", () => {
   it("renders the current year and social links", () => {
     render(<SiteFooter />);
 
-    expect(
-      screen.getByText(/© 2025 Tyler Schumacher/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/© 2025 Tyler Schumacher/i)).toBeInTheDocument();
     const githubLink = secondaryNav.find((item) => item.id === "github");
     const linkedinLink = secondaryNav.find((item) => item.id === "linkedin");
-    expect(
-      screen.getByRole("link", { name: "GitHub" }),
-    ).toHaveAttribute("href", githubLink?.href);
-    expect(
-      screen.getByRole("link", { name: "LinkedIn" }),
-    ).toHaveAttribute("href", linkedinLink?.href);
-    expect(
-      screen.getByRole("link", { name: /back to top/i }),
-    ).toHaveAttribute("href", "#home");
+    expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
+      "href",
+      githubLink?.href,
+    );
+    expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
+      "href",
+      linkedinLink?.href,
+    );
+    expect(screen.getByRole("link", { name: /back to top/i })).toHaveAttribute(
+      "href",
+      "#home",
+    );
   });
 });

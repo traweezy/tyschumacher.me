@@ -24,14 +24,19 @@ export const Hero = () => (
     <Container className="hero__content">
       <div className="hero__grid">
         <div className="hero__intro">
-          <p className="hero__eyebrow type-eyebrow" aria-label={`Based in ${profile.location}`}>
+          <p
+            className="hero__eyebrow type-eyebrow"
+            aria-label={`Based in ${profile.location}`}
+          >
             {profile.location}
           </p>
           <h1 className="hero__title type-heading-1 text-balance">
             {profile.name}
             <span className="hero__title-tagline">{profile.headline}</span>
           </h1>
-          <p className="type-body-lg measure text-[var(--text-secondary)]">{profile.subhead}</p>
+          <p className="type-body-lg measure text-[var(--text-secondary)]">
+            {profile.subhead}
+          </p>
           <div className="hero__actions">
             <a
               className="hero__cta hero__cta--primary"
@@ -55,7 +60,10 @@ export const Hero = () => (
             <dl className="hero__facts">
               <div className="hero__fact">
                 <dt>Focus</dt>
-                <dd>Operator software where interface quality and system behavior have to hold up together.</dd>
+                <dd>
+                  Operator software where interface quality and system behavior
+                  have to hold up together.
+                </dd>
               </div>
               <div className="hero__fact">
                 <dt>Base</dt>

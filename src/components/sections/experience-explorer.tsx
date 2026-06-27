@@ -12,30 +12,43 @@ const filterExperiences = (
   if (filter === "All") {
     return experiences;
   }
-  return experiences.filter((experience) => experience.location.includes(filter));
+  return experiences.filter((experience) =>
+    experience.location.includes(filter),
+  );
 };
 
 type ExperienceExplorerProps = {
   initialExperiences: ExperienceEntry[];
 };
 
-export const ExperienceExplorer = ({ initialExperiences }: ExperienceExplorerProps) => {
+export const ExperienceExplorer = ({
+  initialExperiences,
+}: ExperienceExplorerProps) => {
   const [locationFilter, setLocationFilter] = useState("All");
   const experiences = initialExperiences;
 
   const availableLocations = useMemo(() => {
-    const locations = experiences.map((experience) => experience.location.split(" · ")[0]);
+    const locations = experiences.map(
+      (experience) => experience.location.split(" · ")[0],
+    );
     return ["All", ...dedupe(locations)];
   }, [experiences]);
 
   const filteredExperiences = useMemo(
-    () => filterExperiences(experiences, locationFilter === "All" ? "All" : locationFilter),
+    () =>
+      filterExperiences(
+        experiences,
+        locationFilter === "All" ? "All" : locationFilter,
+      ),
     [experiences, locationFilter],
   );
 
   return (
     <div className="experience-explorer">
-      <fieldset className="experience-filters" aria-label="Filter experience by location">
+      <fieldset
+        className="experience-filters"
+        aria-label="Filter experience by location"
+      >
         <div className="experience-filters__options">
           {availableLocations.map((option) => (
             <button
@@ -66,7 +79,9 @@ export const ExperienceExplorer = ({ initialExperiences }: ExperienceExplorerPro
                 {` · ${item.location}`}
               </span>
             </div>
-            <h3 className="experience-card__role type-heading-3">{item.role}</h3>
+            <h3 className="experience-card__role type-heading-3">
+              {item.role}
+            </h3>
             <ul className="experience-card__bullets type-body measure">
               {item.bullets.map((bullet) => (
                 <li key={bullet} className="text-pretty">

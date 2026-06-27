@@ -43,7 +43,10 @@ Object.defineProperty(window, "localStorage", {
 
 vi.stubGlobal("localStorage", localStorageMock);
 
-const createMediaQueryList = (query: string, matches = false): MediaQueryList => {
+const createMediaQueryList = (
+  query: string,
+  matches = false,
+): MediaQueryList => {
   const mediaList: MediaQueryList = {
     matches,
     media: query,
@@ -158,7 +161,7 @@ vi.mock("next/image", () => {
     fill?: boolean;
     priority?: boolean;
   }) => {
-    const resolvedSrc = typeof src === "string" ? src : src?.src ?? "";
+    const resolvedSrc = typeof src === "string" ? src : (src?.src ?? "");
     const { fill, priority, ...imgProps } = rest;
     void fill;
     void priority;

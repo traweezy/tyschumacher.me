@@ -1,0 +1,14 @@
+.next
+coverage
+node_modules
+out
+playwright-report
+test-results
+tmp
+
+.env*
+!.env.example
+
+*.tsbuildinfo
+next-env.d.ts
+pnpm-lock.yaml

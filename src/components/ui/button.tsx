@@ -38,7 +38,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         ref={ref}
-        className={cn(base, variantStyles[variant], sizeStyles[size], className)}
+        className={cn(
+          base,
+          variantStyles[variant],
+          sizeStyles[size],
+          className,
+        )}
         {...props}
       />
     );

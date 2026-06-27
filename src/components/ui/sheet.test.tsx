@@ -9,7 +9,9 @@ describe("Sheet primitives", () => {
       <Sheet open>
         <SheetContent>
           <DialogPrimitive.Title>Panel heading</DialogPrimitive.Title>
-          <DialogPrimitive.Description>Panel description</DialogPrimitive.Description>
+          <DialogPrimitive.Description>
+            Panel description
+          </DialogPrimitive.Description>
           <p>Panel body</p>
         </SheetContent>
       </Sheet>,

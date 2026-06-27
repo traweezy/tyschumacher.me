@@ -31,9 +31,14 @@ describe("ProjectsGrid", () => {
       />,
     );
 
-    expect(screen.getByRole("heading", { name: "Test Project" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Test Project" }),
+    ).toBeInTheDocument();
     expect(screen.getByText("Engineer")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "View" })).toHaveAttribute("target", "_blank");
+    expect(screen.getByRole("link", { name: "View" })).toHaveAttribute(
+      "target",
+      "_blank",
+    );
     expect(screen.getAllByText(/React|TypeScript|Vitest/)).toHaveLength(3);
   });
 
@@ -53,8 +58,8 @@ describe("ProjectsGrid", () => {
       />,
     );
 
-    expect(
-      screen.getByText("Coming soon").getAttribute("aria-disabled"),
-    ).toBe("true");
+    expect(screen.getByText("Coming soon").getAttribute("aria-disabled")).toBe(
+      "true",
+    );
   });
 });

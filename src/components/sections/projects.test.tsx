@@ -4,9 +4,13 @@ import type { Project } from "@/data/projects";
 import { PROJECT_SLOTS } from "@/components/projects/layout";
 
 const getProjectsMock = vi.fn<() => Promise<Project[]>>();
-const projectsGridSpy = vi.fn(({ projects }: { projects: Array<Project & { layout: (typeof PROJECT_SLOTS)[number] }> }) => (
-  <div data-testid="projects-grid" data-count={projects.length} />
-));
+const projectsGridSpy = vi.fn(
+  ({
+    projects,
+  }: {
+    projects: Array<Project & { layout: (typeof PROJECT_SLOTS)[number] }>;
+  }) => <div data-testid="projects-grid" data-count={projects.length} />,
+);
 
 vi.mock("@/lib/content", () => ({
   getProjects: () => getProjectsMock(),
@@ -17,17 +21,19 @@ vi.mock("@/components/projects/projects-grid", () => ({
 }));
 
 describe("ProjectsSection", () => {
-  const sampleProjects: Project[] = Array.from({ length: 6 }).map((_, index) => ({
-    slug: `project-${index}`,
-    name: `Project ${index}`,
-    summary: "Summary",
-    description: "Description",
-    role: "Engineer",
-    tech: [],
-    year: "2024",
-    image: { src: `/image-${index}.svg`, alt: "Alt" },
-    links: [],
-  }));
+  const sampleProjects: Project[] = Array.from({ length: 6 }).map(
+    (_, index) => ({
+      slug: `project-${index}`,
+      name: `Project ${index}`,
+      summary: "Summary",
+      description: "Description",
+      role: "Engineer",
+      tech: [],
+      year: "2024",
+      image: { src: `/image-${index}.svg`, alt: "Alt" },
+      links: [],
+    }),
+  );
 
   beforeEach(() => {
     getProjectsMock.mockResolvedValue(sampleProjects);
@@ -36,10 +42,21 @@ describe("ProjectsSection", () => {
 
   it("shuffles projects and assigns slot layouts", async () => {
     const sequence = [
-      0.9, 0.7, 0.1, 0.4, 0.2, 0.6, // project ordering
-      0.3, 0.5, 0.8, 0.05, 0.95, // slot shuffling
+      0.9,
+      0.7,
+      0.1,
+      0.4,
+      0.2,
+      0.6, // project ordering
+      0.3,
+      0.5,
+      0.8,
+      0.05,
+      0.95, // slot shuffling
     ];
-    const randomSpy = vi.spyOn(Math, "random").mockImplementation(() => sequence.shift() ?? 0);
+    const randomSpy = vi
+      .spyOn(Math, "random")
+      .mockImplementation(() => sequence.shift() ?? 0);
 
     const { ProjectsSection } = await import("./projects");
     render(await ProjectsSection());
@@ -62,11 +79,9 @@ describe("ProjectsSection", () => {
     const { ProjectsSectionSkeleton } = await import("./projects");
     render(<ProjectsSectionSkeleton />);
 
-    expect(
-      screen.getByRole("region", { name: /work/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getAllByRole("article", { hidden: true }),
-    ).toHaveLength(PROJECT_SLOTS.length);
+    expect(screen.getByRole("region", { name: /work/i })).toBeInTheDocument();
+    expect(screen.getAllByRole("article", { hidden: true })).toHaveLength(
+      PROJECT_SLOTS.length,
+    );
   });
 });

@@ -27,8 +27,14 @@ export const buildPriorityItems: SkillItem[] = [
   { name: "Accessibility", icon: "accessibility", accentKey: "accessibility" },
   { name: "Performance", icon: "performance", accentKey: "performance" },
   { name: "Observability", icon: "observability", accentKey: "observability" },
-  { name: "Release safety", icon: "releaseSafety", accentKey: "release-safety" },
+  {
+    name: "Release safety",
+    icon: "releaseSafety",
+    accentKey: "release-safety",
+  },
   { name: "SEO", icon: "seo", accentKey: "seo" },
 ] as const;
 
-export const skills = [...coreToolItems, ...buildPriorityItems].map((skill) => skill.name);
+export const skills = [...coreToolItems, ...buildPriorityItems].map(
+  (skill) => skill.name,
+);

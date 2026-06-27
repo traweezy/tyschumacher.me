@@ -84,7 +84,10 @@ export const CommandPalette = () => {
         <CommandPrimitive.Empty className={styles.empty}>
           Nothing found. Try another keyword.
         </CommandPrimitive.Empty>
-        <CommandPrimitive.Group heading="Quick actions" className={styles.group}>
+        <CommandPrimitive.Group
+          heading="Quick actions"
+          className={styles.group}
+        >
           {quickActions.map((item) => (
             <CommandPrimitive.Item
               key={item.id}

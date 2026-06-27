@@ -2,7 +2,8 @@ import { getExperiences } from "@/lib/content";
 import { Section } from "@/components/layout/section";
 import { ExperienceExplorer } from "@/components/sections/experience-explorer";
 
-export const experienceHeadline = "Experience in trading, sportsbook, and media products";
+export const experienceHeadline =
+  "Experience in trading, sportsbook, and media products";
 export const experienceCaption =
   "A quick scan of the teams, constraints, and outcomes behind the work.";
 

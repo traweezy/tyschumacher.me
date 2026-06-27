@@ -17,8 +17,14 @@ describe("SiteFooter branch behavior", () => {
     const { SiteFooter } = await import("./site-footer");
     render(<SiteFooter />);
 
-    expect(screen.queryByRole("link", { name: "GitHub" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "LinkedIn" })).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /back to top/i })).toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: "GitHub" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: "LinkedIn" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /back to top/i }),
+    ).toBeInTheDocument();
   });
 });

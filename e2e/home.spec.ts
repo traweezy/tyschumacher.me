@@ -9,10 +9,14 @@ const commandShortcut = process.platform === "darwin" ? "Meta+K" : "Control+K";
 test.describe.configure({ mode: "serial" });
 
 test.describe("Home experience", () => {
-  test("renders hero, navigation, and scrolls to experience", async ({ page }) => {
+  test("renders hero, navigation, and scrolls to experience", async ({
+    page,
+  }) => {
     await page.goto("/");
 
-    await expect(page.getByRole("heading", { name: /Tyler Schumacher/i })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Tyler Schumacher/i }),
+    ).toBeVisible();
     const nav = page.getByRole("navigation", { name: /primary/i });
     await expect(nav).toBeVisible();
 
@@ -23,13 +27,14 @@ test.describe("Home experience", () => {
     await expect(focusAreas).toHaveCount(3);
     await expect(focusAreas.first()).toContainText(/12\+ years/i);
 
-    const viewExperience = page.getByRole("link", { name: /Review experience/i });
+    const viewExperience = page.getByRole("link", {
+      name: /Review experience/i,
+    });
     await expect(viewExperience).toHaveAttribute("href", "#experience");
 
-    await expect(page.getByRole("link", { name: /Start a conversation/i })).toHaveAttribute(
-      "href",
-      "#contact",
-    );
+    await expect(
+      page.getByRole("link", { name: /Start a conversation/i }),
+    ).toHaveAttribute("href", "#contact");
 
     await expect(page.locator("#projects")).toHaveCount(0);
 
@@ -44,17 +49,25 @@ test.describe("Home experience", () => {
     page,
   }) => {
     await page.addInitScript(() => {
-      if (typeof window === "undefined" || typeof window.CSS?.supports !== "function") {
+      if (
+        typeof window === "undefined" ||
+        typeof window.CSS?.supports !== "function"
+      ) {
         return;
       }
       const css = window.CSS;
       const originalSupports = css.supports.bind(css);
-      const override: typeof css.supports = (...args: [string] | [string, string]) => {
+      const override: typeof css.supports = (
+        ...args: [string] | [string, string]
+      ) => {
         const [first, second] = args;
         if (typeof first === "string" && first.includes("animation-timeline")) {
           return false;
         }
-        if (typeof second === "string" && second.includes("animation-timeline")) {
+        if (
+          typeof second === "string" &&
+          second.includes("animation-timeline")
+        ) {
           return false;
         }
         if (args.length === 1) {
@@ -69,16 +82,24 @@ test.describe("Home experience", () => {
     await page.waitForLoadState("load");
 
     const header = page.getByRole("banner");
-    const initialHeight = await header.evaluate((element) => element.getBoundingClientRect().height);
+    const initialHeight = await header.evaluate(
+      (element) => element.getBoundingClientRect().height,
+    );
     expect(initialHeight).toBeGreaterThan(70);
 
     await page.waitForFunction(() => {
       const el = document.querySelector(".scroll-progress");
-      return !!el && el instanceof HTMLElement && el.style.getPropertyValue("--progress-scale") !== "";
+      return (
+        !!el &&
+        el instanceof HTMLElement &&
+        el.style.getPropertyValue("--progress-scale") !== ""
+      );
     });
     const initialScale = await page.evaluate(() =>
       parseFloat(
-        document.querySelector<HTMLElement>(".scroll-progress")?.style.getPropertyValue("--progress-scale") ?? "0",
+        document
+          .querySelector<HTMLElement>(".scroll-progress")
+          ?.style.getPropertyValue("--progress-scale") ?? "0",
       ),
     );
     expect(initialScale).toBeCloseTo(0, 2);
@@ -89,13 +110,22 @@ test.describe("Home experience", () => {
       .toBeGreaterThanOrEqual(720);
 
     await expect
-      .poll(async () => header.evaluate((element) => element.getBoundingClientRect().height))
+      .poll(async () =>
+        header.evaluate((element) => element.getBoundingClientRect().height),
+      )
       .toBeLessThan(initialHeight - 8);
 
-    await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "auto" }));
+    await page.evaluate(() =>
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "auto",
+      }),
+    );
     await page.waitForFunction(() => {
       const value = parseFloat(
-        document.querySelector<HTMLElement>(".scroll-progress")?.style.getPropertyValue("--progress-scale") ?? "0",
+        document
+          .querySelector<HTMLElement>(".scroll-progress")
+          ?.style.getPropertyValue("--progress-scale") ?? "0",
       );
       return value > 0.9;
     });
@@ -169,7 +199,9 @@ test.describe("Home experience", () => {
     await page.goto("/");
     await page.getByLabel("Name").fill("Playwright User");
     await page.getByLabel("Email").fill("broken-address@example.com");
-    await page.getByLabel(/How can I help/i).fill("Message with invalid email.");
+    await page
+      .getByLabel(/How can I help/i)
+      .fill("Message with invalid email.");
     await page.locator('form button[type="submit"]').click();
 
     await expect(page.getByText(/Zap! That address bounced/i)).toBeVisible();
@@ -191,7 +223,9 @@ test.describe("Home experience", () => {
     const experienceSection = page.getByRole("region", { name: /Experience/i });
     await expect(experienceSection).toBeVisible();
 
-    await experienceSection.getByRole("button", { name: "New York, NY" }).click();
+    await experienceSection
+      .getByRole("button", { name: "New York, NY" })
+      .click();
     await expect(experienceSection.locator(".experience-card")).toHaveCount(2);
   });
 
@@ -208,28 +242,42 @@ test.describe("Home experience", () => {
     await expect(page.getByRole("main")).toBeInViewport();
   });
 
-  test("command palette button toggles and closes with escape", async ({ page }) => {
+  test("command palette button toggles and closes with escape", async ({
+    page,
+  }) => {
     await page.goto("/");
 
-    const paletteButton = page.getByRole("button", { name: /Open command palette/i }).first();
+    const paletteButton = page
+      .getByRole("button", { name: /Open command palette/i })
+      .first();
     await paletteButton.click();
 
     const dialog = page.getByRole("dialog", { name: /command palette/i });
     await expect(dialog).toHaveAttribute("data-state", "open");
-    await expect(dialog.getByRole("group", { name: /Quick actions/i })).toBeVisible();
+    await expect(
+      dialog.getByRole("group", { name: /Quick actions/i }),
+    ).toBeVisible();
 
     await page.keyboard.press("Escape");
-    await expect(page.locator('[cmdk-dialog][data-state="open"]')).toHaveCount(0);
+    await expect(page.locator('[cmdk-dialog][data-state="open"]')).toHaveCount(
+      0,
+    );
   });
 
-  test("command palette filters items and displays an empty state", async ({ page }) => {
+  test("command palette filters items and displays an empty state", async ({
+    page,
+  }) => {
     await page.goto("/");
 
-    const paletteButton = page.getByRole("button", { name: /Open command palette/i }).first();
+    const paletteButton = page
+      .getByRole("button", { name: /Open command palette/i })
+      .first();
     await paletteButton.click();
 
     const dialog = page.getByRole("dialog", { name: /command palette/i });
-    const input = dialog.getByPlaceholder(/Jump to a section or open a resource/i);
+    const input = dialog.getByPlaceholder(
+      /Jump to a section or open a resource/i,
+    );
 
     await input.fill("zzzz");
     await expect(dialog.getByText(/Nothing found/i)).toBeVisible();
@@ -240,10 +288,14 @@ test.describe("Home experience", () => {
     await expect(options.first()).toHaveText(/GitHub/i);
   });
 
-  test("command palette external quick action opens in a new tab", async ({ page }) => {
+  test("command palette external quick action opens in a new tab", async ({
+    page,
+  }) => {
     await page.goto("/");
 
-    const paletteButton = page.getByRole("button", { name: /Open command palette/i }).first();
+    const paletteButton = page
+      .getByRole("button", { name: /Open command palette/i })
+      .first();
     await paletteButton.click();
     const dialog = page.getByRole("dialog", { name: /command palette/i });
     await expect(dialog).toHaveAttribute("data-state", "open");
@@ -256,10 +308,14 @@ test.describe("Home experience", () => {
     await popup.close();
   });
 
-  test("command palette resume quick action triggers download in a new tab", async ({ page }) => {
+  test("command palette resume quick action triggers download in a new tab", async ({
+    page,
+  }) => {
     await page.goto("/");
 
-    const paletteButton = page.getByRole("button", { name: /Open command palette/i }).first();
+    const paletteButton = page
+      .getByRole("button", { name: /Open command palette/i })
+      .first();
     await paletteButton.click();
     const dialog = page.getByRole("dialog", { name: /command palette/i });
     await expect(dialog).toHaveAttribute("data-state", "open");
@@ -269,7 +325,8 @@ test.describe("Home experience", () => {
       (window as any).__resumeHref = null;
       window.open = (url: string | URL | undefined) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window as any).__resumeHref = typeof url === "string" ? url : url?.toString() ?? "";
+        (window as any).__resumeHref =
+          typeof url === "string" ? url : (url?.toString() ?? "");
         return null;
       };
     });
@@ -285,7 +342,9 @@ test.describe("Home experience", () => {
       .toMatch(/\/tyler-schumacher-resume\.pdf$/i);
   });
 
-  test("renders all experience entries with expected metadata", async ({ page }) => {
+  test("renders all experience entries with expected metadata", async ({
+    page,
+  }) => {
     await page.goto("/");
 
     const experienceRegion = page.getByRole("region", { name: /Experience/i });
@@ -295,12 +354,16 @@ test.describe("Home experience", () => {
     await expect(cards).toHaveCount(experiences.length);
 
     for (const experience of experiences) {
-      const card = experienceRegion.locator(".experience-card").filter({ hasText: experience.company });
+      const card = experienceRegion
+        .locator(".experience-card")
+        .filter({ hasText: experience.company });
       await expect(card).toContainText(experience.role);
     }
   });
 
-  test("displays approach section skills and profile context", async ({ page }) => {
+  test("displays approach section skills and profile context", async ({
+    page,
+  }) => {
     await page.goto("/");
 
     const aboutRegion = page.getByRole("region", { name: /Approach/i });
@@ -308,7 +371,9 @@ test.describe("Home experience", () => {
 
     await expect(aboutRegion.getByText(profile.bio[0])).toBeVisible();
     await expect(aboutRegion.getByText(profile.bio[1])).toBeVisible();
-    await expect(aboutRegion.getByText(/Start with the failure point/i)).toBeVisible();
+    await expect(
+      aboutRegion.getByText(/Start with the failure point/i),
+    ).toBeVisible();
 
     const skillChips = aboutRegion.locator(".about-skill");
     await expect(skillChips).toHaveCount(skills.length);
@@ -317,7 +382,9 @@ test.describe("Home experience", () => {
     }
   });
 
-  test("shows contact guidance without exposing direct email", async ({ page }) => {
+  test("shows contact guidance without exposing direct email", async ({
+    page,
+  }) => {
     await page.goto("/");
 
     const contactRegion = page.getByRole("region", { name: /Contact/i });
@@ -326,7 +393,9 @@ test.describe("Home experience", () => {
     const status = page.getByRole("status");
     await expect(status).toHaveText("");
 
-    await expect(contactRegion.getByText(new RegExp(profile.email, "i"))).toHaveCount(0);
+    await expect(
+      contactRegion.getByText(new RegExp(profile.email, "i")),
+    ).toHaveCount(0);
   });
 
   test("validates contact form fields on blur", async ({ page }) => {
@@ -341,16 +410,21 @@ test.describe("Home experience", () => {
 
     await expect(page.getByText(/Tell me your name/i)).toBeVisible();
     await expect(page.getByText(/Use a valid email/i)).toBeVisible();
-    await expect(page.getByText(/Add more context so I can help/i)).toBeVisible();
+    await expect(
+      page.getByText(/Add more context so I can help/i),
+    ).toBeVisible();
   });
 
-  test("contact form surfaces service outages with actionable guidance", async ({ page }) => {
+  test("contact form surfaces service outages with actionable guidance", async ({
+    page,
+  }) => {
     await page.route("**/api/contact", async (route) => {
       await route.fulfill({
         status: 503,
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          message: "Email service is not configured. Please email tyschumacher@proton.me directly.",
+          message:
+            "Email service is not configured. Please email tyschumacher@proton.me directly.",
         }),
       });
     });
@@ -364,10 +438,14 @@ test.describe("Home experience", () => {
 
     const status = page.getByRole("status");
     await expect(status).toHaveText(/Email service is not configured/i);
-    await expect(page.getByText(/Email service is not configured/i)).toBeVisible();
+    await expect(
+      page.getByText(/Email service is not configured/i),
+    ).toBeVisible();
   });
 
-  test("contact form falls back when error responses cannot be parsed", async ({ page }) => {
+  test("contact form falls back when error responses cannot be parsed", async ({
+    page,
+  }) => {
     await page.route("**/api/contact", async (route) => {
       await route.fulfill({
         status: 502,
@@ -383,7 +461,8 @@ test.describe("Home experience", () => {
 
     await page.locator('form button[type="submit"]').click();
 
-    const fallbackMessage = /We couldn[’']t send your message right now\. Please try again later\./i;
+    const fallbackMessage =
+      /We couldn[’']t send your message right now\. Please try again later\./i;
     await expect(page.getByRole("status")).toHaveText(fallbackMessage);
     await expect(page.getByText(fallbackMessage)).toBeVisible();
   });
@@ -391,15 +470,16 @@ test.describe("Home experience", () => {
   test("footer exposes external links and returns to top", async ({ page }) => {
     await page.goto("/");
 
-    await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" }));
+    await page.evaluate(() =>
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" }),
+    );
     const footer = page.getByRole("contentinfo");
     await expect(footer).toBeVisible();
 
     for (const item of secondaryNav.filter((link) => link.id !== "resume")) {
-      await expect(footer.getByRole("link", { name: new RegExp(item.title, "i") })).toHaveAttribute(
-        "href",
-        item.href,
-      );
+      await expect(
+        footer.getByRole("link", { name: new RegExp(item.title, "i") }),
+      ).toHaveAttribute("href", item.href);
     }
 
     const backToTop = page.getByRole("link", { name: /Back to top/i });
@@ -412,17 +492,25 @@ test.describe("Home experience", () => {
 test.describe("Mobile navigation", () => {
   test.use({ viewport: { width: 390, height: 844 } });
 
-  test("opens sheet navigation and closes after selection", async ({ page }) => {
+  test("opens sheet navigation and closes after selection", async ({
+    page,
+  }) => {
     await page.goto("/");
 
-    const openNavButton = page.getByRole("button", { name: /Open navigation/i });
+    const openNavButton = page.getByRole("button", {
+      name: /Open navigation/i,
+    });
     await openNavButton.click();
 
-    const mobileNav = page.getByRole("navigation", { name: /Mobile navigation/i });
+    const mobileNav = page.getByRole("navigation", {
+      name: /Mobile navigation/i,
+    });
     await expect(mobileNav).toBeVisible();
 
     for (const item of primaryNav) {
-      await expect(mobileNav.getByRole("link", { name: item.title })).toBeVisible();
+      await expect(
+        mobileNav.getByRole("link", { name: item.title }),
+      ).toBeVisible();
     }
 
     await mobileNav.getByRole("link", { name: /Approach/i }).click();

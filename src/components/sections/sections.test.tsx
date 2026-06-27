@@ -12,7 +12,9 @@ describe("Section components", () => {
   it("renders hero with proof points", () => {
     render(<Hero />);
 
-    expect(screen.getByRole("heading", { name: /Tyler Schumacher/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Tyler Schumacher/i }),
+    ).toBeInTheDocument();
     expect(
       screen.getByText(/Builds software that stays clear under pressure\./i),
     ).toBeInTheDocument();
@@ -22,8 +24,12 @@ describe("Section components", () => {
   it("lists key skills and approach pillars in the about section", () => {
     render(<AboutSection />);
 
-    expect(screen.getByRole("heading", { name: /Start with the failure point/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Make the system legible/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Start with the failure point/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Make the system legible/i }),
+    ).toBeInTheDocument();
     skills.forEach((skill) => {
       expect(screen.getAllByText(skill).length).toBeGreaterThan(0);
     });
@@ -44,7 +50,9 @@ describe("Section components", () => {
     renderWithProviders(<ContactSection />);
 
     expect(
-      screen.getByRole("heading", { name: /Need an engineer who can steady the work/i }),
+      screen.getByRole("heading", {
+        name: /Need an engineer who can steady the work/i,
+      }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /send message/i }),

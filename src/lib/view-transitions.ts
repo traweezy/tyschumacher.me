@@ -1,8 +1,10 @@
 export const runViewTransition = (callback: () => void) => {
   if (typeof document !== "undefined" && "startViewTransition" in document) {
-    const transition = (document as Document & {
-      startViewTransition: (cb: () => void) => { finished: Promise<void> };
-    }).startViewTransition(() => {
+    const transition = (
+      document as Document & {
+        startViewTransition: (cb: () => void) => { finished: Promise<void> };
+      }
+    ).startViewTransition(() => {
       callback();
     });
 

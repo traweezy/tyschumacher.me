@@ -44,9 +44,7 @@ export const Section = ({
             ) : null}
           </div>
           <div className="section-header__content">
-            <h2 className="type-heading-2 text-balance">
-              {headline}
-            </h2>
+            <h2 className="type-heading-2 text-balance">{headline}</h2>
             {caption ? (
               <p className="type-body-lg measure text-pretty text-[var(--text-secondary)]">
                 {caption}
@@ -54,7 +52,9 @@ export const Section = ({
             ) : null}
           </div>
         </header>
-        <div className={cn("flex flex-col gap-10", contentClassName)}>{children}</div>
+        <div className={cn("flex flex-col gap-10", contentClassName)}>
+          {children}
+        </div>
       </div>
     </Container>
   </section>

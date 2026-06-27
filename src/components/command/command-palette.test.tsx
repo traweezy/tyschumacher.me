@@ -25,7 +25,9 @@ describe("CommandPalette", () => {
     expect(useUIStore.getState().isCommandOpen).toBe(false);
 
     fireEvent.keyDown(window, { key: "k", ctrlKey: true });
-    expect(await screen.findByRole("dialog", { name: /command palette/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("dialog", { name: /command palette/i }),
+    ).toBeInTheDocument();
     expect(useUIStore.getState().isCommandOpen).toBe(true);
   });
 
@@ -39,7 +41,10 @@ describe("CommandPalette", () => {
     renderWithProviders(<CommandPalette />);
     fireEvent.click(await screen.findByRole("option", { name: /^Approach$/i }));
 
-    expect(scrollSpy).toHaveBeenCalledWith({ behavior: "smooth", block: "start" });
+    expect(scrollSpy).toHaveBeenCalledWith({
+      behavior: "smooth",
+      block: "start",
+    });
     expect(useUIStore.getState().isCommandOpen).toBe(false);
   });
 
@@ -48,7 +53,9 @@ describe("CommandPalette", () => {
     const querySelectorSpy = vi.spyOn(document, "querySelector");
 
     renderWithProviders(<CommandPalette />);
-    fireEvent.click(await screen.findByRole("option", { name: /^Experience$/i }));
+    fireEvent.click(
+      await screen.findByRole("option", { name: /^Experience$/i }),
+    );
 
     expect(querySelectorSpy).toHaveBeenCalledWith("#experience");
     expect(useUIStore.getState().isCommandOpen).toBe(false);
@@ -56,9 +63,7 @@ describe("CommandPalette", () => {
 
   it("opens external links in a new tab", async () => {
     useUIStore.setState({ isCommandOpen: true });
-    const openSpy = vi
-      .spyOn(window, "open")
-      .mockImplementation(() => null);
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
 
     renderWithProviders(<CommandPalette />);
     fireEvent.click(await screen.findByRole("option", { name: /^GitHub$/i }));
@@ -72,9 +77,7 @@ describe("CommandPalette", () => {
 
   it("treats pdf links as external opens", async () => {
     useUIStore.setState({ isCommandOpen: true });
-    const openSpy = vi
-      .spyOn(window, "open")
-      .mockImplementation(() => null);
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
 
     renderWithProviders(<CommandPalette />);
     fireEvent.click(await screen.findByRole("option", { name: /^Resume$/i }));

@@ -6,7 +6,8 @@ const replaceDocument = (handler: ProxyHandler<Document>) => {
   const proxyDocument = new Proxy(originalDocument as Document, handler);
   (globalThis as unknown as { document: Document }).document = proxyDocument;
   return () => {
-    (globalThis as unknown as { document: Document }).document = originalDocument;
+    (globalThis as unknown as { document: Document }).document =
+      originalDocument;
   };
 };
 

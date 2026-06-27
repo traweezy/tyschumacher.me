@@ -13,12 +13,15 @@ export const projectsCaption =
 export const ProjectsSection = async () => {
   const data = await getProjects();
   const slots = [...PROJECT_SLOTS];
-  const projectsToShow = shuffleByDeterministicWeight(data, (project) => project.slug).slice(
-    0,
-    slots.length,
-  );
+  const projectsToShow = shuffleByDeterministicWeight(
+    data,
+    (project) => project.slug,
+  ).slice(0, slots.length);
   const slotSeed = projectsToShow.map((project) => project.slug).join("|");
-  const shuffledSlots = shuffleByDeterministicWeight(slots, (slot, index) => `${slot.id}-${slotSeed}-${index}`);
+  const shuffledSlots = shuffleByDeterministicWeight(
+    slots,
+    (slot, index) => `${slot.id}-${slotSeed}-${index}`,
+  );
 
   const projectsWithLayout = projectsToShow.map((project, index) => ({
     ...project,
@@ -47,9 +50,15 @@ const hashToUnitInterval = (input: string): number => {
   return (hash >>> 0) / 0xffffffff;
 };
 
-const shuffleByDeterministicWeight = <T,>(items: readonly T[], keyForItem: (item: T, index: number) => string): T[] =>
+const shuffleByDeterministicWeight = <T,>(
+  items: readonly T[],
+  keyForItem: (item: T, index: number) => string,
+): T[] =>
   items
-    .map((item, index) => ({ item, weight: hashToUnitInterval(keyForItem(item, index)) }))
+    .map((item, index) => ({
+      item,
+      weight: hashToUnitInterval(keyForItem(item, index)),
+    }))
     .sort((a, b) => a.weight - b.weight)
     .map(({ item }) => item);
 

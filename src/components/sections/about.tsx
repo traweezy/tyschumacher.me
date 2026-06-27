@@ -6,18 +6,15 @@ import { buildPriorityItems, coreToolItems } from "@/data/skills";
 const approachPillars = [
   {
     title: "Start with the failure point",
-    body:
-      "I begin where confusion, money movement, or operational risk can compound. Once that moment is clear, the rest of the product usually gets easier to shape.",
+    body: "I begin where confusion, money movement, or operational risk can compound. Once that moment is clear, the rest of the product usually gets easier to shape.",
   },
   {
     title: "Make the system legible",
-    body:
-      "The interface should read clearly for the user, and the internals should read clearly for the team supporting it. Instrumentation and release checks need to help, not decorate.",
+    body: "The interface should read clearly for the user, and the internals should read clearly for the team supporting it. Instrumentation and release checks need to help, not decorate.",
   },
   {
     title: "Turn ambiguity into sequence",
-    body:
-      "A lot of work starts with partial requirements and competing instincts. I turn that into a sequence the team can ship without stepping on itself.",
+    body: "A lot of work starts with partial requirements and competing instincts. I turn that into a sequence the team can ship without stepping on itself.",
   },
 ] as const;
 
@@ -39,8 +36,12 @@ export const AboutSection = () => (
               {String(index + 1).padStart(2, "0")}
             </span>
             <div className="about-sequence__content">
-              <h3 className="about-card__title type-heading-4 measure-short">{pillar.title}</h3>
-              <p className="type-body text-[var(--text-secondary)]">{pillar.body}</p>
+              <h3 className="about-card__title type-heading-4 measure-short">
+                {pillar.title}
+              </h3>
+              <p className="type-body text-[var(--text-secondary)]">
+                {pillar.body}
+              </p>
             </div>
           </li>
         ))}
@@ -51,7 +52,8 @@ export const AboutSection = () => (
         <div className="about-meta">
           <p className="about-meta__label type-eyebrow">Tool stack</p>
           <p className="about-meta__value type-body">
-            These are the tools I use most when the work needs to move quickly without making the system harder to operate later.
+            These are the tools I use most when the work needs to move quickly
+            without making the system harder to operate later.
           </p>
         </div>
         <div className="about-skills">
@@ -62,7 +64,10 @@ export const AboutSection = () => (
               data-skill-accent={skill.accentKey}
             >
               <span className="about-skill__mark" aria-hidden="true">
-                <TechnologyIcon name={skill.icon} className="about-skill__icon" />
+                <TechnologyIcon
+                  name={skill.icon}
+                  className="about-skill__icon"
+                />
               </span>
               <span className="about-skill__label">{skill.name}</span>
             </span>
@@ -73,7 +78,8 @@ export const AboutSection = () => (
         <div className="about-meta">
           <p className="about-meta__label type-eyebrow">What I optimize for</p>
           <p className="about-meta__value type-body">
-            These are the qualities I keep protecting while the product is being designed, built, and released.
+            These are the qualities I keep protecting while the product is being
+            designed, built, and released.
           </p>
         </div>
         <div className="about-skills about-skills--priority">
@@ -84,7 +90,10 @@ export const AboutSection = () => (
               data-skill-accent={skill.accentKey}
             >
               <span className="about-skill__mark" aria-hidden="true">
-                <TechnologyIcon name={skill.icon} className="about-skill__icon" />
+                <TechnologyIcon
+                  name={skill.icon}
+                  className="about-skill__icon"
+                />
               </span>
               <span className="about-skill__label">{skill.name}</span>
             </span>

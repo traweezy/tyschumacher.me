@@ -1,11 +1,6 @@
 export type ProjectSlotId = "flare" | "orbit" | "pulse" | "vector" | "nova";
 
-export type ProjectTone =
-  | "violet"
-  | "cyan"
-  | "pink"
-  | "blue"
-  | "indigo";
+export type ProjectTone = "violet" | "cyan" | "pink" | "blue" | "indigo";
 
 export type ProjectSlot = {
   id: ProjectSlotId;
