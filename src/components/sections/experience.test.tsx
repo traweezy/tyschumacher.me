@@ -1,16 +1,10 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import type { ExperienceEntry } from "@/data/experience";
 import { renderWithProviders } from "@/test-utils/render-with-providers";
 
 const getExperiencesMock = vi.fn<() => Promise<ExperienceEntry[]>>();
-
-const mockFetchResponse = (experiences: ExperienceEntry[]) =>
-  Promise.resolve({
-    ok: true,
-    json: async () => ({ experiences }),
-  } as Response);
 
 vi.mock("@/lib/content", () => ({
   getExperiences: () => getExperiencesMock(),
@@ -35,12 +29,7 @@ describe("ExperienceSection", () => {
     },
   ];
 
-  beforeEach(() => {
-    vi.spyOn(global, "fetch").mockImplementation(() => mockFetchResponse(sampleExperiences));
-  });
-
   afterEach(() => {
-    vi.restoreAllMocks();
     getExperiencesMock.mockReset();
   });
 
@@ -67,9 +56,7 @@ describe("ExperienceSection", () => {
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "Remote" }));
     await waitFor(() => {
-      const cards = Array.from(
-        document.querySelectorAll<HTMLLIElement>(".experience-card"),
-      ).filter((card) => !card.getAttribute("style")?.includes("width: 0px"));
+      const cards = Array.from(document.querySelectorAll<HTMLLIElement>(".experience-card"));
       expect(cards).toHaveLength(1);
       expect(cards[0]?.textContent).toContain("Company A");
     });

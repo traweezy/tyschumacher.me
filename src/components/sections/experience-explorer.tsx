@@ -1,19 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import type { ExperienceEntry } from "@/data/experience";
-
-const experienceQueryKey = ["experiences"] as const;
-
-const fetchExperiences = async (): Promise<ExperienceEntry[]> => {
-  const response = await fetch("/api/experience", { cache: "no-store" });
-  if (!response.ok) {
-    throw new Error("Unable to load experiences");
-  }
-  const payload = (await response.json()) as { experiences: ExperienceEntry[] };
-  return payload.experiences;
-};
 
 const dedupe = (values: string[]): string[] => Array.from(new Set(values));
 
@@ -33,13 +21,7 @@ type ExperienceExplorerProps = {
 
 export const ExperienceExplorer = ({ initialExperiences }: ExperienceExplorerProps) => {
   const [locationFilter, setLocationFilter] = useState("All");
-
-  const { data: experiences } = useQuery({
-    queryKey: experienceQueryKey,
-    queryFn: fetchExperiences,
-    initialData: initialExperiences,
-    staleTime: 5 * 60 * 1000,
-  });
+  const experiences = initialExperiences;
 
   const availableLocations = useMemo(() => {
     const locations = experiences.map((experience) => experience.location.split(" · ")[0]);
