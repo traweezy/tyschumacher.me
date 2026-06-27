@@ -3384,6 +3384,7 @@ a:focus-visible {
 }
 
 .about-skill {
+  --skill-accent: var(--accent);
   display: flex;
   align-items: center;
   gap: 0.7rem;
@@ -3394,6 +3395,82 @@ a:focus-visible {
   color: var(--text-primary);
   border: 1px solid var(--border);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.about-skill[data-skill-accent="react"] {
+  --skill-accent: #61dafb;
+}
+
+.about-skill[data-skill-accent="next"] {
+  --skill-accent: #111827;
+}
+
+.about-skill[data-skill-accent="typescript"] {
+  --skill-accent: #3178c6;
+}
+
+.about-skill[data-skill-accent="java"] {
+  --skill-accent: #ea2d2e;
+}
+
+.about-skill[data-skill-accent="go"] {
+  --skill-accent: #00add8;
+}
+
+.about-skill[data-skill-accent="node"] {
+  --skill-accent: #5fa04e;
+}
+
+.about-skill[data-skill-accent="postgresql"] {
+  --skill-accent: #4169e1;
+}
+
+.about-skill[data-skill-accent="graphql"] {
+  --skill-accent: #e10098;
+}
+
+.about-skill[data-skill-accent="kubernetes"] {
+  --skill-accent: #326ce5;
+}
+
+.about-skill[data-skill-accent="docker"] {
+  --skill-accent: #2496ed;
+}
+
+.about-skill[data-skill-accent="git"] {
+  --skill-accent: #f05032;
+}
+
+.about-skill[data-skill-accent="tailwind"] {
+  --skill-accent: #06b6d4;
+}
+
+.about-skill[data-skill-accent="zustand"] {
+  --skill-accent: #7c5cff;
+}
+
+.about-skill[data-skill-accent="tanstack"] {
+  --skill-accent: #ff4154;
+}
+
+.about-skill[data-skill-accent="accessibility"] {
+  --skill-accent: #0f766e;
+}
+
+.about-skill[data-skill-accent="performance"] {
+  --skill-accent: #7c3aed;
+}
+
+.about-skill[data-skill-accent="observability"] {
+  --skill-accent: #0f4c81;
+}
+
+.about-skill[data-skill-accent="release-safety"] {
+  --skill-accent: #9c4f2f;
+}
+
+.about-skill[data-skill-accent="seo"] {
+  --skill-accent: #a16207;
 }
 
 .about-skill--priority {

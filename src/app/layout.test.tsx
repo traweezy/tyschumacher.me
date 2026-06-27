@@ -8,6 +8,10 @@ vi.mock("next/font/google", () => ({
   Manrope: () => ({ variable: "font-manrope" }),
 }));
 
+vi.mock("next/headers", () => ({
+  headers: async () => new Headers({ "x-nonce": "test-nonce" }),
+}));
+
 vi.mock("next/script", () => ({
   default: () => null,
 }));
@@ -72,9 +76,9 @@ describe("RootLayout component", () => {
     const RootLayout = layoutModule.default;
 
     render(
-      <RootLayout>
-        <div>Page content</div>
-      </RootLayout>,
+      await RootLayout({
+        children: <div>Page content</div>,
+      }),
     );
 
     expect(

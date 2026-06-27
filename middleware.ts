@@ -13,27 +13,31 @@ const generateNonce = (): string => {
 
 export function middleware(request: NextRequest) {
   const nonce = generateNonce();
+  const cspHeader = [
+    "default-src 'self'",
+    `script-src 'self' 'nonce-${nonce}'`,
+    `style-src 'self' 'nonce-${nonce}'`,
+    "style-src-attr 'unsafe-hashes' 'sha256-zlqnbDt84zf1iSefLU/ImC54isoprH/MRiVZGskwexk='",
+    "img-src 'self' data:",
+    "font-src 'self'",
+    "object-src 'none'",
+    "connect-src 'self'",
+    "frame-ancestors 'none'",
+    "form-action 'self'",
+    "base-uri 'self'",
+    "upgrade-insecure-requests",
+  ].join("; ");
+
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);
   requestHeaders.set("x-nextjs-nonce", nonce);
+  requestHeaders.set("Content-Security-Policy", cspHeader);
 
   const response = NextResponse.next({
     request: {
       headers: requestHeaders,
     },
   });
-
-  const cspHeader = [
-    "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}'`,
-    `style-src 'self' 'nonce-${nonce}'`,
-    "img-src 'self' data:",
-    "font-src 'self'",
-    "connect-src 'self'",
-    "frame-ancestors 'none'",
-    "form-action 'self'",
-    "base-uri 'self'",
-  ].join("; ");
 
   response.headers.set("Content-Security-Policy", cspHeader);
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");

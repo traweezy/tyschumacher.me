@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import { Section } from "@/components/layout/section";
 import { TechnologyIcon } from "@/components/ui/technology-icons";
 import { profile } from "@/data/profile";
@@ -60,7 +59,7 @@ export const AboutSection = () => (
             <span
               key={skill.name}
               className="about-skill"
-              style={{ "--skill-accent": skill.accent } as CSSProperties}
+              data-skill-accent={skill.accentKey}
             >
               <span className="about-skill__mark" aria-hidden="true">
                 <TechnologyIcon name={skill.icon} className="about-skill__icon" />
@@ -82,7 +81,7 @@ export const AboutSection = () => (
             <span
               key={skill.name}
               className="about-skill about-skill--priority"
-              style={{ "--skill-accent": skill.accent } as CSSProperties}
+              data-skill-accent={skill.accentKey}
             >
               <span className="about-skill__mark" aria-hidden="true">
                 <TechnologyIcon name={skill.icon} className="about-skill__icon" />

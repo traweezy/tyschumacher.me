@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist_Mono, Manrope } from "next/font/google";
+import { headers } from "next/headers";
 import Script from "next/script";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -100,11 +101,13 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   return (
     <html
       lang="en"
@@ -115,9 +118,14 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
-        <Script src="/theme-preview.js" strategy="beforeInteractive" />
+        <Script
+          src="/theme-preview.js"
+          strategy="beforeInteractive"
+          nonce={nonce}
+        />
       </head>
       <body
         className={`${manrope.variable} ${fraunces.variable} ${geistMono.variable}`}

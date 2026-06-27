@@ -6,6 +6,10 @@ vi.mock("@/components/sections/hero", () => ({
   Hero: () => <div>Hero section</div>,
 }));
 
+vi.mock("next/server", () => ({
+  connection: async () => undefined,
+}));
+
 vi.mock("@/components/sections/experience", () => ({
   ExperienceSection: () => <div>Experience content</div>,
   ExperienceSectionSkeleton: () => <div>Loading experience</div>,
@@ -28,7 +32,7 @@ describe("Home page", () => {
     const pageModule = await import("./page");
     const Home = pageModule.default;
 
-    render(<Home />);
+    render(await Home());
 
     expect(screen.getByText("Hero section")).toBeInTheDocument();
     expect(screen.getByText("Experience content")).toBeInTheDocument();

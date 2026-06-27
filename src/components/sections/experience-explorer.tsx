@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 import type { ExperienceEntry } from "@/data/experience";
-import { usePrefersReducedMotion } from "@/state/accessibility-store";
 
 const experienceQueryKey = ["experiences"] as const;
 
@@ -35,15 +33,6 @@ type ExperienceExplorerProps = {
 
 export const ExperienceExplorer = ({ initialExperiences }: ExperienceExplorerProps) => {
   const [locationFilter, setLocationFilter] = useState("All");
-  const prefersReducedMotion = usePrefersReducedMotion();
-  const [listRef, enableAnimations] = useAutoAnimate<HTMLOListElement>({
-    duration: 260,
-    easing: "cubic-bezier(0.2, 0.9, 0.38, 1)",
-  });
-
-  useEffect(() => {
-    enableAnimations(!prefersReducedMotion);
-  }, [prefersReducedMotion, enableAnimations]);
 
   const { data: experiences } = useQuery({
     queryKey: experienceQueryKey,
@@ -84,7 +73,7 @@ export const ExperienceExplorer = ({ initialExperiences }: ExperienceExplorerPro
           ))}
         </div>
       </fieldset>
-      <ol ref={listRef} className="experience-list" aria-live="polite">
+      <ol className="experience-list" aria-live="polite">
         {filteredExperiences.map((item) => (
           <li key={`${item.company}-${item.start}`} className="experience-card">
             <div className="experience-card__meta type-body-sm">

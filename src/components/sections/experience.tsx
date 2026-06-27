@@ -24,7 +24,7 @@ export const ExperienceSection = async () => {
 
 export const ExperienceSectionSkeleton = () => (
   <Section
-    id="experience"
+    id="experience-loading"
     label="Experience"
     headline={experienceHeadline}
     caption={experienceCaption}
