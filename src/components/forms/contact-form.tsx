@@ -3,28 +3,17 @@
 import { useMemo } from "react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import {
+  contactFieldSchemas,
+  contactSchema,
+  isContactField,
+  type ContactValues,
+} from "@/lib/contact";
 import styles from "./contact-form.module.css";
-
-const contactSchema = z.object({
-  name: z.string().min(2, "Tell me your name"),
-  email: z.string().email("Use a valid email"),
-  message: z.string().min(12, "Add more context so I can help"),
-});
-
-type ContactValues = z.infer<typeof contactSchema>;
-const FORM_FIELDS = ["name", "email", "message"] as const;
-type ContactField = (typeof FORM_FIELDS)[number];
 
 const FALLBACK_ERROR_MESSAGE =
   "We couldn’t send your message right now. Please try again later.";
-
-const schemaByField = {
-  name: contactSchema.shape.name,
-  email: contactSchema.shape.email,
-  message: contactSchema.shape.message,
-} as const;
 
 const getErrorMessage = (error: unknown): string => {
   if (typeof error === "string") {
@@ -51,13 +40,17 @@ export const ContactForm = () => {
       });
 
       if (!response.ok) {
-        const data = (await response.json().catch(() => ({}))) as { message?: string; errors?: Array<{ field?: string; message?: string }> };
+        const data = (await response.json().catch(() => ({}))) as {
+          message?: string;
+          errors?: Array<{ field?: string; message?: string }>;
+        };
 
         const fieldErrors = Array.isArray(data?.errors)
           ? data.errors
               .filter(
                 (error): error is { field: string; message: string } =>
-                  typeof error?.field === "string" && typeof error?.message === "string",
+                  typeof error?.field === "string" &&
+                  typeof error?.message === "string",
               )
               .map((error) => ({
                 field: error.field,
@@ -100,8 +93,8 @@ export const ContactForm = () => {
         const fieldErrors = typedError.fieldErrors;
         if (fieldErrors) {
           fieldErrors.forEach(({ field, message }) => {
-            if (!FORM_FIELDS.includes(field as ContactField)) return;
-            formApi.setFieldMeta(field as ContactField, (meta) => ({
+            if (!isContactField(field)) return;
+            formApi.setFieldMeta(field, (meta) => ({
               ...meta,
               isTouched: true,
               errorMap: {
@@ -136,7 +129,11 @@ export const ContactForm = () => {
       return message;
     }
     return null;
-  }, [contactMutation.error, contactMutation.isError, contactMutation.isSuccess]);
+  }, [
+    contactMutation.error,
+    contactMutation.isError,
+    contactMutation.isSuccess,
+  ]);
 
   const textInputs = [
     {
@@ -175,7 +172,7 @@ export const ContactForm = () => {
           <form.Field
             key={fieldConfig.name}
             name={fieldConfig.name}
-            validators={{ onBlur: schemaByField[fieldConfig.name] }}
+            validators={{ onBlur: contactFieldSchemas[fieldConfig.name] }}
           >
             {(field) => (
               <label className={styles.field}>
@@ -190,7 +187,10 @@ export const ContactForm = () => {
                   placeholder={fieldConfig.placeholder}
                   autoComplete={fieldConfig.autoComplete}
                 />
-                <span id={`contact-${fieldConfig.name}-error`} className={styles.error}>
+                <span
+                  id={`contact-${fieldConfig.name}-error`}
+                  className={styles.error}
+                >
                   {getErrorMessage(field.state.meta.errors[0])}
                 </span>
               </label>
@@ -200,7 +200,7 @@ export const ContactForm = () => {
       </div>
       <form.Field
         name="message"
-        validators={{ onBlur: schemaByField.message }}
+        validators={{ onBlur: contactFieldSchemas.message }}
       >
         {(field) => (
           <label className={styles.field}>
