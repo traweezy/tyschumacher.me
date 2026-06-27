@@ -1,5 +1,9 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import {
+  getTelemetryConnectSource,
+  type TelemetryEnvironment,
+} from "@/lib/telemetry-config";
 
 const generateNonce = (): string => {
   const array = new Uint8Array(16);
@@ -11,9 +15,18 @@ const generateNonce = (): string => {
   return btoa(str);
 };
 
-export function proxy(request: NextRequest) {
-  const nonce = generateNonce();
-  const cspHeader = [
+export const createContentSecurityPolicy = (
+  nonce: string,
+  env?: TelemetryEnvironment,
+): string => {
+  const connectSources = ["'self'"];
+  const telemetryConnectSource = getTelemetryConnectSource(env);
+
+  if (telemetryConnectSource) {
+    connectSources.push(telemetryConnectSource);
+  }
+
+  return [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}'`,
     `style-src 'self' 'nonce-${nonce}'`,
@@ -21,12 +34,17 @@ export function proxy(request: NextRequest) {
     "img-src 'self' data:",
     "font-src 'self'",
     "object-src 'none'",
-    "connect-src 'self'",
+    `connect-src ${connectSources.join(" ")}`,
     "frame-ancestors 'none'",
     "form-action 'self'",
     "base-uri 'self'",
     "upgrade-insecure-requests",
   ].join("; ");
+};
+
+export function proxy(request: NextRequest) {
+  const nonce = generateNonce();
+  const cspHeader = createContentSecurityPolicy(nonce);
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);
@@ -41,9 +59,15 @@ export function proxy(request: NextRequest) {
 
   response.headers.set("Content-Security-Policy", cspHeader);
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-  response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  response.headers.set(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=()",
+  );
   response.headers.set("X-Content-Type-Options", "nosniff");
-  response.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
+  response.headers.set(
+    "Strict-Transport-Security",
+    "max-age=63072000; includeSubDomains; preload",
+  );
   response.headers.set("X-DNS-Prefetch-Control", "off");
   response.headers.set("Cross-Origin-Opener-Policy", "same-origin");
   response.headers.set("X-Frame-Options", "DENY");

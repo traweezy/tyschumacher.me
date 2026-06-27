@@ -1,9 +1,19 @@
 "use client";
 
 import { trace, context } from "@opentelemetry/api";
-import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
-import { BatchSpanProcessor, ConsoleSpanExporter, SimpleSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import { resourceFromAttributes } from "@opentelemetry/resources";
+import {
+  BatchSpanProcessor,
+  ConsoleSpanExporter,
+  SimpleSpanProcessor,
+  type SpanProcessor,
+} from "@opentelemetry/sdk-trace-base";
+import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
+import {
+  getTelemetryExportUrl,
+  getTelemetryMode,
+} from "@/lib/telemetry-config";
 
 let tracerInitialized = false;
 const instrumentedElements = new WeakSet<Element>();
@@ -12,7 +22,10 @@ const attachClickInstrumentation = (): void => {
   const tracer = trace.getTracer("tyschumacher.me");
 
   const handleElement = (element: Element) => {
-    if (!(element instanceof HTMLElement) || instrumentedElements.has(element)) {
+    if (
+      !(element instanceof HTMLElement) ||
+      instrumentedElements.has(element)
+    ) {
       return;
     }
     const spanName = element.dataset.observeClick ?? "interaction";
@@ -28,7 +41,7 @@ const attachClickInstrumentation = (): void => {
     instrumentedElements.add(element);
   };
 
-  document.querySelectorAll('[data-observe-click]').forEach(handleElement);
+  document.querySelectorAll("[data-observe-click]").forEach(handleElement);
 
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
@@ -36,15 +49,33 @@ const attachClickInstrumentation = (): void => {
         if (!(node instanceof HTMLElement)) {
           return;
         }
-        if (node.matches('[data-observe-click]')) {
+        if (node.matches("[data-observe-click]")) {
           handleElement(node);
         }
-        node.querySelectorAll?.('[data-observe-click]').forEach(handleElement);
+        node.querySelectorAll?.("[data-observe-click]").forEach(handleElement);
       });
     });
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
+};
+
+const createSpanProcessor = (): SpanProcessor | null => {
+  const exporterUrl = getTelemetryExportUrl();
+
+  if (exporterUrl) {
+    return new BatchSpanProcessor(
+      new OTLPTraceExporter({
+        url: exporterUrl,
+      }),
+    );
+  }
+
+  if (getTelemetryMode() === "console") {
+    return new SimpleSpanProcessor(new ConsoleSpanExporter());
+  }
+
+  return null;
 };
 
 export const initObservability = (): void => {
@@ -53,15 +84,19 @@ export const initObservability = (): void => {
   }
 
   try {
-    const exporterUrl = process.env.NEXT_PUBLIC_OTEL_EXPORT_URL;
-    const spanProcessor = exporterUrl
-      ? new BatchSpanProcessor(
-          new OTLPTraceExporter({
-            url: exporterUrl,
-          }),
-        )
-      : new SimpleSpanProcessor(new ConsoleSpanExporter());
+    const spanProcessor = createSpanProcessor();
+
+    if (!spanProcessor) {
+      tracerInitialized = true;
+      return;
+    }
+
     const provider = new WebTracerProvider({
+      resource: resourceFromAttributes({
+        "deployment.environment.name": process.env.NODE_ENV ?? "development",
+        "service.name": "tyschumacher.me",
+        "service.namespace": "portfolio",
+      }),
       spanProcessors: [spanProcessor],
     });
 
