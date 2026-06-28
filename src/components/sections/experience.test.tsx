@@ -14,6 +14,8 @@ describe("ExperienceSection", () => {
   const sampleExperiences: ExperienceEntry[] = [
     {
       company: "Company A",
+      focus: "Product systems",
+      mark: "CA",
       role: "Role A",
       start: "Jan 2020",
       location: "Remote",
@@ -21,6 +23,8 @@ describe("ExperienceSection", () => {
     },
     {
       company: "Company B",
+      focus: "Trading tools",
+      mark: "CB",
       role: "Role B",
       start: "Feb 2018",
       end: "Mar 2020",
@@ -56,6 +60,7 @@ describe("ExperienceSection", () => {
     expect(
       screen.getByText("Feb 2018 · Mar 2020 · New York, NY"),
     ).toBeInTheDocument();
+    expect(screen.getByText("Product systems")).toBeInTheDocument();
 
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "Remote" }));
