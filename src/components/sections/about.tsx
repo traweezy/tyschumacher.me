@@ -6,15 +6,15 @@ import { buildPriorityItems, coreToolItems } from "@/data/skills";
 const approachPillars = [
   {
     title: "Find the pressure point",
-    body: "I start with the moment where a user can lose time, money, or confidence. Once that moment is clear, the product has a real center.",
+    body: "I start with the moment where a user can lose time, money, or confidence. That gives the work a concrete center.",
   },
   {
     title: "Make the work readable",
-    body: "The screen should make sense to the person using it, and the internals should make sense to the team supporting it.",
+    body: "The interface should explain current state; the code path should explain why it changed.",
   },
   {
     title: "Put the build in order",
-    body: "A lot of work starts with partial requirements and competing instincts. I turn that into a path the team can ship without guessing.",
+    body: "When requirements are partial or opinions conflict, I turn them into a release path with clear tradeoffs.",
   },
 ] as const;
 
@@ -22,7 +22,7 @@ export const AboutSection = () => (
   <Section
     id="about"
     label="Approach"
-    headline="I care most about the parts people rely on"
+    headline="How I decide what to build"
     caption={profile.bio[0]}
     overline={profile.bio[1]}
     contentClassName="about-grid"
@@ -52,8 +52,8 @@ export const AboutSection = () => (
         <div className="about-meta">
           <p className="about-meta__label type-eyebrow">Tool stack</p>
           <p className="about-meta__value type-body">
-            The stack changes by problem, but these are the tools I reach for
-            when the work needs to move without becoming harder to run later.
+            The stack changes by problem. I prefer tools that help the team
+            ship, inspect behavior, and keep ownership clear after launch.
           </p>
         </div>
         <div className="about-skills">
@@ -78,7 +78,7 @@ export const AboutSection = () => (
         <div className="about-meta">
           <p className="about-meta__label type-eyebrow">What I optimize for</p>
           <p className="about-meta__value type-body">
-            These are the tradeoffs I keep visible while the product is being
+            These are the constraints I keep visible while the product is
             designed, built, and released.
           </p>
         </div>

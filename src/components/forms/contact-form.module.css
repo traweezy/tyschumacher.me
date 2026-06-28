@@ -1,11 +1,7 @@
 .form {
   display: grid;
   gap: 1rem;
-  padding: clamp(1.3rem, 1.7vw, 1.8rem);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  background: var(--panel-gradient);
-  box-shadow: 0 22px 60px -48px var(--shadow-color);
+  padding: 0;
   width: 100%;
 }
 
@@ -74,9 +70,5 @@
 }
 
 :root[data-theme="dark"] .form {
-  background: linear-gradient(
-    150deg,
-    rgba(8, 18, 44, 0.9),
-    rgba(36, 12, 64, 0.82)
-  );
+  background: transparent;
 }

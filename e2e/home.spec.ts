@@ -25,9 +25,7 @@ test.describe("Home experience", () => {
 
     const focusAreas = page.locator(".hero__principle");
     await expect(focusAreas).toHaveCount(3);
-    await expect(focusAreas.first()).toContainText(
-      /Screens for decisions in motion/i,
-    );
+    await expect(focusAreas.first()).toContainText(/State people can act on/i);
 
     const viewExperience = page.getByRole("link", {
       name: /Review experience/i,
@@ -37,6 +35,15 @@ test.describe("Home experience", () => {
     await expect(
       page.getByRole("link", { name: /Start a conversation/i }),
     ).toHaveAttribute("href", "#contact");
+
+    const workingModeTrigger = page.getByRole("button", {
+      name: /Show working mode/i,
+    });
+    await workingModeTrigger.click();
+    await expect(
+      page.getByText(/Calm interfaces for live work/i),
+    ).toBeVisible();
+    await page.keyboard.press("Escape");
 
     await expect(page.locator("#projects")).toHaveCount(0);
 
@@ -284,7 +291,7 @@ test.describe("Home experience", () => {
     await input.fill("zzzz");
     await expect(dialog.getByText(/Nothing found/i)).toBeVisible();
 
-    await input.fill("git");
+    await input.fill("github");
     const options = dialog.getByRole("option");
     await expect(options).toHaveCount(1);
     await expect(options.first()).toHaveText(/GitHub/i);
@@ -360,7 +367,18 @@ test.describe("Home experience", () => {
         .locator(".experience-card")
         .filter({ hasText: experience.company });
       await expect(card).toContainText(experience.role);
+      for (const workType of experience.workTypes ?? []) {
+        await expect(card).toContainText(workType.name);
+      }
+      for (const technology of experience.stack ?? []) {
+        await expect(card).toContainText(technology.name);
+      }
     }
+    await expect(
+      experienceRegion
+        .locator(".experience-card__tech")
+        .filter({ hasText: /^Git$/ }),
+    ).toHaveCount(0);
   });
 
   test("displays approach section skills and profile context", async ({

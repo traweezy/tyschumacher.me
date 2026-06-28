@@ -18,9 +18,9 @@ describe("Section components", () => {
     expect(
       screen.getByText(/Software for teams that work live\./i),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Screens for decisions in motion/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/State people can act on/i)).toBeInTheDocument();
+    expect(screen.getByText(/Profile snapshot/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Working console/i)).not.toBeInTheDocument();
   });
 
   it("lists key skills and approach pillars in the about section", () => {
@@ -40,8 +40,14 @@ describe("Section components", () => {
   it("details recent experience entries", async () => {
     renderWithProviders(await ExperienceSection());
 
-    experiences.forEach(({ company, bullets }) => {
+    experiences.forEach(({ company, bullets, stack, workTypes }) => {
       expect(screen.getByText(company)).toBeInTheDocument();
+      workTypes?.forEach((workType) => {
+        expect(screen.getAllByText(workType.name).length).toBeGreaterThan(0);
+      });
+      stack?.forEach((technology) => {
+        expect(screen.getAllByText(technology.name).length).toBeGreaterThan(0);
+      });
       bullets.forEach((bullet) => {
         expect(screen.getByText(bullet)).toBeInTheDocument();
       });
@@ -53,7 +59,7 @@ describe("Section components", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: /Have a messy product or system problem/i,
+        name: /Have a product or platform problem worth untangling/i,
       }),
     ).toBeInTheDocument();
     expect(

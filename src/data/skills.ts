@@ -17,7 +17,6 @@ export const coreToolItems: SkillItem[] = [
   { name: "GraphQL", icon: "graphql", accentKey: "graphql" },
   { name: "Kubernetes", icon: "kubernetes", accentKey: "kubernetes" },
   { name: "Docker", icon: "docker", accentKey: "docker" },
-  { name: "Git", icon: "git", accentKey: "git" },
   { name: "Tailwind CSS", icon: "tailwindcss", accentKey: "tailwind" },
   { name: "Zustand", icon: "zustand", accentKey: "zustand" },
   { name: "TanStack Query", icon: "reactquery", accentKey: "tanstack" },
@@ -32,6 +31,8 @@ export const buildPriorityItems: SkillItem[] = [
     icon: "releaseSafety",
     accentKey: "release-safety",
   },
+  { name: "Compliance", icon: "compliance", accentKey: "compliance" },
+  { name: "Analytics", icon: "analytics", accentKey: "analytics" },
   { name: "SEO", icon: "seo", accentKey: "seo" },
 ] as const;
 

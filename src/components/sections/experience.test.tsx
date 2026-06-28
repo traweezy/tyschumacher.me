@@ -17,6 +17,11 @@ describe("ExperienceSection", () => {
       role: "Role A",
       start: "Jan 2020",
       location: "Remote",
+      workTypes: [{ name: "Finance", icon: "finance", accentKey: "finance" }],
+      stack: [
+        { name: "React", icon: "react", accentKey: "react" },
+        { name: "Go", icon: "go", accentKey: "go" },
+      ],
       bullets: ["Built features", "Mentored teams"],
     },
     {
@@ -25,6 +30,7 @@ describe("ExperienceSection", () => {
       start: "Feb 2018",
       end: "Mar 2020",
       location: "New York, NY",
+      stack: [{ name: "Java", icon: "openjdk", accentKey: "java" }],
       bullets: ["Optimized performance"],
     },
   ];
@@ -41,7 +47,7 @@ describe("ExperienceSection", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: /experience in trading, sportsbook, and media products/i,
+        name: /experience across live products and internal platforms/i,
       }),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "All" })).toBeInTheDocument();
@@ -54,6 +60,14 @@ describe("ExperienceSection", () => {
     expect(screen.getByText("Role A")).toBeInTheDocument();
     expect(screen.getByText("Jan 2020 · Present")).toBeInTheDocument();
     expect(screen.getByText("Feb 2018 · Mar 2020")).toBeInTheDocument();
+    expect(
+      screen.getByRole("list", {
+        name: /work types, technologies, and skills used at Company A/i,
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Finance")).toBeInTheDocument();
+    expect(screen.getByText("React")).toBeInTheDocument();
+    expect(screen.getByText("Go")).toBeInTheDocument();
 
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "Remote" }));

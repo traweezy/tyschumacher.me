@@ -61,14 +61,14 @@ const geistMono = Geist_Mono({
 const siteUrl = "https://tyschumacher.me";
 const title = "Tyler Schumacher | Software for teams that work live";
 const description =
-  "I build web tools for trading, sportsbook, and operations teams where the screen has to be clear and the system has to be trustworthy.";
+  "I build interfaces and services for trading, sportsbook, and operations teams that need fast decisions, visible state, and reliable releases.";
 
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Tyler Schumacher",
   url: siteUrl,
-  jobTitle: "Principal Software Engineer",
+  jobTitle: "Principal Product Engineer",
   email: "mailto:tyschumacher@proton.me",
   address: {
     "@type": "PostalAddress",

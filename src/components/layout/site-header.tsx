@@ -29,6 +29,7 @@ import {
   useSetCommandOpen,
   useSetMobileNavOpen,
 } from "@/state/ui-store";
+import { runViewTransition } from "@/lib/view-transitions";
 import { cn } from "@/lib/utils";
 
 const scrollThreshold = 64;
@@ -43,6 +44,8 @@ type ThemeModeId = (typeof themeModeOptions)[number]["id"];
 
 const defaultThemeMode: ThemeModeId = "light";
 const themeModeStorageKey = "tyschumacher.theme-mode";
+const themeModeChangeEvent = "tyschumacher:theme-mode";
+const workingModePopoverId = "working-mode-popover";
 
 const isThemeModeId = (value: string | null): value is ThemeModeId =>
   themeModeOptions.some((option) => option.id === value);
@@ -110,7 +113,9 @@ export const SiteHeader = () => {
   const setMobileNavOpen = useSetMobileNavOpen();
   const setCommandOpen = useSetCommandOpen();
   const progressRef = useRef<HTMLDivElement | null>(null);
+  const popoverCloseTimerRef = useRef<number | null>(null);
   const hasManualModeOverrideRef = useRef(readStoredThemeMode() !== null);
+  const [isWorkingModeOpen, setIsWorkingModeOpen] = useState(false);
   const handleSystemModePreference = useEffectEvent((matches: boolean) => {
     if (hasManualModeOverrideRef.current) {
       return;
@@ -124,14 +129,100 @@ export const SiteHeader = () => {
   const handleThemeModeToggle = () => {
     const nextMode = previewMode === "dark" ? "light" : "dark";
     hasManualModeOverrideRef.current = true;
-    setPreviewMode(nextMode);
-    applyThemeMode(nextMode);
-    writeStoredThemeMode(nextMode);
+    runViewTransition(() => {
+      setPreviewMode(nextMode);
+      applyThemeMode(nextMode);
+      writeStoredThemeMode(nextMode);
+    });
+  };
+
+  const handleExternalThemeModeChange = useEffectEvent((mode: ThemeModeId) => {
+    hasManualModeOverrideRef.current = true;
+    setPreviewMode(mode);
+    applyThemeMode(mode);
+  });
+  const clearPopoverCloseTimer = () => {
+    if (popoverCloseTimerRef.current === null) {
+      return;
+    }
+
+    window.clearTimeout(popoverCloseTimerRef.current);
+    popoverCloseTimerRef.current = null;
+  };
+  const getWorkingModePopover = () =>
+    document.getElementById(workingModePopoverId);
+  const isPopoverOpen = (popover: HTMLElement): boolean => {
+    try {
+      return popover.matches(":popover-open");
+    } catch {
+      return false;
+    }
+  };
+  const showWorkingModePopover = () => {
+    clearPopoverCloseTimer();
+    const popover = getWorkingModePopover();
+    if (
+      !popover ||
+      typeof popover.showPopover !== "function" ||
+      isPopoverOpen(popover)
+    ) {
+      return;
+    }
+
+    popover.showPopover();
+  };
+  const hideWorkingModePopover = () => {
+    const popover = getWorkingModePopover();
+    if (
+      !popover ||
+      typeof popover.hidePopover !== "function" ||
+      !isPopoverOpen(popover)
+    ) {
+      return;
+    }
+
+    popover.hidePopover();
+  };
+  const scheduleHideWorkingModePopover = () => {
+    clearPopoverCloseTimer();
+    popoverCloseTimerRef.current = window.setTimeout(() => {
+      hideWorkingModePopover();
+      popoverCloseTimerRef.current = null;
+    }, 160);
+  };
+  const handleWorkingModeToggle = () => {
+    clearPopoverCloseTimer();
+    const popover = getWorkingModePopover();
+    if (!popover) {
+      return;
+    }
+
+    if (
+      typeof popover.showPopover !== "function" ||
+      typeof popover.hidePopover !== "function"
+    ) {
+      return;
+    }
+
+    if (isPopoverOpen(popover)) {
+      return;
+    }
+
+    popover.showPopover();
   };
 
   useEffect(() => {
     applyThemeMode(previewMode);
   }, [previewMode]);
+
+  useEffect(
+    () => () => {
+      if (popoverCloseTimerRef.current !== null) {
+        window.clearTimeout(popoverCloseTimerRef.current);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -142,6 +233,20 @@ export const SiteHeader = () => {
     mediaQuery.addEventListener("change", handleSystemModeChange);
     return () =>
       mediaQuery.removeEventListener("change", handleSystemModeChange);
+  }, []);
+
+  useEffect(() => {
+    const handleThemeModeChange = (event: Event) => {
+      const customEvent = event as CustomEvent<{ mode?: string }>;
+      const mode = customEvent.detail?.mode ?? null;
+      if (isThemeModeId(mode)) {
+        handleExternalThemeModeChange(mode);
+      }
+    };
+
+    window.addEventListener(themeModeChangeEvent, handleThemeModeChange);
+    return () =>
+      window.removeEventListener(themeModeChangeEvent, handleThemeModeChange);
   }, []);
 
   useEffect(() => {
@@ -243,30 +348,79 @@ export const SiteHeader = () => {
         "site-header sticky top-0 z-50",
         condensed && "site-header--condensed",
       )}
+      data-active-section={activeSection}
     >
       <div className="scroll-progress" aria-hidden ref={progressRef} />
       <Container className="site-header__frame">
         <div className="site-header__bar">
-          <a href="#home" className="site-header__identity focus-ring">
-            <span className="site-header__avatar-wrap">
-              <Image
-                src="/images/avatar.png"
-                alt={`Portrait of ${profile.name}`}
-                width={48}
-                height={48}
-                priority
-                className="site-header__avatar"
-              />
-            </span>
-            <span className="site-header__identity-copy">
+          <div className="site-header__identity">
+            <button
+              type="button"
+              className="site-header__avatar-button"
+              aria-expanded={isWorkingModeOpen}
+              aria-label="Show working mode"
+              onClick={handleWorkingModeToggle}
+              onFocus={showWorkingModePopover}
+              onBlur={scheduleHideWorkingModePopover}
+              onPointerEnter={showWorkingModePopover}
+              onPointerLeave={scheduleHideWorkingModePopover}
+            >
+              <span className="site-header__avatar-wrap">
+                <Image
+                  src="/images/avatar.png"
+                  alt={`Portrait of ${profile.name}`}
+                  width={48}
+                  height={48}
+                  priority
+                  className="site-header__avatar"
+                />
+              </span>
+            </button>
+            <a
+              href="#home"
+              className="site-header__identity-copy site-header__identity-link focus-ring"
+            >
               <span className="site-header__name">{profile.name}</span>
               <span className="site-header__identity-meta">
                 <span>{profile.role}</span>
                 <span className="site-header__meta-dot" aria-hidden="true" />
                 <span>{profile.location}</span>
               </span>
-            </span>
-          </a>
+            </a>
+            <div
+              id={workingModePopoverId}
+              popover="auto"
+              className="site-header__working-mode-popover"
+              onBlur={scheduleHideWorkingModePopover}
+              onFocus={showWorkingModePopover}
+              onPointerEnter={showWorkingModePopover}
+              onPointerLeave={scheduleHideWorkingModePopover}
+              onToggle={(event) => {
+                setIsWorkingModeOpen(isPopoverOpen(event.currentTarget));
+              }}
+            >
+              <p className="site-header__popover-label type-eyebrow">
+                Working mode
+              </p>
+              <p className="site-header__popover-title">
+                Calm interfaces for live work.
+              </p>
+              <dl className="site-header__popover-list">
+                <div>
+                  <dt>Lens</dt>
+                  <dd>State, constraint, next move</dd>
+                </div>
+                <div>
+                  <dt>Bias</dt>
+                  <dd>Ship small, observe, keep rollback paths close</dd>
+                </div>
+                <div>
+                  <dt>Fit</dt>
+                  <dd>Trading, sportsbook, and operator-heavy tools</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
           <nav
             className="site-header__desktop-nav"
             aria-label="Primary navigation"

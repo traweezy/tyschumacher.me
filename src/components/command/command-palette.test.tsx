@@ -15,6 +15,9 @@ describe("CommandPalette", () => {
 
   afterEach(() => {
     document.querySelector("#about")?.remove();
+    document.documentElement.dataset.theme = "civic-light";
+    document.documentElement.dataset.themeMode = "light";
+    window.localStorage.clear();
     vi.restoreAllMocks();
   });
 
@@ -87,5 +90,38 @@ describe("CommandPalette", () => {
       "_blank",
       "noreferrer",
     );
+  });
+
+  it("runs local commands from the palette", async () => {
+    useUIStore.setState({ isCommandOpen: true });
+    const writeText = vi.fn<() => Promise<void>>().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: { writeText },
+    });
+
+    renderWithProviders(<CommandPalette />);
+    fireEvent.click(
+      await screen.findByRole("option", { name: /^Toggle theme$/i }),
+    );
+
+    expect(document.documentElement).toHaveAttribute(
+      "data-theme",
+      "civic-dark",
+    );
+    expect(window.localStorage.getItem("tyschumacher.theme-mode")).toBe("dark");
+    expect(useUIStore.getState().isCommandOpen).toBe(false);
+
+    useUIStore.setState({ isCommandOpen: true });
+    fireEvent.click(
+      await screen.findByRole("option", { name: /^Copy intro$/i }),
+    );
+
+    expect(writeText).toHaveBeenCalledWith(
+      expect.stringContaining(
+        "Tyler Schumacher is a principal product engineer",
+      ),
+    );
+    expect(useUIStore.getState().isCommandOpen).toBe(false);
   });
 });

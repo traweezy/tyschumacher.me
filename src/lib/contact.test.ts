@@ -22,7 +22,9 @@ describe("contact schema", () => {
     });
     expect(contactFieldSchemas.message.meta()).toMatchObject({
       title: "Message",
-      examples: ["Share the context, the problem, and what good looks like."],
+      examples: [
+        "Share the context, the constraint, and what good looks like.",
+      ],
     });
   });
 

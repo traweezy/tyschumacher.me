@@ -16,11 +16,11 @@ export const profile = {
   email: "tyschumacher@proton.me",
   headline: "Software for teams that work live.",
   subhead:
-    "I build web tools for trading, sportsbook, and operations teams where the screen has to be clear and the system has to be trustworthy.",
+    "I build interfaces and services for trading, sportsbook, and operations teams that need fast decisions, visible state, and reliable releases.",
   bio: [
     "I like interfaces that make the next move obvious.",
-    "Most of my work sits between product pressure, system behavior, and the people who need both to hold up.",
+    "Most of my work sits between the product decision, the system behavior, and the team that has to support both.",
   ],
   workingStyle:
-    "I turn unclear product pressure into tools, services, and release paths teams can operate without guesswork.",
+    "I turn ambiguous product pressure into web tools, services, and release paths teams can support.",
 } satisfies Profile;

@@ -3,9 +3,9 @@ import { Section } from "@/components/layout/section";
 import { ExperienceExplorer } from "@/components/sections/experience-explorer";
 
 export const experienceHeadline =
-  "Experience in trading, sportsbook, and media products";
+  "Experience across live products and internal platforms";
 export const experienceCaption =
-  "A quick scan of the teams, constraints, and outcomes behind the work.";
+  "Roles at the point where product decisions, system behavior, and release risk meet.";
 
 export const ExperienceSection = async () => {
   const items = await getExperiences();

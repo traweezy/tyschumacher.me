@@ -3,10 +3,23 @@
 import { Dialog as DialogPrimitive } from "radix-ui";
 import { Command as CommandPrimitive } from "cmdk";
 import { useEffect, useEffectEvent, useMemo } from "react";
-import { Search, ExternalLink } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  Clipboard,
+  Download,
+  ExternalLink,
+  Moon,
+  Search,
+  Send,
+  Sun,
+  UserRound,
+  Waypoints,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { primaryNav, secondaryNav } from "@/data/navigation";
+import { profile } from "@/data/profile";
 import {
   useIsCommandOpen,
   useSetCommandOpen,
@@ -18,6 +31,81 @@ import styles from "./command-palette.module.css";
 
 const sections = primaryNav.filter((item) => item.href.startsWith("#"));
 const isExternal = (href: string) => /^https?:\/\//.test(href);
+const themeModeStorageKey = "tyschumacher.theme-mode";
+const themeModeChangeEvent = "tyschumacher:theme-mode";
+const profileIntro = `${profile.name} is a ${profile.role.toLowerCase()} who builds interfaces and services for trading, sportsbook, and operations teams that need fast decisions, visible state, and reliable releases.`;
+
+type ThemeModeId = "light" | "dark";
+
+type CommandAction =
+  | {
+      description: string;
+      href: string;
+      icon: LucideIcon;
+      id: string;
+      kind: "Jump" | "Open";
+      keywords: string;
+      title: string;
+      type: "link";
+    }
+  | {
+      description: string;
+      icon: LucideIcon;
+      id: string;
+      kind: "Copy" | "Mode";
+      keywords: string;
+      title: string;
+      type: "copy-intro" | "theme";
+    };
+
+const isThemeModeId = (value: string | undefined): value is ThemeModeId =>
+  value === "light" || value === "dark";
+
+const readThemeMode = (): ThemeModeId => {
+  const value = document.documentElement.dataset.themeMode;
+  return isThemeModeId(value) ? value : "light";
+};
+
+const applyThemeMode = (mode: ThemeModeId): void => {
+  document.documentElement.dataset.theme = `civic-${mode}`;
+  document.documentElement.dataset.themeMode = mode;
+
+  try {
+    window.localStorage.setItem(themeModeStorageKey, mode);
+  } catch {
+    // Storage can be unavailable in strict privacy modes.
+  }
+
+  window.dispatchEvent(
+    new CustomEvent(themeModeChangeEvent, {
+      detail: { mode },
+    }),
+  );
+};
+
+const copyText = async (text: string): Promise<void> => {
+  if (!navigator.clipboard) {
+    return;
+  }
+
+  await navigator.clipboard.writeText(text);
+};
+
+const getSectionIcon = (id: string): LucideIcon => {
+  if (id === "experience") {
+    return BriefcaseBusiness;
+  }
+  if (id === "about") {
+    return Waypoints;
+  }
+  if (id === "contact") {
+    return Send;
+  }
+  return UserRound;
+};
+
+const getExternalIcon = (id: string): LucideIcon =>
+  id === "resume" ? Download : ExternalLink;
 
 export const CommandPalette = () => {
   const router = useRouter();
@@ -36,28 +124,82 @@ export const CommandPalette = () => {
     return () => window.removeEventListener("keydown", handleCommandShortcut);
   }, []);
 
-  const quickActions = useMemo(
+  const quickActions = useMemo<CommandAction[]>(
     () => [
-      ...sections.map((item) => ({ ...item, type: "section" as const })),
-      ...secondaryNav.map((item) => ({ ...item, type: "external" as const })),
+      ...sections.map((item): CommandAction => ({
+        description:
+          item.id === "home"
+            ? "Return to the top of the page."
+            : `Jump to the ${item.title.toLowerCase()} section.`,
+        href: item.href,
+        icon: getSectionIcon(item.id),
+        id: item.id,
+        kind: "Jump",
+        keywords: `${item.title} section navigation`,
+        title: item.title,
+        type: "link",
+      })),
+      {
+        description: "Switch between the avatar-aligned light and dark themes.",
+        icon: Moon,
+        id: "toggle-theme",
+        kind: "Mode",
+        keywords: "theme dark light mode appearance",
+        title: "Toggle theme",
+        type: "theme",
+      },
+      {
+        description: "Copy a short intro for messages and referrals.",
+        icon: Clipboard,
+        id: "copy-intro",
+        kind: "Copy",
+        keywords: "copy profile intro bio summary",
+        title: "Copy intro",
+        type: "copy-intro",
+      },
+      ...secondaryNav.map((item): CommandAction => ({
+        description:
+          item.id === "resume"
+            ? "Open the resume PDF in a new tab."
+            : `Open ${item.title} in a new tab.`,
+        href: item.href,
+        icon: getExternalIcon(item.id),
+        id: item.id,
+        kind: "Open",
+        keywords: `${item.title} profile external resume`,
+        title: item.title,
+        type: "link",
+      })),
     ],
     [],
   );
 
-  const handleSelect = (href: string) => {
+  const handleSelect = (item: CommandAction) => {
     setCommandOpen(false);
-    if (href.startsWith("#")) {
-      const el = document.querySelector(href);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (item.type === "link") {
+      const { href } = item;
+      if (href.startsWith("#")) {
+        const el = document.querySelector(href);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+        return;
       }
+      if (isExternal(href) || href.endsWith(".pdf")) {
+        window.open(href, "_blank", "noreferrer");
+        return;
+      }
+      runViewTransition(() => router.push(href as Route));
       return;
     }
-    if (isExternal(href) || href.endsWith(".pdf")) {
-      window.open(href, "_blank", "noreferrer");
+
+    if (item.type === "theme") {
+      const nextMode = readThemeMode() === "dark" ? "light" : "dark";
+      runViewTransition(() => applyThemeMode(nextMode));
       return;
     }
-    runViewTransition(() => router.push(href as Route));
+
+    void copyText(profileIntro).catch(() => undefined);
   };
 
   return (
@@ -94,22 +236,40 @@ export const CommandPalette = () => {
           heading="Quick actions"
           className={styles.group}
         >
-          {quickActions.map((item) => (
-            <CommandPrimitive.Item
-              key={item.id}
-              value={item.title}
-              className={styles.item}
-              onSelect={() => handleSelect(item.href)}
-            >
-              <span>{item.title}</span>
-              {item.type === "external" ? (
-                <ExternalLink
-                  className="h-3.5 w-3.5 opacity-70"
-                  aria-hidden="true"
-                />
-              ) : null}
-            </CommandPrimitive.Item>
-          ))}
+          {quickActions.map((item) => {
+            const CommandIcon = item.icon;
+
+            return (
+              <CommandPrimitive.Item
+                key={item.id}
+                value={`${item.title} ${item.keywords}`}
+                className={styles.item}
+                onSelect={() => handleSelect(item)}
+              >
+                <span className={styles.itemContent}>
+                  <span className={styles.itemIcon} aria-hidden="true">
+                    {item.type === "theme" ? (
+                      <>
+                        <Moon className={styles.itemThemeIconDark} />
+                        <Sun className={styles.itemThemeIconLight} />
+                      </>
+                    ) : (
+                      <CommandIcon className={styles.itemGlyph} />
+                    )}
+                  </span>
+                  <span className={styles.itemText}>
+                    <span>{item.title}</span>
+                    <span className={styles.itemDescription} aria-hidden="true">
+                      {item.description}
+                    </span>
+                  </span>
+                </span>
+                <span className={styles.itemKind} aria-hidden="true">
+                  {item.kind}
+                </span>
+              </CommandPrimitive.Item>
+            );
+          })}
         </CommandPrimitive.Group>
       </CommandPrimitive.List>
     </CommandPrimitive.Dialog>

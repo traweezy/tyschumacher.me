@@ -52,7 +52,7 @@ const contactMessageSchema = z
   .meta({
     title: "Message",
     description: "Project context or question submitted through the form.",
-    examples: ["Share the context, the problem, and what good looks like."],
+    examples: ["Share the context, the constraint, and what good looks like."],
   });
 
 export const contactSchema = z

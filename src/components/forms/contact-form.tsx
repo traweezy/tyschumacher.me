@@ -66,7 +66,7 @@ const contactTextareaFields = [
     control: "textarea",
     label: "How can I help?",
     name: "message",
-    placeholder: "Share the context, the problem, and what good looks like.",
+    placeholder: "Share the context, the constraint, and what good looks like.",
     rows: 5,
     validator: contactFieldSchemas.message,
   },

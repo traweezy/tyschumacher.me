@@ -4,8 +4,8 @@ export const ContactSection = () => (
   <Section
     id="contact"
     label="Contact"
-    headline="Have a messy product or system problem?"
-    caption="Send the context and what makes it hard. I’ll reply within two business days."
+    headline="Have a product or platform problem worth untangling?"
+    caption="Send the context, the constraints, and what would make it successful. I’ll reply within two business days."
     contentClassName="contact-grid"
   >
     <ContactForm />

@@ -77,6 +77,7 @@ describe("SiteHeader", () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     MockIntersectionObserver.instances = [];
     useUIStore.setState({ isCommandOpen: false, isMobileNavOpen: false });
     document.documentElement.dataset.theme = "civic-light";
@@ -99,6 +100,12 @@ describe("SiteHeader", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("img", { name: /portrait of tyler schumacher/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /show working mode/i }),
+    ).toHaveAttribute("aria-expanded", "false");
+    expect(
+      screen.getByText(/Calm interfaces for live work/i),
     ).toBeInTheDocument();
     expect(
       screen.queryByText(/staff and principal roles/i),
@@ -136,6 +143,74 @@ describe("SiteHeader", () => {
     ).toHaveAttribute("aria-pressed", "true");
   });
 
+  test("opens and hides the avatar working mode popover", () => {
+    vi.useFakeTimers();
+    renderWithProviders(<SiteHeader />);
+
+    const trigger = screen.getByRole("button", {
+      name: /show working mode/i,
+    });
+    const popover = document.getElementById("working-mode-popover");
+    expect(popover).toBeInstanceOf(HTMLElement);
+
+    const workingModePopover = popover as HTMLElement;
+    let isOpen = false;
+    const originalMatches = workingModePopover.matches.bind(workingModePopover);
+    const showPopover = vi.fn(() => {
+      isOpen = true;
+      workingModePopover.dispatchEvent(new Event("toggle", { bubbles: true }));
+    });
+    const hidePopover = vi.fn(() => {
+      isOpen = false;
+      workingModePopover.dispatchEvent(new Event("toggle", { bubbles: true }));
+    });
+
+    vi.spyOn(workingModePopover, "matches").mockImplementation((selector) =>
+      selector === ":popover-open" ? isOpen : originalMatches(selector),
+    );
+    Object.defineProperty(workingModePopover, "showPopover", {
+      configurable: true,
+      value: showPopover,
+    });
+    Object.defineProperty(workingModePopover, "hidePopover", {
+      configurable: true,
+      value: hidePopover,
+    });
+
+    fireEvent.pointerEnter(trigger);
+
+    expect(showPopover).toHaveBeenCalledTimes(1);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+    fireEvent.pointerLeave(trigger);
+    act(() => {
+      vi.advanceTimersByTime(160);
+    });
+
+    expect(hidePopover).toHaveBeenCalledTimes(1);
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(trigger);
+    fireEvent.click(trigger);
+
+    expect(showPopover).toHaveBeenCalledTimes(2);
+
+    vi.useRealTimers();
+  });
+
+  test("keeps avatar popover interactions inert without browser support", () => {
+    renderWithProviders(<SiteHeader />);
+
+    const trigger = screen.getByRole("button", {
+      name: /show working mode/i,
+    });
+
+    fireEvent.click(trigger);
+    fireEvent.pointerEnter(trigger);
+
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+  });
+
   test("uses a stored theme mode before the system preference", async () => {
     window.localStorage.setItem(themeModeStorageKey, "dark");
     document.documentElement.dataset.theme = "civic-light";
@@ -153,6 +228,26 @@ describe("SiteHeader", () => {
     expect(
       screen.getAllByRole("button", { name: /switch to light theme/i })[0],
     ).toHaveAttribute("aria-pressed", "true");
+  });
+
+  test("syncs theme state from external commands", async () => {
+    renderWithProviders(<SiteHeader />);
+
+    window.dispatchEvent(
+      new CustomEvent("tyschumacher:theme-mode", {
+        detail: { mode: "dark" },
+      }),
+    );
+
+    await waitFor(() =>
+      expect(
+        screen.getAllByRole("button", { name: /switch to light theme/i })[0],
+      ).toHaveAttribute("aria-pressed", "true"),
+    );
+    expect(document.documentElement).toHaveAttribute(
+      "data-theme",
+      "civic-dark",
+    );
   });
 
   test("opens command palette via keyboard shortcut", async () => {
