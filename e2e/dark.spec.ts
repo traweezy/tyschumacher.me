@@ -12,4 +12,21 @@ test.describe("Dark mode preference", () => {
       page.getByRole("button", { name: /Switch to light theme/i }).first(),
     ).toHaveAttribute("aria-pressed", "true");
   });
+
+  test("applies a stored theme preference before system dark", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      window.localStorage.setItem("tyschumacher.theme-mode", "light");
+    });
+    await page.goto("/");
+
+    const root = page.locator("html");
+    await expect(root).toHaveAttribute("data-theme", "civic-light");
+    await expect(root).toHaveAttribute("data-theme-mode", "light");
+
+    await expect(
+      page.getByRole("button", { name: /Switch to dark theme/i }).first(),
+    ).toHaveAttribute("aria-pressed", "false");
+  });
 });

@@ -12,10 +12,6 @@ vi.mock("next/headers", () => ({
   headers: async () => new Headers({ "x-nonce": "test-nonce" }),
 }));
 
-vi.mock("next/script", () => ({
-  default: () => null,
-}));
-
 vi.mock("./providers", () => ({
   Providers: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
@@ -86,5 +82,37 @@ describe("RootLayout component", () => {
     ).toHaveAttribute("href", "#main-content");
     expect(screen.getByText("Global header")).toBeInTheDocument();
     expect(screen.getByRole("main")).toHaveTextContent("Page content");
+  });
+
+  it("injects the theme initializer before body content", async () => {
+    const layoutModule = await import("./layout");
+    const RootLayout = layoutModule.default;
+
+    render(
+      await RootLayout({
+        children: <div>Page content</div>,
+      }),
+    );
+
+    const initializer = document.querySelector<HTMLScriptElement>(
+      "script[data-theme-initializer]",
+    );
+
+    expect(initializer).not.toBeNull();
+    expect(initializer).toHaveAttribute("nonce", "test-nonce");
+    expect(initializer?.textContent).toContain("tyschumacher.theme-mode");
+    expect(initializer?.textContent).toContain("prefers-color-scheme: dark");
+    expect(initializer?.textContent).toContain("localStorage.getItem");
+
+    const controlsInitializer = document.querySelector<HTMLScriptElement>(
+      "script[data-theme-controls-initializer]",
+    );
+
+    expect(controlsInitializer).not.toBeNull();
+    expect(controlsInitializer).toHaveAttribute("nonce", "test-nonce");
+    expect(controlsInitializer?.textContent).toContain(
+      "[data-theme-mode-toggle]",
+    );
+    expect(controlsInitializer?.textContent).toContain("aria-pressed");
   });
 });

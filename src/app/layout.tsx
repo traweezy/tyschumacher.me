@@ -1,11 +1,44 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist_Mono, Manrope } from "next/font/google";
 import { headers } from "next/headers";
-import Script from "next/script";
 import "react-vertical-timeline-component/style.min.css";
 import "./globals.css";
 import { Providers } from "./providers";
 import { SiteHeader } from "@/components/layout/site-header";
+
+const themeModeStorageKey = "tyschumacher.theme-mode";
+const themeModeInitializerScript = `(() => {
+  const modes = new Set(["light", "dark"]);
+  const readStoredMode = () => {
+    try {
+      const value = window.localStorage.getItem("${themeModeStorageKey}");
+      return modes.has(value) ? value : null;
+    } catch {
+      return null;
+    }
+  };
+  const readSystemMode = () =>
+    window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  const mode = readStoredMode() ?? readSystemMode();
+  document.documentElement.dataset.theme = "civic-" + mode;
+  document.documentElement.dataset.themeMode = mode;
+})();`;
+const themeControlsInitializerScript = `(() => {
+  const readMode = () =>
+    document.documentElement.dataset.themeMode === "dark" ? "dark" : "light";
+  const syncControls = () => {
+    const mode = readMode();
+    const nextMode = mode === "dark" ? "light" : "dark";
+    document.querySelectorAll("[data-theme-mode-toggle]").forEach((control) => {
+      if (!(control instanceof HTMLButtonElement)) {
+        return;
+      }
+      control.setAttribute("aria-pressed", String(mode === "dark"));
+      control.setAttribute("aria-label", "Switch to " + nextMode + " theme");
+    });
+  };
+  syncControls();
+})();`;
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -115,17 +148,18 @@ export default async function RootLayout({
       data-theme="civic-light"
       data-theme-mode="light"
       data-motion="safe"
+      suppressHydrationWarning
     >
       <head>
+        <script
+          data-theme-initializer
+          nonce={nonce}
+          dangerouslySetInnerHTML={{ __html: themeModeInitializerScript }}
+        />
         <script
           type="application/ld+json"
           nonce={nonce}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
-        />
-        <Script
-          src="/theme-preview.js"
-          strategy="beforeInteractive"
-          nonce={nonce}
         />
       </head>
       <body
@@ -136,6 +170,11 @@ export default async function RootLayout({
             Skip to content
           </a>
           <SiteHeader />
+          <script
+            data-theme-controls-initializer
+            nonce={nonce}
+            dangerouslySetInnerHTML={{ __html: themeControlsInitializerScript }}
+          />
           <main id="main-content">{children}</main>
         </Providers>
       </body>

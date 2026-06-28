@@ -42,6 +42,7 @@ const themeModeOptions = [
 type ThemeModeId = (typeof themeModeOptions)[number]["id"];
 
 const defaultThemeMode: ThemeModeId = "light";
+const themeModeStorageKey = "tyschumacher.theme-mode";
 
 const isThemeModeId = (value: string | null): value is ThemeModeId =>
   themeModeOptions.some((option) => option.id === value);
@@ -51,9 +52,35 @@ const applyThemeMode = (mode: ThemeModeId): void => {
   document.documentElement.dataset.themeMode = mode;
 };
 
+const readStoredThemeMode = (): ThemeModeId | null => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    const value = window.localStorage.getItem(themeModeStorageKey);
+    return isThemeModeId(value) ? value : null;
+  } catch {
+    return null;
+  }
+};
+
+const writeStoredThemeMode = (mode: ThemeModeId): void => {
+  try {
+    window.localStorage.setItem(themeModeStorageKey, mode);
+  } catch {
+    // Storage can be unavailable in strict privacy modes.
+  }
+};
+
 const readPreviewMode = (fallback: ThemeModeId): ThemeModeId => {
   if (typeof document === "undefined") {
     return fallback;
+  }
+
+  const storedMode = readStoredThemeMode();
+  if (storedMode) {
+    return storedMode;
   }
 
   const value = document.documentElement.dataset.themeMode ?? null;
@@ -83,7 +110,7 @@ export const SiteHeader = () => {
   const setMobileNavOpen = useSetMobileNavOpen();
   const setCommandOpen = useSetCommandOpen();
   const progressRef = useRef<HTMLDivElement | null>(null);
-  const hasManualModeOverrideRef = useRef(false);
+  const hasManualModeOverrideRef = useRef(readStoredThemeMode() !== null);
   const handleSystemModePreference = useEffectEvent((matches: boolean) => {
     if (hasManualModeOverrideRef.current) {
       return;
@@ -99,6 +126,7 @@ export const SiteHeader = () => {
     hasManualModeOverrideRef.current = true;
     setPreviewMode(nextMode);
     applyThemeMode(nextMode);
+    writeStoredThemeMode(nextMode);
   };
 
   useEffect(() => {
@@ -208,7 +236,6 @@ export const SiteHeader = () => {
   const socialLinks = secondaryNav.filter((item) => item.id !== "resume");
   const nextThemeMode = previewMode === "dark" ? "light" : "dark";
   const themeToggleLabel = `Switch to ${nextThemeMode} theme`;
-  const ThemeToggleIcon = previewMode === "dark" ? Sun : Moon;
 
   return (
     <header
@@ -272,7 +299,10 @@ export const SiteHeader = () => {
               aria-label={themeToggleLabel}
               aria-pressed={previewMode === "dark"}
             >
-              <ThemeToggleIcon className="h-4 w-4" aria-hidden="true" />
+              <span className="site-header__theme-toggle-icons" aria-hidden>
+                <Moon className="site-header__theme-toggle-icon site-header__theme-toggle-icon--dark-action h-4 w-4" />
+                <Sun className="site-header__theme-toggle-icon site-header__theme-toggle-icon--light-action h-4 w-4" />
+              </span>
             </button>
             <button
               type="button"
@@ -307,7 +337,10 @@ export const SiteHeader = () => {
               data-theme-mode-toggle
               className="site-header__icon-button site-header__theme-toggle"
             >
-              <ThemeToggleIcon className="h-5 w-5" aria-hidden="true" />
+              <span className="site-header__theme-toggle-icons" aria-hidden>
+                <Moon className="site-header__theme-toggle-icon site-header__theme-toggle-icon--dark-action h-5 w-5" />
+                <Sun className="site-header__theme-toggle-icon site-header__theme-toggle-icon--light-action h-5 w-5" />
+              </span>
             </button>
             <button
               type="button"

@@ -45,6 +45,8 @@ class MockIntersectionObserver {
   }
 }
 
+const themeModeStorageKey = "tyschumacher.theme-mode";
+
 const renderHeaderWithSections = () =>
   renderWithProviders(
     <>
@@ -71,6 +73,7 @@ describe("SiteHeader", () => {
       writable: true,
       value: { supports: vi.fn(() => true) },
     });
+    window.localStorage.clear();
   });
 
   afterEach(() => {
@@ -78,6 +81,7 @@ describe("SiteHeader", () => {
     useUIStore.setState({ isCommandOpen: false, isMobileNavOpen: false });
     document.documentElement.dataset.theme = "civic-light";
     document.documentElement.dataset.themeMode = "light";
+    window.localStorage.clear();
     window.history.replaceState({}, "", "/");
     Object.defineProperty(globalThis, "CSS", {
       configurable: true,
@@ -124,6 +128,26 @@ describe("SiteHeader", () => {
     expect(document.documentElement).toHaveAttribute(
       "data-theme",
       "civic-dark",
+    );
+    expect(document.documentElement).toHaveAttribute("data-theme-mode", "dark");
+    expect(window.localStorage.getItem(themeModeStorageKey)).toBe("dark");
+    expect(
+      screen.getAllByRole("button", { name: /switch to light theme/i })[0],
+    ).toHaveAttribute("aria-pressed", "true");
+  });
+
+  test("uses a stored theme mode before the system preference", async () => {
+    window.localStorage.setItem(themeModeStorageKey, "dark");
+    document.documentElement.dataset.theme = "civic-light";
+    document.documentElement.dataset.themeMode = "light";
+
+    renderWithProviders(<SiteHeader />);
+
+    await waitFor(() =>
+      expect(document.documentElement).toHaveAttribute(
+        "data-theme",
+        "civic-dark",
+      ),
     );
     expect(document.documentElement).toHaveAttribute("data-theme-mode", "dark");
     expect(

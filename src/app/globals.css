@@ -2574,9 +2574,43 @@ a:focus-visible {
   flex-shrink: 0;
 }
 
-.site-header__theme-toggle[aria-pressed="true"] {
+.site-header__theme-toggle[aria-pressed="true"],
+:root[data-theme-mode="dark"] .site-header__theme-toggle {
   background: var(--chrome-active-bg);
   color: var(--accent);
+}
+
+.site-header__theme-toggle-icons {
+  display: grid;
+  place-items: center;
+}
+
+.site-header__theme-toggle-icon {
+  grid-area: 1 / 1;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.site-header__theme-toggle-icon--light-action {
+  opacity: 0;
+  transform: scale(0.82) rotate(-18deg);
+}
+
+:root[data-theme-mode="dark"] .site-header__theme-toggle-icon--dark-action {
+  opacity: 0;
+  transform: scale(0.82) rotate(18deg);
+}
+
+:root[data-theme-mode="dark"] .site-header__theme-toggle-icon--light-action {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header__theme-toggle-icon {
+    transition: none;
+  }
 }
 
 .site-header__sheet {
