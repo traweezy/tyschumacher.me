@@ -14,8 +14,6 @@ describe("ExperienceSection", () => {
   const sampleExperiences: ExperienceEntry[] = [
     {
       company: "Company A",
-      focus: "Product systems",
-      mark: "CA",
       role: "Role A",
       start: "Jan 2020",
       location: "Remote",
@@ -23,8 +21,6 @@ describe("ExperienceSection", () => {
     },
     {
       company: "Company B",
-      focus: "Trading tools",
-      mark: "CB",
       role: "Role B",
       start: "Feb 2018",
       end: "Mar 2020",
@@ -56,17 +52,14 @@ describe("ExperienceSection", () => {
 
     expect(screen.getByText("Company A")).toBeInTheDocument();
     expect(screen.getByText("Role A")).toBeInTheDocument();
-    expect(screen.getByText("Jan 2020 · Present · Remote")).toBeInTheDocument();
-    expect(
-      screen.getByText("Feb 2018 · Mar 2020 · New York, NY"),
-    ).toBeInTheDocument();
-    expect(screen.getByText("Product systems")).toBeInTheDocument();
+    expect(screen.getByText("Jan 2020 · Present")).toBeInTheDocument();
+    expect(screen.getByText("Feb 2018 · Mar 2020")).toBeInTheDocument();
 
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "Remote" }));
     await waitFor(() => {
       const cards = Array.from(
-        document.querySelectorAll<HTMLLIElement>(".experience-card"),
+        document.querySelectorAll<HTMLElement>(".experience-card"),
       );
       expect(cards).toHaveLength(1);
       expect(cards[0]?.textContent).toContain("Company A");

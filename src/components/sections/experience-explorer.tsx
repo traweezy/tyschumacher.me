@@ -2,6 +2,7 @@
 
 import { memo, useCallback, useMemo, useState } from "react";
 import type { MouseEvent } from "react";
+import { VerticalTimelineElement } from "react-vertical-timeline-component";
 import type { ExperienceEntry } from "@/data/experience";
 
 const EXPERIENCE_FILTER_SELECTOR = "[data-location-filter]";
@@ -19,6 +20,9 @@ const filterExperiences = (
     experience.location.includes(filter),
   );
 };
+
+const getExperienceDates = (experience: ExperienceEntry): string =>
+  `${experience.start} · ${experience.end ?? "Present"}`;
 
 type ExperienceExplorerProps = {
   initialExperiences: ExperienceEntry[];
@@ -89,39 +93,48 @@ const ExperienceExplorerComponent = ({
           ))}
         </div>
       </fieldset>
-      <ol className="experience-list experience-timeline" aria-live="polite">
-        {filteredExperiences.map((item) => (
-          <li key={`${item.company}-${item.start}`} className="experience-card">
-            <div className="experience-card__rail" aria-hidden="true">
-              <span className="experience-card__mark">{item.mark}</span>
-            </div>
-            <article className="experience-card__content">
-              <div className="experience-card__meta type-body-sm">
-                <span className="experience-card__company">{item.company}</span>
-                <span className="experience-card__dates">
-                  {item.start}
-                  {item.end ? ` · ${item.end}` : " · Present"}
-                  {` · ${item.location}`}
-                </span>
-              </div>
-              <h3 className="experience-card__role type-heading-3">
-                {item.role}
-              </h3>
-              <ul className="experience-card__bullets type-body measure">
-                {item.bullets.map((bullet) => (
-                  <li key={bullet} className="text-pretty">
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-            </article>
-            <div className="experience-card__brand" aria-hidden="true">
-              <span className="experience-card__brand-mark">{item.mark}</span>
-              <span className="experience-card__brand-label">{item.focus}</span>
-            </div>
-          </li>
-        ))}
-      </ol>
+      <div className="experience-timeline" aria-live="polite">
+        <div
+          className="vertical-timeline vertical-timeline--two-columns experience-vertical-timeline"
+          aria-label="Experience timeline"
+        >
+          {filteredExperiences.map((item) => (
+            <VerticalTimelineElement
+              key={`${item.company}-${item.start}`}
+              className="experience-timeline__item"
+              date={getExperienceDates(item)}
+              dateClassName="experience-timeline__date"
+              icon={
+                <span className="experience-timeline__dot" aria-hidden="true" />
+              }
+              iconClassName="experience-timeline__icon"
+              textClassName="experience-timeline__content"
+              visible
+            >
+              <article className="experience-card">
+                <div className="experience-card__meta type-body-sm">
+                  <span className="experience-card__company">
+                    {item.company}
+                  </span>
+                  <span className="experience-card__location">
+                    {item.location}
+                  </span>
+                </div>
+                <h3 className="experience-card__role type-heading-3">
+                  {item.role}
+                </h3>
+                <ul className="experience-card__bullets type-body measure">
+                  {item.bullets.map((bullet) => (
+                    <li key={bullet} className="text-pretty">
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </VerticalTimelineElement>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

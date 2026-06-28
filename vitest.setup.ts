@@ -124,6 +124,53 @@ globalThis.__dispatchMatchMedia = (query: string, matches: boolean) => {
   });
 };
 
+class MockIntersectionObserver implements IntersectionObserver {
+  readonly root = null;
+  readonly rootMargin = "";
+  readonly scrollMargin = "";
+  readonly thresholds = [0];
+
+  constructor(private readonly callback: IntersectionObserverCallback) {}
+
+  observe(target: Element) {
+    const rect = target.getBoundingClientRect();
+    this.callback(
+      [
+        {
+          boundingClientRect: rect,
+          intersectionRatio: 1,
+          intersectionRect: rect,
+          isIntersecting: true,
+          rootBounds: null,
+          target,
+          time: Date.now(),
+        },
+      ],
+      this,
+    );
+  }
+
+  unobserve() {}
+
+  disconnect() {}
+
+  takeRecords(): IntersectionObserverEntry[] {
+    return [];
+  }
+}
+
+Object.defineProperty(window, "IntersectionObserver", {
+  configurable: true,
+  writable: true,
+  value: MockIntersectionObserver,
+});
+
+Object.defineProperty(globalThis, "IntersectionObserver", {
+  configurable: true,
+  writable: true,
+  value: MockIntersectionObserver,
+});
+
 class ResizeObserver {
   observe() {}
   unobserve() {}

@@ -1,7 +1,5 @@
 export type ExperienceEntry = {
   company: string;
-  focus: string;
-  mark: string;
   role: string;
   start: string;
   end?: string;
@@ -12,8 +10,6 @@ export type ExperienceEntry = {
 export const experiences: ExperienceEntry[] = [
   {
     company: "Caesars Sportsbook",
-    focus: "Live data and trader tools",
-    mark: "CS",
     role: "Senior Full Stack Developer",
     start: "Dec 2021",
     location: "Jersey City, NJ · Remote",
@@ -26,8 +22,6 @@ export const experiences: ExperienceEntry[] = [
   },
   {
     company: "Instinet",
-    focus: "Trading platform modernization",
-    mark: "IN",
     role: "Senior Full Stack Developer",
     start: "Dec 2017",
     end: "Dec 2021",
@@ -40,8 +34,6 @@ export const experiences: ExperienceEntry[] = [
   },
   {
     company: "Lab49",
-    focus: "Financial research portals",
-    mark: "L49",
     role: "Consultant Engineer",
     start: "Jun 2017",
     end: "Dec 2017",
@@ -53,8 +45,6 @@ export const experiences: ExperienceEntry[] = [
   },
   {
     company: "Twisted Rope",
-    focus: "Campaign and commerce systems",
-    mark: "TR",
     role: "Full Stack Developer",
     start: "Oct 2015",
     end: "Jun 2017",
