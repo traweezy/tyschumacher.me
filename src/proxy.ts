@@ -28,7 +28,7 @@ export const createContentSecurityPolicy = (
 
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}'`,
+    `script-src 'self' 'nonce-${nonce}'${(env?.NODE_ENV ?? process.env.NODE_ENV) === "development" ? " 'unsafe-eval'" : ""}`,
     `style-src 'self' 'nonce-${nonce}'`,
     "style-src-attr 'unsafe-hashes' 'sha256-zlqnbDt84zf1iSefLU/ImC54isoprH/MRiVZGskwexk='",
     "img-src 'self' data:",

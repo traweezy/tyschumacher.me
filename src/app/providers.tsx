@@ -11,7 +11,8 @@ import {
   usePrefersReducedMotion,
   useSetPrefersReducedMotion,
 } from "@/state/accessibility-store";
-import { initObservability } from "@/lib/observability";
+import { getTelemetryMode } from "@/lib/telemetry-config";
+import { WebVitals } from "@/components/web-vitals";
 
 type ProvidersProps = {
   children: ReactNode;
@@ -63,10 +64,22 @@ export const Providers = ({ children }: ProvidersProps) => {
   useInitializePreferences();
 
   useEffect(() => {
-    initObservability();
+    if (getTelemetryMode() === "disabled") return;
+    let active = true;
+    void import("@/lib/observability")
+      .then(({ initObservability }) => {
+        if (active) initObservability();
+      })
+      .catch(() => console.error("telemetry.load_failed"));
+    return () => {
+      active = false;
+    };
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <WebVitals />
+      {children}
+    </QueryClientProvider>
   );
 };

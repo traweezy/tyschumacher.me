@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
+import { ContactEmailClient } from "@/lib/resend-client";
+import { SITE_URL } from "@/lib/site";
+import { contactProblem } from "@/lib/http-problem";
+import { createDeliveryBudget, readContactBody } from "@/lib/contact-request";
 import {
   contactSchema,
   createContactIdempotencyKey,
@@ -7,10 +10,12 @@ import {
   isContactIdempotencyKey,
 } from "@/lib/contact";
 
+const claimDelivery = createDeliveryBudget(Date.now);
+
 const resendApiKey = process.env.RESEND_API_KEY;
 const resend =
   typeof resendApiKey === "string" && resendApiKey.length > 0
-    ? new Resend(resendApiKey)
+    ? new ContactEmailClient(resendApiKey)
     : null;
 
 const escapeHtml = (value: string): string =>
@@ -42,48 +47,83 @@ const getResendIdempotencyKey = (request: Request): string | null => {
 };
 
 export async function POST(request: Request) {
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json(
-      { message: "Invalid request payload." },
-      { status: 400 },
+  const requestId = crypto.randomUUID();
+  const started = performance.now();
+  const problem = (
+    status: number,
+    title: string,
+    detail: string,
+    extra: {
+      errors?: ReturnType<typeof getContactValidationErrors>;
+      retryAfter?: number;
+    } = {},
+  ) => contactProblem({ status, title, detail, requestId, ...extra });
+  const origin = request.headers.get("origin");
+  if (
+    origin &&
+    origin !== new URL(request.url).origin &&
+    origin !== SITE_URL &&
+    origin !== "https://tyschumacher.me"
+  ) {
+    return problem(
+      403,
+      "Forbidden",
+      "This form must be submitted from the portfolio site.",
     );
   }
+  if (
+    request.headers.get("content-type")?.split(";")[0]?.trim() !==
+    "application/json"
+  ) {
+    return problem(
+      415,
+      "Unsupported media type",
+      "Use an application/json request.",
+    );
+  }
+  const body = await readContactBody(request);
+  if (!body.ok)
+    return problem(
+      body.status,
+      body.status === 413 ? "Payload too large" : "Invalid request",
+      "Invalid request payload. Keep your message under 4000 characters and try again.",
+    );
 
-  const parsed = contactSchema.safeParse(body);
+  const parsed = contactSchema.safeParse(body.value);
 
   if (!parsed.success) {
     const errors = getContactValidationErrors(parsed.error);
-    return NextResponse.json(
-      {
-        message: "Please double-check the highlighted fields.",
-        errors,
-      },
-      { status: 400 },
+    return problem(
+      400,
+      "Validation failed",
+      "Please double-check the highlighted fields.",
+      { errors },
     );
   }
 
   const idempotencyKey = getResendIdempotencyKey(request);
 
   if (!idempotencyKey) {
-    return NextResponse.json(
-      { message: "Invalid idempotency key." },
-      { status: 400 },
-    );
+    return problem(400, "Invalid idempotency key", "Invalid idempotency key.");
   }
 
   if (!resend) {
-    console.error("RESEND_API_KEY is not configured.");
-    return NextResponse.json(
-      {
-        message:
-          "Email service is not configured. Please email tyschumacher@proton.me directly.",
-      },
-      { status: 503 },
+    console.error("contact.delivery_unavailable", { requestId });
+    return problem(
+      503,
+      "Service unavailable",
+      "Email service is not configured. Please email tyschumacher@proton.me directly.",
     );
   }
+
+  const retryAfter = claimDelivery();
+  if (retryAfter)
+    return problem(
+      429,
+      "Too many requests",
+      "Please wait a minute before trying again, or email tyschumacher@proton.me directly.",
+      { retryAfter },
+    );
 
   try {
     const { email, message, name } = parsed.data;
@@ -111,25 +151,33 @@ export async function POST(request: Request) {
     );
 
     if (result.error || !result.data) {
-      console.error("Unable to send contact email", result.error);
-      return NextResponse.json(
-        {
-          message:
-            "We couldn’t send your message right now. Please try again or email tyschumacher@proton.me directly.",
-        },
-        { status: 502 },
+      console.error("contact.delivery_failed", {
+        requestId,
+        durationMs: Math.round(performance.now() - started),
+      });
+      return problem(
+        502,
+        "Delivery failed",
+        "We couldn’t send your message right now. Please try again or email tyschumacher@proton.me directly.",
       );
     }
-
-    return NextResponse.json({ message: "Message sent." });
-  } catch (error) {
-    console.error("Unable to send contact email", error);
+    console.info("contact.delivered", {
+      requestId,
+      durationMs: Math.round(performance.now() - started),
+    });
     return NextResponse.json(
-      {
-        message:
-          "We couldn’t send your message right now. Please try again or email tyschumacher@proton.me directly.",
-      },
-      { status: 502 },
+      { message: "Message sent." },
+      { headers: { "Cache-Control": "no-store", "X-Request-ID": requestId } },
+    );
+  } catch {
+    console.error("contact.delivery_failed", {
+      requestId,
+      durationMs: Math.round(performance.now() - started),
+    });
+    return problem(
+      502,
+      "Delivery failed",
+      "We couldn’t send your message right now. Please try again or email tyschumacher@proton.me directly.",
     );
   }
 }

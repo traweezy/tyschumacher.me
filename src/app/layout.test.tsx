@@ -53,15 +53,15 @@ describe("RootLayout metadata", () => {
     }
 
     if (firstImage instanceof URL) {
-      expect(firstImage.pathname).toBe("/og-image.svg");
+      expect(firstImage.pathname).toBe("/og.png");
     } else if (typeof firstImage === "string") {
-      expect(firstImage).toBe("/og-image.svg");
+      expect(firstImage).toBe("/og.png");
     } else {
-      expect(firstImage.url).toBe("/og-image.svg");
+      expect(firstImage.url).toBe("/og.png");
     }
     expect(viewport.themeColor).toEqual([
-      { media: "(prefers-color-scheme: light)", color: "#f7f5fb" },
-      { media: "(prefers-color-scheme: dark)", color: "#070813" },
+      { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
+      { media: "(prefers-color-scheme: dark)", color: "#0b1017" },
     ]);
   });
 });

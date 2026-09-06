@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist_Mono, Manrope } from "next/font/google";
 import { headers } from "next/headers";
-import "react-vertical-timeline-component/style.min.css";
 import "./globals.css";
 import { Providers } from "./providers";
+import { profile } from "@/data/profile";
+import { SITE_URL } from "@/lib/site";
 import { SiteHeader } from "@/components/layout/site-header";
 
 const themeModeStorageKey = "tyschumacher.theme-mode";
@@ -58,7 +59,7 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const siteUrl = "https://tyschumacher.me";
+const siteUrl = SITE_URL;
 const title = "Tyler Schumacher | Software for teams that work live";
 const description =
   "I build interfaces and services for trading, sportsbook, and operations teams that need fast decisions, visible state, and reliable releases.";
@@ -68,7 +69,7 @@ const personJsonLd = {
   "@type": "Person",
   name: "Tyler Schumacher",
   url: siteUrl,
-  jobTitle: "Principal Product Engineer",
+  jobTitle: profile.role,
   email: "mailto:tyschumacher@proton.me",
   address: {
     "@type": "PostalAddress",
@@ -89,9 +90,13 @@ export const metadata: Metadata = {
     template: "%s · Tyler Schumacher",
   },
   description,
+  alternates: { canonical: "/" },
+  authors: [{ name: "Tyler Schumacher", url: siteUrl }],
+  creator: "Tyler Schumacher",
+  robots: { index: true, follow: true },
   keywords: [
     "Tyler Schumacher",
-    "Principal engineer",
+    "Software engineer",
     "Product engineer",
     "React",
     "TypeScript",
@@ -103,10 +108,12 @@ export const metadata: Metadata = {
     url: siteUrl,
     title,
     description,
-    siteName: "Tyler Schumacher Portfolio",
+    siteName: "Tyler Schumacher",
+    locale: "en_US",
     images: [
       {
-        url: "/og-image.svg",
+        url: "/og.png",
+        type: "image/png",
         width: 1200,
         height: 630,
         alt: "Tyler Schumacher | Software for teams that work live",
@@ -115,10 +122,20 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    images: [
+      {
+        url: "/og.png",
+        alt: "Tyler Schumacher — Software for teams that work live.",
+      },
+    ],
     title,
     description,
   },
+  manifest: "/manifest.webmanifest",
   icons: {
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
     icon: [
       { url: "/favicon.ico" },
       { url: "/icon.svg", type: "image/svg+xml" },
@@ -130,8 +147,8 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f7f5fb" },
-    { media: "(prefers-color-scheme: dark)", color: "#070813" },
+    { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b1017" },
   ],
 };
 
@@ -145,6 +162,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       data-theme="civic-light"
       data-theme-mode="light"
       data-motion="safe"
@@ -154,11 +172,13 @@ export default async function RootLayout({
         <script
           data-theme-initializer
           nonce={nonce}
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: themeModeInitializerScript }}
         />
         <script
           type="application/ld+json"
           nonce={nonce}
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
       </head>
@@ -173,9 +193,12 @@ export default async function RootLayout({
           <script
             data-theme-controls-initializer
             nonce={nonce}
+            suppressHydrationWarning
             dangerouslySetInnerHTML={{ __html: themeControlsInitializerScript }}
           />
-          <main id="main-content">{children}</main>
+          <main id="main-content" tabIndex={-1}>
+            {children}
+          </main>
         </Providers>
       </body>
     </html>

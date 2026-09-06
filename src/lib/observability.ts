@@ -112,3 +112,17 @@ export const initObservability = (): void => {
     console.error("Observability initialization failed", error);
   }
 };
+
+export const reportWebVital = (metric: {
+  name: string;
+  value: number;
+  rating: string;
+}): void => {
+  const tracer = trace.getTracer("tyschumacher.me");
+  tracer.startActiveSpan(`web_vital.${metric.name.toLowerCase()}`, (span) => {
+    span.setAttribute("metric.name", metric.name);
+    span.setAttribute("metric.value", metric.value);
+    span.setAttribute("metric.rating", metric.rating);
+    span.end();
+  });
+};

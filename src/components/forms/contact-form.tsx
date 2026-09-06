@@ -97,6 +97,7 @@ export const ContactForm = () => {
           "Idempotency-Key": idempotencyKey,
         },
         body: JSON.stringify(values),
+        signal: AbortSignal.timeout(15_000),
       });
 
       if (!response.ok) {
@@ -130,7 +131,7 @@ export const ContactForm = () => {
       }
     },
     onError: (error) => {
-      console.error("Contact form submission failed", error);
+      console.error("contact.submission_failed", { name: error.name });
     },
   });
 

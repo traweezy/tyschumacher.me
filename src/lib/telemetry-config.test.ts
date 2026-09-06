@@ -48,3 +48,17 @@ describe("telemetry config", () => {
     ).toBe("otlp");
   });
 });
+
+it("rejects embedded credentials and insecure production collectors", () => {
+  expect(
+    getTelemetryExportUrl({
+      NEXT_PUBLIC_OTEL_EXPORT_URL: "https://user:secret@example.com/traces",
+    }),
+  ).toBeNull();
+  expect(
+    getTelemetryExportUrl({
+      NEXT_PUBLIC_OTEL_EXPORT_URL: "http://example.com/traces",
+      NODE_ENV: "production",
+    }),
+  ).toBeNull();
+});

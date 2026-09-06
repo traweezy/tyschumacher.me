@@ -250,4 +250,51 @@ describe("POST /api/contact", () => {
     const payload = await response.json();
     expect(payload.message).toMatch(/couldn’t send your message/i);
   });
+  it("returns Problem Details for disallowed origins and unsupported bodies", async () => {
+    const POST = await loadRoute();
+    const response = await POST(
+      createRequest({}, { Origin: "https://attacker.example" }),
+    );
+    expect(response.status).toBe(403);
+    expect(response.headers.get("content-type")).toContain(
+      "application/problem+json",
+    );
+    expect(await response.json()).toMatchObject({
+      type: "about:blank",
+      status: 403,
+      instance: "/api/contact",
+    });
+    const wrongType = await POST(
+      createRequest("{}", { "Content-Type": "text/plain" }),
+    );
+    expect(wrongType.status).toBe(415);
+    const oversized = await POST(createRequest("x".repeat(17000)));
+    expect(oversized.status).toBe(413);
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+  it("bounds deliveries and returns Retry-After without sending again", async () => {
+    process.env.RESEND_API_KEY = "test-key";
+    const POST = await loadRoute();
+    sendMock.mockResolvedValue(successfulResendResult);
+    for (let index = 0; index < 10; index++) {
+      const response = await POST(
+        createRequest({
+          name: "Test Person",
+          email: "test@example.com",
+          message: "A valid test contact message.",
+        }),
+      );
+      expect(response.status).toBe(200);
+    }
+    const limited = await POST(
+      createRequest({
+        name: "Test Person",
+        email: "test@example.com",
+        message: "A valid test contact message.",
+      }),
+    );
+    expect(limited.status).toBe(429);
+    expect(Number(limited.headers.get("retry-after"))).toBeGreaterThan(0);
+    expect(sendMock).toHaveBeenCalledTimes(10);
+  });
 });
