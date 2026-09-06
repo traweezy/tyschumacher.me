@@ -30,11 +30,11 @@ pnpm test:coverage
 pnpm audit --audit-level=moderate
 pnpm run sbom
 pnpm build
-pnpm exec playwright install chromium
+pnpm exec playwright install chromium webkit
 pnpm test:e2e
 ```
 
-Stop a running dev server before browser tests: Playwright can reuse port 3000 and should validate the production build. Tests cover projects, navigation, contact responses, keyboard interaction, themes, reduced motion, crawler metadata, no-JavaScript project reading, light/dark accessibility and 360–1920 px overflow. Coverage thresholds are 80% across all four metrics. Reports go to `coverage/`, `playwright-report/` and `test-results/`.
+Stop a running dev server before browser tests: Playwright can reuse port 3000 and should validate the production build. Tests cover projects, navigation, contact responses, keyboard interaction, themes, reduced motion, crawler metadata, no-JavaScript project reading, light/dark accessibility and 320–1920 px layouts. Phone and tablet profiles run in Chromium and WebKit. OpenSSL provides a temporary certificate for the local WebKit HTTPS preview on port 3001. Coverage thresholds are 80% across all four metrics. Reports go to `coverage/`, `playwright-report/` and `test-results/`.
 
 `pnpm analyze` opens Next.js’s Turbopack bundle explorer. `pnpm test:diagnostics` investigates asynchronous leaks. `pnpm test:e2e:coverage` collects browser V8 coverage. Generated SBOMs are ignored locally and uploaded in CI.
 
@@ -60,6 +60,7 @@ Production telemetry is disabled unless `NEXT_PUBLIC_OTEL_EXPORT_URL` is set at 
 ## Content and architecture
 
 - [Application index](docs/app-index.md): entry points, boundaries and editing workflow.
+- [Mobile and tablet audit](docs/mobile-tablet-audit.md): responsive fixes, browser coverage, and local HTTPS testing.
 - [Portfolio research and audit](docs/portfolio-audit.md): project provenance, design decisions, upgrades and limitations.
 - [Third-party notices](THIRD_PARTY_NOTICES.md): asset provenance and license notes.
 - `src/data/`: profile, skills, experience, projects and navigation.

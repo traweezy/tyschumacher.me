@@ -4,6 +4,97 @@ import { SHARE_IMAGE_PATH } from "../src/lib/site";
 
 const canonical = "https://www.tyschumacher.me/";
 
+test("header controls stay separate and reachable at phone and tablet breakpoints", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+  for (const width of [320, 360, 640, 768, 960, 961, 1024, 1194, 1280, 1366]) {
+    await page.setViewportSize({ width, height: 900 });
+    const failures = await page.getByRole("banner").evaluate((header) => {
+      const controls = [
+        ...header.querySelectorAll<HTMLElement>("a, button"),
+      ].filter(
+        (element) =>
+          element.checkVisibility({ checkVisibilityCSS: true }) &&
+          element.getBoundingClientRect().width > 0,
+      );
+      return controls.flatMap((element, index) => {
+        const rect = element.getBoundingClientRect();
+        const label =
+          element.getAttribute("aria-label") ?? element.textContent?.trim();
+        const failures: string[] = [];
+        if (
+          rect.left < 0 ||
+          rect.right > innerWidth ||
+          rect.height < 24 ||
+          rect.width < 24
+        )
+          failures.push(`Out of bounds or too small: ${label}`);
+        const hit = document.elementFromPoint(
+          rect.x + rect.width / 2,
+          rect.y + rect.height / 2,
+        );
+        if (!element.contains(hit)) failures.push(`Obscured: ${label}`);
+        for (const other of controls.slice(index + 1)) {
+          if (element.contains(other) || other.contains(element)) continue;
+          const next = other.getBoundingClientRect();
+          if (
+            Math.min(rect.right, next.right) >
+              Math.max(rect.left, next.left) + 1 &&
+            Math.min(rect.bottom, next.bottom) >
+              Math.max(rect.top, next.top) + 1
+          )
+            failures.push(`Overlapping: ${label}`);
+        }
+        return failures;
+      });
+    });
+    expect(failures, `Header at ${width}px`).toEqual([]);
+  }
+});
+
+test("project images reserve their full space while downloads are delayed", async ({
+  page,
+}) => {
+  let releaseImages: () => void = () => undefined;
+  const imageGate = new Promise<void>((resolve) => {
+    releaseImages = resolve;
+  });
+  await page.route("**/_next/image?**", async (route) => {
+    await imageGate;
+    await route.continue();
+  });
+  try {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const boxes = await page
+      .locator("[data-project] img")
+      .evaluateAll((images) =>
+        images.map((image) => {
+          const rect = image.getBoundingClientRect();
+          return {
+            width: rect.width,
+            height: rect.height,
+            expectedRatio:
+              Number(image.getAttribute("height")) /
+              Number(image.getAttribute("width")),
+          };
+        }),
+      );
+    expect(boxes).toHaveLength(5);
+    for (const box of boxes) {
+      expect(box.height).toBeGreaterThan(100);
+      expect(Math.abs(box.height - box.width * box.expectedRatio)).toBeLessThan(
+        1,
+      );
+    }
+  } finally {
+    releaseImages();
+    await page.unrouteAll({ behavior: "wait" });
+  }
+});
+
 test("serves complete metadata and crawler-readable share assets", async ({
   request,
   page,
