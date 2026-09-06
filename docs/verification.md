@@ -175,3 +175,23 @@ Desktop and mobile screenshots were inspected, including an actual Flameshot
 desktop capture. The revised PDF was rendered with Poppler and visually checked;
 all 11 bullets extract correctly, and all three contact links remain clickable.
 Evidence is in `/tmp/portfolio-copy-20260906`.
+
+## Focus, personal impact, and favicon
+
+Rewrote the profile focus and all four experience highlights around transferable
+engineering contributions. Replaced “Practice” with “Personal impact” using the
+existing career evidence, without adding numerical claims. Removed the decorative
+TS badge and aligned experience labels with a shared grid that stacks on mobile.
+
+Restored the original avatar ICO byte for byte from the revision before
+`60b3a0e`, removed the SVG override, and versioned the favicon URL to refresh
+browser caches. The personal website screenshot now shows the revised profile
+card and has a filename tied to its image revision.
+
+Formatting, lint, typecheck, production build, all 94 unit tests, and all 32
+browser tests passed. Coverage remains above the configured thresholds, and the
+dependency audit found no known vulnerabilities. Browser checks confirm a single
+ICO favicon declaration and a valid ICO response. Headed desktop and mobile
+screenshots, including actual Flameshot captures, confirm the badge removal,
+avatar favicon, readable text, and aligned highlights without horizontal overflow.
+Evidence is in `/tmp/portfolio-focus-20260906`.

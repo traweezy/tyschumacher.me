@@ -32,9 +32,14 @@ export const experiences: ExperienceEntry[] = [
       { label: "Product", value: "Live odds, trader tools, analytics" },
       {
         label: "Focus",
-        value: "Large event traffic and fast odds changes",
+        value:
+          "Keeping complex interfaces responsive and clear as information changes.",
       },
-      { label: "Practice", value: "Trader feedback and FullStory sessions" },
+      {
+        label: "Personal impact",
+        value:
+          "Improved workflows through user feedback, reviewed designs, and mentored other engineers.",
+      },
     ],
     workTypes: [
       {
@@ -86,9 +91,14 @@ export const experiences: ExperienceEntry[] = [
       { label: "Product", value: "Trading workbenches and services" },
       {
         label: "Focus",
-        value: "Live trading workflows and compliance requirements",
+        value:
+          "Modernizing essential tools while protecting reliability and meeting compliance requirements.",
       },
-      { label: "Practice", value: "Safer CI and deployment paths" },
+      {
+        label: "Personal impact",
+        value:
+          "Modernized legacy tools and improved how teams review, deploy, and recover releases.",
+      },
     ],
     workTypes: [
       {
@@ -132,11 +142,13 @@ export const experiences: ExperienceEntry[] = [
       { label: "Product", value: "Bank research portals" },
       {
         label: "Focus",
-        value: "Accessibility, compliance, and performance",
+        value:
+          "Turning complex business requirements into accessible, usable interfaces.",
       },
       {
-        label: "Practice",
-        value: "Clear requirements for engineering teams",
+        label: "Personal impact",
+        value:
+          "Translated product and legal requirements into clear work for engineering teams.",
       },
     ],
     workTypes: [
@@ -189,8 +201,16 @@ export const experiences: ExperienceEntry[] = [
     location: "Buffalo, NY",
     caseLog: [
       { label: "Product", value: "Hospitality and retail web apps" },
-      { label: "Focus", value: "Responsive campaign delivery" },
-      { label: "Practice", value: "Analytics and SEO foundations" },
+      {
+        label: "Focus",
+        value:
+          "Building adaptable web experiences that support business and marketing goals.",
+      },
+      {
+        label: "Personal impact",
+        value:
+          "Created reusable interfaces and added analytics to guide future product and campaign decisions.",
+      },
     ],
     workTypes: [
       { name: "Media", icon: "media", accentKey: "media", kind: "domain" },

@@ -49,6 +49,16 @@ test("serves complete metadata and crawler-readable share assets", async ({
     expect((await request.get(asset)).status()).toBe(200);
   }
   await page.goto("/");
+  const favicon = page.locator('link[rel="icon"]');
+  await expect(favicon).toHaveCount(1);
+  await expect(favicon).toHaveAttribute("href", /^\/favicon\.ico\?v=.+$/);
+  const faviconResponse = await request.get(
+    (await favicon.getAttribute("href")) ?? "",
+  );
+  expect(faviconResponse.status()).toBe(200);
+  const faviconBytes = await faviconResponse.body();
+  expect(faviconBytes.readUInt16LE(0)).toBe(0);
+  expect(faviconBytes.readUInt16LE(2)).toBe(1);
   expect(
     new URL(
       (await page.locator('link[rel="canonical"]').getAttribute("href")) ?? "",

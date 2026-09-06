@@ -12,7 +12,11 @@ const profileLinks = {
   resume: Download,
 } as const;
 const profileRows = [
-  { label: "Focus", value: "Web applications & backend systems" },
+  {
+    label: "Focus",
+    value:
+      "Turning complex requirements into software people can use and teams can maintain.",
+  },
   { label: "Industries", value: "Sportsbook, electronic trading & operations" },
   { label: "Based in", value: profile.location },
 ] as const;
@@ -51,9 +55,6 @@ export const Hero = memo(() => (
         </div>
         <aside className="hero-snapshot" aria-label="Profile snapshot">
           <div className="hero-snapshot__header">
-            <span className="hero-snapshot__mark" aria-hidden="true">
-              TS
-            </span>
             <span className="hero-snapshot__role">At a glance</span>
           </div>
           <div className="hero-snapshot__body">
