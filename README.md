@@ -79,6 +79,10 @@ summary, positioning, phone number, and education. The generator uses the pinned
 Playwright Chromium installation (`pnpm exec playwright install chromium`) and
 refuses to replace the PDF if the content exceeds one Letter page.
 
+Resume skills use six functional groups: frontend, backend and APIs, data stores,
+messaging, infrastructure, and observability. The generator requires every website
+technology to appear exactly once and uses decorative Lucide icons beside labels.
+
 After changing shared content, regenerate the resume and inspect a PDF render
 before committing it. Preserve official titles and dates when reconciling LinkedIn;
 the website and resume can use shorter descriptions of the same contributions.

@@ -75,10 +75,10 @@ export const experiences: ExperienceEntry[] = [
       },
     ],
     bullets: [
-      "Created Go and Java services that normalized data from live providers and kept betting interfaces current during major events.",
-      "Built React screens for live odds, trader tools, and internal analytics, with virtualized lists and accessible controls for use during long sessions.",
-      "Used FullStory sessions and trader feedback to identify usability problems and prioritize fixes.",
-      "Mentored engineers, reviewed designs, and helped teams make delivery decisions.",
+      "Built Go and Java integrations that normalized provider data and kept live betting interfaces current.",
+      "Built accessible React tools for live odds, trader workflows, and analytics, with virtualized lists for changing data.",
+      "Used FullStory sessions and trader feedback to identify usability issues and prioritize fixes.",
+      "Mentored engineers, reviewed technical designs, and guided delivery decisions.",
     ],
   },
   {
@@ -127,9 +127,9 @@ export const experiences: ExperienceEntry[] = [
       },
     ],
     bullets: [
-      "Built Node.js and Java services for a trading platform handling large transaction volumes and strict compliance requirements.",
-      "Replaced legacy Flash workbenches with modular React tools that were easier for traders to use and teams to maintain.",
-      "Improved GitLab CI pipelines and Kubernetes deployments to make releases easier to inspect and recover from failures.",
+      "Built Node.js and Java services for electronic trading, balancing throughput, reliability, and compliance.",
+      "Modernized legacy Flash workbenches into modular React tools for traders and engineering teams.",
+      "Improved GitLab CI and Kubernetes workflows so releases were easier to inspect and recover.",
     ],
   },
   {
@@ -189,8 +189,8 @@ export const experiences: ExperienceEntry[] = [
       },
     ],
     bullets: [
-      "Built React interfaces for bank research portals and collaborated with Java backend teams on accessibility, compliance, and performance requirements.",
-      "Worked with product and legal teams to turn complex requirements into screens and services engineers could build.",
+      "Built accessible React research portals with Java teams, meeting banking compliance and performance requirements.",
+      "Translated product and legal requirements into practical interfaces and service integrations.",
     ],
   },
   {
@@ -235,8 +235,8 @@ export const experiences: ExperienceEntry[] = [
       { name: "SEO", icon: "seo", accentKey: "seo", kind: "skill" },
     ],
     bullets: [
-      "Built responsive React and Node.js apps for hospitality and retail brands, with reusable UI patterns for campaign work.",
-      "Added analytics and SEO improvements so clients could measure campaign performance and plan future work.",
+      "Built responsive React and Node.js applications for hospitality and retail, with reusable UI patterns.",
+      "Added analytics and SEO foundations to help clients evaluate campaigns and plan future work.",
     ],
   },
 ];

@@ -223,3 +223,23 @@ and the resume download browser test pass. Coverage is 90.66% statements, 84.68%
 branches, 91.73% functions, and 90.92% lines. The dependency audit reports no known
 vulnerabilities. The browser check verifies downloads through the header, hero,
 mobile menu, and command palette without navigating away from the portfolio.
+
+## Resume spacing and skills refinement
+
+Spread the resume header across identity and contact columns, increased its
+padding and line spacing, and removed condensed name tracking. Added decorative
+Lucide icons to contact details, section headings, and skill categories. Skills
+now have six distinct groups, with aligned labels and subtle row separators.
+The generator verifies that every website technology appears exactly once.
+
+Tightened the shared experience sentences while preserving all four roles,
+11 contributions, dates, and supported claims. Both website and resume consume
+the revised copy. The PDF retains its body font size, all 23 technologies, five
+clickable links, accessibility tags, and one Letter page.
+
+Poppler output and an actual Flameshot desktop capture of the PDF in Okular were
+inspected for clipping, spacing, icon rendering, and alignment. Independent PDF
+parsing verifies all shared content and links. Formatting, lint, strict typecheck,
+production build, 94 unit tests, and all 19 main browser tests pass; coverage is
+above every configured threshold and the dependency audit has no known findings.
+Evidence is in `/tmp/portfolio-resume-header-20260906`.

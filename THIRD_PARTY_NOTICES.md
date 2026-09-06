@@ -6,7 +6,7 @@ Dependency license inventory: `pnpm licenses list --prod`. The CycloneDX invento
 
 ## Icons
 
-New skill and project icons extend the installed [Lucide](https://lucide.dev/license) icon set under the ISC license. Vendor names are factual technology labels; the added icons are semantic illustrations. Existing local technology SVGs and professional profile marks are retained.
+Skill, project, and resume icons use the installed [Lucide](https://lucide.dev/license) icon set under the ISC license. Vendor names are factual technology labels; the added icons are semantic illustrations. Existing local technology SVGs and professional profile marks are retained.
 
 ## caniuse-lite
 
