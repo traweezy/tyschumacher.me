@@ -290,9 +290,7 @@ test.describe("Home experience", () => {
     await paletteButton.click();
 
     const dialog = page.getByRole("dialog", { name: /command palette/i });
-    const input = dialog.getByPlaceholder(
-      /Jump to a section or open a resource/i,
-    );
+    const input = dialog.getByPlaceholder(/Search sections and links/i);
 
     await input.fill("zzzz");
     await expect(dialog.getByText(/Nothing found/i)).toBeVisible();

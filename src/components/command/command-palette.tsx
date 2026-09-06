@@ -2,7 +2,15 @@
 
 import { Dialog as DialogPrimitive } from "radix-ui";
 import { Command as CommandPrimitive } from "cmdk";
-import { useEffect, useEffectEvent, useMemo } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useEffectEvent,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   BriefcaseBusiness,
   Code2,
@@ -15,6 +23,7 @@ import {
   Sun,
   UserRound,
   Waypoints,
+  X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { Route } from "next";
@@ -109,6 +118,67 @@ const getSectionIcon = (id: string): LucideIcon => {
 
 const getExternalIcon = (id: string): LucideIcon =>
   id === "resume" ? Download : ExternalLink;
+
+const CommandSearch = memo(() => {
+  const [search, setSearch] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const clearSearch = useCallback(() => {
+    setSearch("");
+    inputRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    if (!viewport) return;
+
+    // A phone keyboard can shrink the visual viewport without changing CSS vh.
+    const dialog = inputRef.current?.closest<HTMLElement>("[cmdk-dialog]");
+    if (!dialog) return;
+    const updateViewport = () => {
+      dialog.style.setProperty("--viewport-height", `${viewport.height}px`);
+      dialog.style.setProperty("--viewport-top", `${viewport.offsetTop}px`);
+    };
+    updateViewport();
+    viewport.addEventListener("resize", updateViewport);
+    viewport.addEventListener("scroll", updateViewport);
+    return () => {
+      viewport.removeEventListener("resize", updateViewport);
+      viewport.removeEventListener("scroll", updateViewport);
+      dialog.style.removeProperty("--viewport-height");
+      dialog.style.removeProperty("--viewport-top");
+    };
+  }, []);
+
+  return (
+    <div className={styles.header}>
+      <Search className="h-4 w-4 shrink-0" aria-hidden="true" />
+      <CommandPrimitive.Input
+        ref={inputRef}
+        value={search}
+        onValueChange={setSearch}
+        placeholder="Search sections and links"
+        className={styles.input}
+      />
+      {search ? (
+        <button type="button" className={styles.control} onClick={clearSearch}>
+          Clear
+        </button>
+      ) : (
+        <kbd className={styles.shortcut}>⌘K</kbd>
+      )}
+      <DialogPrimitive.Close asChild>
+        <button
+          type="button"
+          className={styles.control}
+          aria-label="Close search"
+        >
+          <X size={20} aria-hidden="true" />
+        </button>
+      </DialogPrimitive.Close>
+    </div>
+  );
+});
+CommandSearch.displayName = "CommandSearch";
 
 export const CommandPalette = () => {
   const router = useRouter();
@@ -232,6 +302,8 @@ export const CommandPalette = () => {
       onOpenChange={setCommandOpen}
       label="Command palette"
       className={styles.root}
+      contentClassName={styles.dialog ?? ""}
+      overlayClassName={styles.overlay ?? ""}
     >
       <DialogPrimitive.Title className="visually-hidden">
         Command palette
@@ -239,14 +311,7 @@ export const CommandPalette = () => {
       <DialogPrimitive.Description className="visually-hidden">
         Search sections and resources across the site.
       </DialogPrimitive.Description>
-      <div className={styles.header}>
-        <Search className="h-4 w-4" aria-hidden="true" />
-        <CommandPrimitive.Input
-          placeholder="Jump to a section or open a resource…"
-          className={styles.input}
-        />
-        <kbd className={styles.shortcut}>⌘K</kbd>
-      </div>
+      <CommandSearch />
       <CommandPrimitive.List
         className={cn(
           styles.list,

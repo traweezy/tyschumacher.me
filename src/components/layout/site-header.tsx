@@ -218,6 +218,16 @@ export const SiteHeader = () => {
     applyThemeMode(previewMode);
   }, [previewMode]);
 
+  useEffect(() => {
+    // Match the desktop navigation breakpoint when a tablet rotates or resizes.
+    const desktop = window.matchMedia("(min-width: 80rem)");
+    const closeMobileNavigation = () => {
+      if (desktop.matches) setMobileNavOpen(false);
+    };
+    desktop.addEventListener("change", closeMobileNavigation);
+    return () => desktop.removeEventListener("change", closeMobileNavigation);
+  }, [setMobileNavOpen]);
+
   useEffect(
     () => () => {
       if (popoverCloseTimerRef.current !== null) {
@@ -541,6 +551,18 @@ export const SiteHeader = () => {
                   Browse page sections, external profiles, and the resume
                   download.
                 </SheetDescription>
+                <div className="site-header__sheet-toolbar">
+                  <span className="type-eyebrow">Navigation</span>
+                  <SheetClose asChild>
+                    <button
+                      type="button"
+                      className="site-header__icon-button"
+                      aria-label="Close navigation"
+                    >
+                      <X className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                  </SheetClose>
+                </div>
                 <div className="site-header__sheet-card">
                   <div className="site-header__sheet-profile">
                     <div className="site-header__sheet-avatar-wrap">

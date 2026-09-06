@@ -69,7 +69,6 @@
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: auto;
 }
 .imageAction {
   position: absolute;

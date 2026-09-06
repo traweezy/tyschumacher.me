@@ -216,9 +216,13 @@ export const ContactForm = () => {
             validators={{ onBlur: fieldConfig.validator }}
           >
             {(field) => (
-              <label className={styles.field}>
-                <span>{fieldConfig.label}</span>
+              <div className={styles.field}>
+                <label htmlFor={`contact-${fieldConfig.name}`}>
+                  {fieldConfig.label}
+                </label>
                 <input
+                  id={`contact-${fieldConfig.name}`}
+                  name={fieldConfig.name}
                   type={fieldConfig.type}
                   value={field.state.value}
                   onChange={(event) => field.handleChange(event.target.value)}
@@ -234,7 +238,7 @@ export const ContactForm = () => {
                 >
                   {getErrorMessage(field.state.meta.errors[0])}
                 </span>
-              </label>
+              </div>
             )}
           </form.Field>
         ))}
@@ -246,9 +250,13 @@ export const ContactForm = () => {
           validators={{ onBlur: fieldConfig.validator }}
         >
           {(field) => (
-            <label className={styles.field}>
-              <span>{fieldConfig.label}</span>
+            <div className={styles.field}>
+              <label htmlFor={`contact-${fieldConfig.name}`}>
+                {fieldConfig.label}
+              </label>
               <textarea
+                id={`contact-${fieldConfig.name}`}
+                name={fieldConfig.name}
                 rows={fieldConfig.rows}
                 value={field.state.value}
                 onChange={(event) => field.handleChange(event.target.value)}
@@ -263,7 +271,7 @@ export const ContactForm = () => {
               >
                 {getErrorMessage(field.state.meta.errors[0])}
               </span>
-            </label>
+            </div>
           )}
         </form.Field>
       ))}

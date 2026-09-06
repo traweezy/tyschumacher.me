@@ -1,10 +1,35 @@
-.root {
+.overlay {
   position: fixed;
-  top: 8vh;
+  inset: 0;
+  z-index: 1190;
+  background: rgb(0 0 0 / 50%);
+}
+
+.dialog {
+  --dialog-gutter: clamp(0.75rem, 4dvh, 2rem);
+  position: fixed;
+  top: calc(
+    var(--viewport-top, 0px) +
+      max(var(--dialog-gutter), env(safe-area-inset-top))
+  );
   left: 50%;
   transform: translateX(-50%);
   z-index: 1200;
-  width: min(640px, calc(100vw - 2.5rem));
+  width: min(640px, calc(100% - 1.5rem));
+  max-height: calc(
+    var(--viewport-height, 100dvh) -
+      max(var(--dialog-gutter), env(safe-area-inset-top)) -
+      max(var(--dialog-gutter), env(safe-area-inset-bottom))
+  );
+  display: flex;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  max-height: inherit;
   border-radius: 18px;
   border: 1px solid var(--border-strong);
   background:
@@ -19,18 +44,46 @@
 .header {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
-  padding: 1rem 1.25rem;
+  flex-shrink: 0;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--border);
 }
 
 .input {
   flex: 1;
+  min-width: 0;
+  min-height: 2.75rem;
   background: transparent;
   border: 0;
   color: inherit;
-  font-size: 0.95rem;
+  font-size: 1rem;
   outline: none;
+}
+
+.control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border: 0;
+  border-radius: 0.6rem;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.control:hover {
+  background: var(--accent-soft);
+}
+
+.control:focus-visible,
+.input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .shortcut {
@@ -44,8 +97,10 @@
 }
 
 .list {
-  max-height: min(700px, 78vh);
+  min-height: 0;
+  max-height: 700px;
   overflow: auto;
+  overscroll-behavior: contain;
   padding: 0.65rem;
 }
 
@@ -185,16 +240,17 @@
 }
 
 @media (max-width: 520px) {
-  .root {
-    top: 12vh;
-    width: min(100vw - 1.25rem, 640px);
-  }
-
   .item {
     align-items: flex-start;
   }
 
   .itemKind {
+    display: none;
+  }
+}
+
+@media (pointer: coarse), (max-width: 520px) {
+  .shortcut {
     display: none;
   }
 }

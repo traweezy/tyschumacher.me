@@ -72,7 +72,7 @@ const ProjectCard = memo<ProjectCardProps>(({ project, index }) => (
           alt={project.image.alt}
           width={project.image.width}
           height={project.image.height}
-          sizes="(min-width: 1200px) 720px, (min-width: 768px) 55vw, 100vw"
+          sizes="(min-width: 1280px) 720px, (min-width: 784px) 50vw, 100vw"
           className={styles.image}
         />
         <span className={styles.imageAction} aria-hidden="true">

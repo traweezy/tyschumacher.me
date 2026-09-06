@@ -8,7 +8,7 @@
 .row {
   display: grid;
   gap: 0.85rem;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
 }
 
 .field {
@@ -19,7 +19,7 @@
   color: var(--text-secondary);
 }
 
-.field span:first-of-type {
+.field > label {
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: none;
@@ -35,6 +35,7 @@
   background: var(--input-bg);
   color: var(--text-primary);
   font: inherit;
+  font-size: 1rem;
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
@@ -49,8 +50,8 @@
 
 .field input[aria-invalid="true"],
 .field textarea[aria-invalid="true"] {
-  border-color: rgba(244, 63, 94, 0.6);
-  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.16);
+  border-color: var(--text-error);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--text-error) 16%, transparent);
 }
 
 .field textarea {
@@ -61,7 +62,7 @@
 .error {
   min-height: 1.1rem;
   font-size: 0.8rem;
-  color: rgba(244, 63, 94, 0.9);
+  color: var(--text-error);
 }
 
 .status {
