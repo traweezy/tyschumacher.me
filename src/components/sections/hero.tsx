@@ -26,9 +26,7 @@ export const Hero = memo(() => (
     <Container className="hero__content">
       <div className="hero__grid">
         <div className="hero__intro">
-          <p className="hero__eyebrow type-eyebrow">
-            {profile.role} · Product & platform
-          </p>
+          <p className="hero__eyebrow type-eyebrow">{profile.role}</p>
           <h1 className="hero__title type-heading-1 text-balance">
             <span className="hero__name">{profile.name}</span>
           </h1>

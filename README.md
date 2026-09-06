@@ -75,7 +75,8 @@ The latest visual/content research and decisions are recorded in [the refinement
 
 `pnpm resume:build` regenerates the downloadable PDF from the website's profile,
 experience, skills, and navigation data. `src/data/resume.ts` holds only the resume
-summary, positioning, phone number, and education. The generator uses the pinned
+summary, phone number, and education. Both surfaces use the role in
+`src/data/profile.ts`. The generator uses the pinned
 Playwright Chromium installation (`pnpm exec playwright install chromium`) and
 refuses to replace the PDF if the content exceeds one Letter page.
 

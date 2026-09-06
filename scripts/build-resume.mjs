@@ -155,7 +155,7 @@ const html = `<!doctype html>
       <header>
         <div>
           <h1>${escapeHtml(profile.name)}</h1>
-          <p class="title">${escapeHtml(resume.title)}</p>
+          <p class="title">${escapeHtml(profile.role)}</p>
         </div>
         <div class="contacts">
           <p class="contact"><span class="contact-item">${icon(MapPin)}${escapeHtml(profile.location)}</span>${link(`tel:${resume.phone.replace(/[^+\d]/g, "")}`, resume.phone, Phone)}</p>

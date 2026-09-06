@@ -1,7 +1,6 @@
 import { memo } from "react";
 import { Section } from "@/components/layout/section";
 import { TechnologyIcon } from "@/components/ui/technology-icons";
-import { profile } from "@/data/profile";
 import { buildPriorityItems, skillGroups } from "@/data/skills";
 import type { SkillItem } from "@/data/skills";
 
@@ -45,7 +44,6 @@ export const AboutSection = memo(() => (
     id="about"
     label="Skills"
     headline="Skills & tools"
-    caption={profile.bio[0]}
     contentClassName="skills-content"
   >
     <div className="skills-groups">
@@ -59,9 +57,6 @@ export const AboutSection = memo(() => (
     <div className="working-practices">
       <div>
         <h3 className="type-heading-3">How I work</h3>
-        <p className="type-body text-[var(--text-secondary)]">
-          {profile.bio[1]}
-        </p>
       </div>
       <ol className="working-practices__list">
         {workingPractices.map((practice) => (

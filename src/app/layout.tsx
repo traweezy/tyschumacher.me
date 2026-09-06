@@ -60,10 +60,9 @@ const geistMono = Geist_Mono({
 });
 
 const siteUrl = SITE_URL;
+const title = `${profile.name} | ${profile.role}`;
+const description = profile.subhead;
 const shareImageUrl = new URL(SHARE_IMAGE_PATH, siteUrl).href;
-const title = "Tyler Schumacher | Software for teams that work live";
-const description =
-  "I build interfaces and services for trading, sportsbook, and operations teams that need fast decisions, visible state, and reliable releases.";
 
 const personJsonLd = {
   "@context": "https://schema.org",

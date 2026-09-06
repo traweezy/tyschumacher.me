@@ -412,7 +412,7 @@ test.describe("Home experience", () => {
     ).toHaveCount(0);
   });
 
-  test("displays grouped skills with visible decorative icons and profile context", async ({
+  test("displays grouped skills with visible decorative icons and working practices", async ({
     page,
   }) => {
     await page.goto("/");
@@ -420,8 +420,9 @@ test.describe("Home experience", () => {
     const aboutRegion = page.getByRole("region", { name: /Skills/i });
     await expect(aboutRegion).toBeVisible();
 
-    await expect(aboutRegion.getByText(profile.bio[0])).toBeVisible();
-    await expect(aboutRegion.getByText(profile.bio[1])).toBeVisible();
+    await expect(
+      aboutRegion.getByRole("heading", { name: "How I work" }),
+    ).toBeVisible();
     await expect(
       aboutRegion.getByText(/Understand the workflow/i),
     ).toBeVisible();

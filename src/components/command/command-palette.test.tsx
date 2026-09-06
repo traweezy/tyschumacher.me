@@ -128,7 +128,9 @@ describe("CommandPalette", () => {
     );
 
     expect(writeText).toHaveBeenCalledWith(
-      expect.stringContaining("Tyler Schumacher is a software engineer"),
+      expect.stringContaining(
+        "Tyler Schumacher is a senior full stack engineer",
+      ),
     );
     expect(useUIStore.getState().isCommandOpen).toBe(false);
   });
