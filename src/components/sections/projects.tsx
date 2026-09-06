@@ -1,134 +1,45 @@
-import clsx from "clsx";
+import { memo } from "react";
 import { getProjects } from "@/lib/content";
 import { Section } from "@/components/layout/section";
 import { ProjectsGrid } from "@/components/projects/projects-grid";
 import styles from "@/components/projects/projects-grid.module.css";
-import { PROJECT_SLOTS } from "@/components/projects/layout";
 
-export const projectsHeadline = "Selected work from live product environments";
+export const projectsHeadline = "Selected projects";
 export const projectsCaption =
-  "A few representative systems: trader tooling, rollout pipelines, live sports platforms, and analytics products built for teams that need the next step to be clear.";
+  "A look inside what I’m building now. Real interfaces, the decisions behind them, and a clear view of what’s ready to explore.";
 
-const getRequiredStyle = (
-  className: string | undefined,
-  key: string,
-): string => {
-  if (!className) {
-    throw new Error(`Missing CSS module class: ${key}`);
-  }
+export const ProjectsSection = memo(() => (
+  <Section
+    id="projects"
+    label="Projects"
+    headline={projectsHeadline}
+    caption={projectsCaption}
+    contentClassName={styles.wrapper ?? ""}
+  >
+    <ProjectsGrid projects={getProjects()} />
+  </Section>
+));
+ProjectsSection.displayName = "ProjectsSection";
 
-  return className;
-};
-
-export const ProjectsSection = async () => {
-  const data = await getProjects();
-  const slots = [...PROJECT_SLOTS];
-  const projectsToShow = shuffleByDeterministicWeight(
-    data,
-    (project) => project.slug,
-  ).slice(0, slots.length);
-  const slotSeed = projectsToShow.map((project) => project.slug).join("|");
-  const shuffledSlots = shuffleByDeterministicWeight(
-    slots,
-    (slot, index) => `${slot.id}-${slotSeed}-${index}`,
-  );
-
-  const projectsWithLayout = projectsToShow.map((project, index) => {
-    const layout = shuffledSlots.at(index);
-
-    if (!layout) {
-      throw new Error(`Missing project layout slot for ${project.slug}`);
-    }
-
-    return {
-      ...project,
-      layout,
-    };
-  });
-  const projectsGridWrapper = getRequiredStyle(
-    styles["projects-grid-wrapper"],
-    "projects-grid-wrapper",
-  );
-
-  return (
-    <Section
-      id="projects"
-      label="Work"
-      headline={projectsHeadline}
-      caption={projectsCaption}
-      contentClassName={projectsGridWrapper}
-    >
-      <ProjectsGrid projects={projectsWithLayout} />
-    </Section>
-  );
-};
-
-const hashToUnitInterval = (input: string): number => {
-  let hash = 0;
-  for (let index = 0; index < input.length; index += 1) {
-    hash = Math.imul(31, hash) + input.charCodeAt(index);
-    hash |= 0; // keep 32-bit int
-  }
-  return (hash >>> 0) / 0xffffffff;
-};
-
-const shuffleByDeterministicWeight = <T,>(
-  items: readonly T[],
-  keyForItem: (item: T, index: number) => string,
-): T[] =>
-  items
-    .map((item, index) => ({
-      item,
-      weight: hashToUnitInterval(keyForItem(item, index)),
-    }))
-    .sort((a, b) => a.weight - b.weight)
-    .map(({ item }) => item);
-
-const placeholderCards = PROJECT_SLOTS;
-
-export const ProjectsSectionSkeleton = () => {
-  const projectsGridWrapper = getRequiredStyle(
-    styles["projects-grid-wrapper"],
-    "projects-grid-wrapper",
-  );
-
-  return (
-    <Section
-      id="projects"
-      label="Work"
-      headline={projectsHeadline}
-      caption={projectsCaption}
-      contentClassName={projectsGridWrapper}
-    >
-      <div className={styles["projects-bento-grid"]} aria-hidden>
-        {placeholderCards.map((slot) => (
-          <article
-            key={slot.id}
-            className={clsx(
-              styles["projects-card"],
-              styles[`tone-${slot.tone}`],
-              styles[`area-${slot.area}`],
-              styles["projects-card--pending"],
-            )}
-          >
-            <div className={styles["projects-card__header"]}>
-              <span className="skeleton h-3 w-16 rounded-full" />
-              <span className="skeleton h-6 w-2/3 rounded-full" />
-            </div>
-            <div className={clsx(styles["projects-card__media"], "skeleton")} />
-            <span className="skeleton block h-4 w-11/12 rounded-full" />
-            <span className="skeleton block h-4 w-8/12 rounded-full" />
-            <div className={styles["projects-card__tech"]}>
-              <span className="skeleton h-6 w-20 rounded-full" />
-              <span className="skeleton h-6 w-16 rounded-full" />
-              <span className="skeleton h-6 w-24 rounded-full" />
-            </div>
-            <div className={styles["projects-card__cta"]}>
-              <span className="skeleton h-4 w-28 rounded-full" />
-            </div>
-          </article>
-        ))}
-      </div>
-    </Section>
-  );
-};
+export const ProjectsSectionSkeleton = memo(() => (
+  <Section
+    id="projects-loading"
+    label="Projects"
+    headline={projectsHeadline}
+    caption={projectsCaption}
+    contentClassName={styles.wrapper ?? ""}
+  >
+    <div className={styles.grid} aria-hidden="true">
+      {getProjects().map((project) => (
+        <div key={project.slug} className={styles.card}>
+          <span className="skeleton block aspect-[1.44] w-full" />
+          <div className={styles.cardBody}>
+            <span className="skeleton block h-8 w-2/3 rounded" />
+            <span className="skeleton block h-24 w-full rounded" />
+          </div>
+        </div>
+      ))}
+    </div>
+  </Section>
+));
+ProjectsSectionSkeleton.displayName = "ProjectsSectionSkeleton";

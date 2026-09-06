@@ -9,7 +9,7 @@ import { skills } from "@/data/skills";
 import { renderWithProviders } from "@/test-utils/render-with-providers";
 
 describe("Section components", () => {
-  it("renders hero with working principles", () => {
+  it("renders hero with clear role and professional links", () => {
     render(<Hero />);
 
     expect(
@@ -18,8 +18,8 @@ describe("Section components", () => {
     expect(
       screen.getByText(/Software for teams that work live\./i),
     ).toBeInTheDocument();
-    expect(screen.getByText(/State people can act on/i)).toBeInTheDocument();
-    expect(screen.getByText(/Profile snapshot/i)).toBeInTheDocument();
+    expect(screen.getByText(/At a glance/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Profile snapshot/i)).toBeInTheDocument();
     expect(screen.queryByText(/Working console/i)).not.toBeInTheDocument();
   });
 
@@ -27,10 +27,10 @@ describe("Section components", () => {
     render(<AboutSection />);
 
     expect(
-      screen.getByRole("heading", { name: /Find the pressure point/i }),
+      screen.getByRole("heading", { name: /Understand the workflow/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /Make the work readable/i }),
+      screen.getByRole("heading", { name: /Make behavior clear/i }),
     ).toBeInTheDocument();
     skills.forEach((skill) => {
       expect(screen.getAllByText(skill).length).toBeGreaterThan(0);
@@ -38,7 +38,7 @@ describe("Section components", () => {
   });
 
   it("details recent experience entries", async () => {
-    renderWithProviders(await ExperienceSection());
+    renderWithProviders(<ExperienceSection />);
 
     experiences.forEach(({ company, bullets, stack, workTypes }) => {
       expect(screen.getByText(company)).toBeInTheDocument();
@@ -59,7 +59,7 @@ describe("Section components", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: /Have a product or platform problem worth untangling/i,
+        name: /Let’s talk about your team/i,
       }),
     ).toBeInTheDocument();
     expect(

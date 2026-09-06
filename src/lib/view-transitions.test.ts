@@ -2,12 +2,25 @@ import { describe, expect, it, vi } from "vitest";
 import { runViewTransition } from "@/lib/view-transitions";
 
 const replaceDocument = (handler: ProxyHandler<Document>) => {
-  const originalDocument = globalThis.document;
-  const proxyDocument = new Proxy(originalDocument as Document, handler);
-  (globalThis as unknown as { document: Document }).document = proxyDocument;
+  const originalDescriptor = Object.getOwnPropertyDescriptor(
+    document,
+    "startViewTransition",
+  );
+  const proxyDocument = new Proxy(document, handler);
+  const method = proxyDocument.startViewTransition;
+  Object.defineProperty(document, "startViewTransition", {
+    configurable: true,
+    writable: true,
+    value: method,
+  });
   return () => {
-    (globalThis as unknown as { document: Document }).document =
-      originalDocument;
+    if (originalDescriptor)
+      Object.defineProperty(
+        document,
+        "startViewTransition",
+        originalDescriptor,
+      );
+    else Reflect.deleteProperty(document, "startViewTransition");
   };
 };
 

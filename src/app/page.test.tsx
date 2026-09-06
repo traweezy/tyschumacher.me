@@ -15,6 +15,11 @@ vi.mock("@/components/sections/experience", () => ({
   ExperienceSectionSkeleton: () => <div>Loading experience</div>,
 }));
 
+vi.mock("@/components/sections/projects", () => ({
+  ProjectsSection: () => <div>Projects content</div>,
+  ProjectsSectionSkeleton: () => <div>Loading projects</div>,
+}));
+
 vi.mock("@/components/sections/about", () => ({
   AboutSection: () => <div>About content</div>,
 }));
@@ -28,13 +33,14 @@ vi.mock("@/components/layout/site-footer", () => ({
 }));
 
 describe("Home page", () => {
-  it("renders each visible section and wraps experience in suspense", async () => {
+  it("renders each visible section", async () => {
     const pageModule = await import("./page");
     const Home = pageModule.default;
 
     render(await Home());
 
     expect(screen.getByText("Hero section")).toBeInTheDocument();
+    expect(screen.getByText("Projects content")).toBeInTheDocument();
     expect(screen.getByText("Experience content")).toBeInTheDocument();
     expect(screen.getByText("About content")).toBeInTheDocument();
     expect(screen.getByText("Contact content")).toBeInTheDocument();

@@ -13,9 +13,21 @@ import { useUIStore } from "@/state/ui-store";
 import { renderWithProviders } from "@/test-utils/render-with-providers";
 
 vi.mock("next/image", () => ({
-  default: ({ alt, ...props }: ComponentPropsWithoutRef<"img">) => (
+  default: ({
+    alt,
+    src,
+    width,
+    height,
+    className,
+  }: ComponentPropsWithoutRef<"img">) => (
     // eslint-disable-next-line @next/next/no-img-element
-    <img alt={alt} {...props} />
+    <img
+      alt={alt}
+      src={src}
+      width={width}
+      height={height}
+      className={className}
+    />
   ),
 }));
 
@@ -99,7 +111,7 @@ describe("SiteHeader", () => {
       screen.getByRole("link", { name: /Experience/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("img", { name: /portrait of tyler schumacher/i }),
+      screen.getByRole("img", { name: /tyler schumacher’s avatar/i }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /show working mode/i }),
@@ -261,19 +273,23 @@ describe("SiteHeader", () => {
     renderHeaderWithSections();
 
     await waitFor(() =>
-      expect(screen.getByRole("link", { name: /Approach/i })).toHaveAttribute(
+      expect(screen.getByRole("link", { name: /Skills/i })).toHaveAttribute(
         "aria-current",
         "location",
       ),
     );
 
-    const observer = MockIntersectionObserver.instances[0];
+    const observer = MockIntersectionObserver.instances.find((instance) =>
+      instance.observe.mock.calls.some(
+        ([target]) => target === document.getElementById("experience"),
+      ),
+    );
     expect(observer).toBeDefined();
     observer?.trigger([
       {
         target: document.getElementById("about")!,
-        isIntersecting: true,
-        intersectionRatio: 0.3,
+        isIntersecting: false,
+        intersectionRatio: 0,
         boundingClientRect: { top: 220 } as DOMRectReadOnly,
       },
       {
@@ -289,6 +305,48 @@ describe("SiteHeader", () => {
         "aria-current",
         "location",
       ),
+    );
+  });
+
+  test("keeps the later visible section when only its predecessor exits", async () => {
+    renderHeaderWithSections();
+    const observer = MockIntersectionObserver.instances.find((instance) =>
+      instance.observe.mock.calls.some(
+        ([target]) => target === document.getElementById("projects"),
+      ),
+    );
+    expect(observer).toBeDefined();
+    const home = {
+      target: document.getElementById("home")!,
+      isIntersecting: true,
+      intersectionRatio: 0.1,
+      boundingClientRect: { top: -360 } as DOMRectReadOnly,
+    };
+    act(() => {
+      observer?.trigger([
+        home,
+        {
+          target: document.getElementById("projects")!,
+          isIntersecting: true,
+          intersectionRatio: 0.006,
+          boundingClientRect: { top: 176 } as DOMRectReadOnly,
+        },
+      ]);
+    });
+    await waitFor(() =>
+      expect(screen.getByRole("link", { name: /^Projects$/ })).toHaveAttribute(
+        "aria-current",
+        "location",
+      ),
+    );
+    act(() => {
+      observer?.trigger([
+        { ...home, isIntersecting: false, intersectionRatio: 0 },
+      ]);
+    });
+    expect(screen.getByRole("link", { name: /^Projects$/ })).toHaveAttribute(
+      "aria-current",
+      "location",
     );
   });
 

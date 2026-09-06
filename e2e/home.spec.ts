@@ -23,17 +23,23 @@ test.describe("Home experience", () => {
     const skipLink = page.getByRole("link", { name: /Skip to content/i });
     await expect(skipLink).toHaveAttribute("href", "#main-content");
 
-    const focusAreas = page.locator(".hero__principle");
-    await expect(focusAreas).toHaveCount(3);
-    await expect(focusAreas.first()).toContainText(/State people can act on/i);
+    const snapshot = page.getByRole("complementary", {
+      name: "Profile snapshot",
+    });
+    await expect(snapshot.getByText("At a glance")).toBeVisible();
+    for (const link of secondaryNav) {
+      const profileLink = snapshot.getByRole("link", { name: link.title });
+      await expect(profileLink).toHaveAttribute("href", link.href);
+      await expect(profileLink.locator("svg").first()).toBeVisible();
+    }
 
     const viewExperience = page.getByRole("link", {
-      name: /Review experience/i,
+      name: /Explore projects/i,
     });
-    await expect(viewExperience).toHaveAttribute("href", "#experience");
+    await expect(viewExperience).toHaveAttribute("href", "#projects");
 
     await expect(
-      page.getByRole("link", { name: /Start a conversation/i }),
+      page.getByRole("link", { name: /Get in touch/i }),
     ).toHaveAttribute("href", "#contact");
 
     const workingModeTrigger = page.getByRole("button", {
@@ -45,7 +51,7 @@ test.describe("Home experience", () => {
     ).toBeVisible();
     await page.keyboard.press("Escape");
 
-    await expect(page.locator("#projects")).toHaveCount(0);
+    await expect(page.locator("#projects")).toHaveCount(1);
 
     await page
       .getByRole("navigation", { name: /primary/i })
@@ -147,7 +153,7 @@ test.describe("Home experience", () => {
     const dialog = page.getByRole("dialog", { name: /command palette/i });
     await expect(dialog).toHaveAttribute("data-state", "open");
     await expect(dialog.getByText(/Quick actions/i)).toBeVisible();
-    await dialog.getByRole("option", { name: /Approach/i }).click();
+    await dialog.getByRole("option", { name: /Skills/i }).click();
     await expect(page.locator("#about")).toBeVisible();
   });
 
@@ -317,38 +323,63 @@ test.describe("Home experience", () => {
     await popup.close();
   });
 
-  test("command palette resume quick action triggers download in a new tab", async ({
+  test("resume actions download the PDF without leaving the portfolio", async ({
     page,
+    context,
+    request,
   }) => {
     await page.goto("/");
+    const originalURL = page.url();
+    const originalTabs = context.pages().length;
+    const response = await request.get("/tyler-schumacher-resume.pdf");
+    expect(response.headers()["content-disposition"]).toBe(
+      'attachment; filename="tyler-schumacher-resume.pdf"',
+    );
+    expect((await response.body()).subarray(0, 5).toString()).toBe("%PDF-");
 
-    const paletteButton = page
-      .getByRole("button", { name: /Open command palette/i })
-      .first();
-    await paletteButton.click();
-    const dialog = page.getByRole("dialog", { name: /command palette/i });
-    await expect(dialog).toHaveAttribute("data-state", "open");
+    for (const region of [
+      page.locator("header.site-header"),
+      page.locator("#home"),
+    ]) {
+      const action = region.getByRole("link", {
+        name: "Download resume (PDF)",
+      });
+      const downloadPromise = page.waitForEvent("download");
+      await action.click();
+      const download = await downloadPromise;
+      expect(download.suggestedFilename()).toBe("tyler-schumacher-resume.pdf");
+      expect(await download.failure()).toBeNull();
+    }
 
-    await page.evaluate(() => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as any).__resumeHref = null;
-      window.open = (url: string | URL | undefined) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window as any).__resumeHref =
-          typeof url === "string" ? url : (url?.toString() ?? "");
-        return null;
-      };
-    });
+    await page
+      .getByRole("button", { name: "Open command palette" })
+      .first()
+      .click();
+    const dialog = page.getByRole("dialog", { name: "Command palette" });
+    await dialog.getByRole("combobox").fill("resume");
+    await expect(dialog.getByRole("option")).toHaveCount(1);
+    const paletteDownload = page.waitForEvent("download");
+    await dialog
+      .getByRole("option", { name: "Download resume", exact: true })
+      .click();
+    expect((await paletteDownload).suggestedFilename()).toBe(
+      "tyler-schumacher-resume.pdf",
+    );
+    await expect(dialog).not.toBeVisible();
 
-    await dialog.getByRole("option", { name: /Resume/i }).click();
-    await expect
-      .poll(async () =>
-        page.evaluate(() => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          return (window as any).__resumeHref as string | null;
-        }),
-      )
-      .toMatch(/\/tyler-schumacher-resume\.pdf$/i);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.getByRole("button", { name: "Open navigation" }).click();
+    const navigation = page.getByRole("dialog", { name: "Site navigation" });
+    const mobileDownload = page.waitForEvent("download");
+    await navigation
+      .getByRole("link", { name: "Download resume (PDF)" })
+      .click();
+    expect((await mobileDownload).suggestedFilename()).toBe(
+      "tyler-schumacher-resume.pdf",
+    );
+    await expect(navigation).not.toBeVisible();
+    expect(page.url()).toBe(originalURL);
+    expect(context.pages()).toHaveLength(originalTabs);
   });
 
   test("renders all experience entries with expected metadata", async ({
@@ -381,24 +412,27 @@ test.describe("Home experience", () => {
     ).toHaveCount(0);
   });
 
-  test("displays approach section skills and profile context", async ({
+  test("displays grouped skills with visible decorative icons and profile context", async ({
     page,
   }) => {
     await page.goto("/");
 
-    const aboutRegion = page.getByRole("region", { name: /Approach/i });
+    const aboutRegion = page.getByRole("region", { name: /Skills/i });
     await expect(aboutRegion).toBeVisible();
 
     await expect(aboutRegion.getByText(profile.bio[0])).toBeVisible();
     await expect(aboutRegion.getByText(profile.bio[1])).toBeVisible();
     await expect(
-      aboutRegion.getByText(/Find the pressure point/i),
+      aboutRegion.getByText(/Understand the workflow/i),
     ).toBeVisible();
 
     const skillChips = aboutRegion.locator(".about-skill");
     await expect(skillChips).toHaveCount(skills.length);
     for (const skill of skills) {
-      await expect(skillChips.filter({ hasText: skill })).toHaveCount(1);
+      const item = skillChips.filter({ hasText: skill });
+      await expect(item).toHaveCount(1);
+      await expect(item.locator("svg")).toBeVisible();
+      await expect(item.locator("svg")).toHaveAttribute("aria-hidden", "true");
     }
   });
 

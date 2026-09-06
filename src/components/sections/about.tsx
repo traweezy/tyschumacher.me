@@ -1,105 +1,83 @@
+import { memo } from "react";
 import { Section } from "@/components/layout/section";
 import { TechnologyIcon } from "@/components/ui/technology-icons";
 import { profile } from "@/data/profile";
-import { buildPriorityItems, coreToolItems } from "@/data/skills";
+import { buildPriorityItems, skillGroups } from "@/data/skills";
+import type { SkillItem } from "@/data/skills";
 
-const approachPillars = [
+const workingPractices = [
   {
-    title: "Find the pressure point",
-    body: "I start with the moment where a user can lose time, money, or confidence. That gives the work a concrete center.",
+    title: "Understand the workflow",
+    body: "Start with users, constraints, and the decisions the software needs to support.",
   },
   {
-    title: "Make the work readable",
-    body: "The interface should explain current state; the code path should explain why it changed.",
+    title: "Make behavior clear",
+    body: "Design readable interfaces and instrument the services behind them so teams can understand what happened.",
   },
   {
-    title: "Put the build in order",
-    body: "When requirements are partial or opinions conflict, I turn them into a release path with clear tradeoffs.",
+    title: "Plan for ownership",
+    body: "Review tradeoffs, test critical paths, and make releases and recovery part of the design.",
   },
 ] as const;
 
-export const AboutSection = () => (
+const SkillList = memo<{ items: readonly SkillItem[]; label: string }>(
+  ({ items, label }) => (
+    <ul className="about-skills" aria-label={label}>
+      {items.map((skill) => (
+        <li
+          key={skill.name}
+          className="about-skill"
+          data-skill-accent={skill.accentKey}
+        >
+          <span className="about-skill__mark" aria-hidden="true">
+            <TechnologyIcon name={skill.icon} className="about-skill__icon" />
+          </span>
+          <span className="about-skill__label">{skill.name}</span>
+        </li>
+      ))}
+    </ul>
+  ),
+);
+SkillList.displayName = "SkillList";
+
+export const AboutSection = memo(() => (
   <Section
     id="about"
-    label="Approach"
-    headline="How I decide what to build"
+    label="Skills"
+    headline="Skills & tools"
     caption={profile.bio[0]}
-    overline={profile.bio[1]}
-    contentClassName="about-grid"
+    contentClassName="skills-content"
   >
-    <div className="about-card about-card--sequence">
-      <p className="about-lead__kicker type-eyebrow">How I work</p>
-      <ol className="about-sequence">
-        {approachPillars.map((pillar, index) => (
-          <li key={pillar.title} className="about-sequence__item">
-            <span className="about-sequence__index" aria-hidden="true">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <div className="about-sequence__content">
-              <h3 className="about-card__title type-heading-4 measure-short">
-                {pillar.title}
-              </h3>
-              <p className="type-body text-[var(--text-secondary)]">
-                {pillar.body}
-              </p>
-            </div>
+    <div className="skills-groups">
+      {skillGroups.map((group) => (
+        <div key={group.title} className="about-card">
+          <h3 className="skills-group__title">{group.title}</h3>
+          <SkillList items={group.items} label={group.title} />
+        </div>
+      ))}
+    </div>
+    <div className="working-practices">
+      <div>
+        <h3 className="type-heading-3">How I work</h3>
+        <p className="type-body text-[var(--text-secondary)]">
+          {profile.bio[1]}
+        </p>
+      </div>
+      <ol className="working-practices__list">
+        {workingPractices.map((practice) => (
+          <li key={practice.title}>
+            <h4 className="skills-group__title">{practice.title}</h4>
+            <p className="type-body-sm text-[var(--text-secondary)]">
+              {practice.body}
+            </p>
           </li>
         ))}
       </ol>
     </div>
-    <div className="about-stack">
-      <div className="about-card about-card--tools">
-        <div className="about-meta">
-          <p className="about-meta__label type-eyebrow">Tool stack</p>
-          <p className="about-meta__value type-body">
-            The stack changes by problem. I prefer tools that help the team
-            ship, inspect behavior, and keep ownership clear after launch.
-          </p>
-        </div>
-        <div className="about-skills">
-          {coreToolItems.map((skill) => (
-            <span
-              key={skill.name}
-              className="about-skill"
-              data-skill-accent={skill.accentKey}
-            >
-              <span className="about-skill__mark" aria-hidden="true">
-                <TechnologyIcon
-                  name={skill.icon}
-                  className="about-skill__icon"
-                />
-              </span>
-              <span className="about-skill__label">{skill.name}</span>
-            </span>
-          ))}
-        </div>
-      </div>
-      <div className="about-card about-card--focus">
-        <div className="about-meta">
-          <p className="about-meta__label type-eyebrow">What I optimize for</p>
-          <p className="about-meta__value type-body">
-            These are the constraints I keep visible while the product is
-            designed, built, and released.
-          </p>
-        </div>
-        <div className="about-skills about-skills--priority">
-          {buildPriorityItems.map((skill) => (
-            <span
-              key={skill.name}
-              className="about-skill about-skill--priority"
-              data-skill-accent={skill.accentKey}
-            >
-              <span className="about-skill__mark" aria-hidden="true">
-                <TechnologyIcon
-                  name={skill.icon}
-                  className="about-skill__icon"
-                />
-              </span>
-              <span className="about-skill__label">{skill.name}</span>
-            </span>
-          ))}
-        </div>
-      </div>
+    <div className="engineering-priorities">
+      <h3 className="skills-group__title">Engineering priorities</h3>
+      <SkillList items={buildPriorityItems} label="Engineering priorities" />
     </div>
   </Section>
-);
+));
+AboutSection.displayName = "AboutSection";

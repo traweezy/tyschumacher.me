@@ -23,7 +23,7 @@ test.describe("Mobile navigation", () => {
       ).toBeVisible();
     }
 
-    await mobileNav.getByRole("link", { name: /Approach/i }).click();
+    await mobileNav.getByRole("link", { name: /Skills/i }).click();
 
     await expect(mobileNav).not.toBeVisible();
 

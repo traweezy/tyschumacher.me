@@ -1,4 +1,17 @@
 import {
+  ArrowLeftRight,
+  Container,
+  CreditCard,
+  Database,
+  Network,
+  Puzzle,
+  Radio,
+  RadioTower,
+  ServerCog,
+  Shapes,
+  SquareTerminal,
+  Table2,
+  Workflow,
   Accessibility,
   Activity,
   BriefcaseBusiness,
@@ -13,11 +26,29 @@ import {
   ShoppingBag,
   Trophy,
 } from "lucide-react";
+import { memo } from "react";
 import type { SVGProps } from "react";
 
 type TechnologyIconProps = SVGProps<SVGSVGElement>;
 
 export type TechnologyIconName =
+  | "wxt"
+  | "indexeddb"
+  | "grpc"
+  | "kafka"
+  | "grafana"
+  | "redis"
+  | "nats"
+  | "opentelemetry"
+  | "spring"
+  | "websocket"
+  | "sse"
+  | "bubbletea"
+  | "podman"
+  | "medusa"
+  | "stripe"
+  | "konva"
+  | "aggrid"
   | "accessibility"
   | "analytics"
   | "compliance"
@@ -48,11 +79,45 @@ export type TechnologyIconName =
   | "typescript"
   | "zustand";
 
-export const TechnologyIcon = ({
-  name,
-  ...props
-}: TechnologyIconProps & { name: TechnologyIconName }) => {
+export const TechnologyIcon = memo<
+  TechnologyIconProps & { name: TechnologyIconName }
+>(({ name, ...props }) => {
   switch (name) {
+    case "wxt":
+      return <Puzzle aria-hidden="true" {...props} />;
+    case "indexeddb":
+      return <Database aria-hidden="true" {...props} />;
+    case "grpc":
+      return <Network aria-hidden="true" {...props} />;
+    case "kafka":
+      return <Workflow aria-hidden="true" {...props} />;
+    case "grafana":
+      return <ChartNoAxesCombined aria-hidden="true" {...props} />;
+    case "redis":
+      return <Database aria-hidden="true" {...props} />;
+    case "nats":
+      return <RadioTower aria-hidden="true" {...props} />;
+    case "opentelemetry":
+      return <Activity aria-hidden="true" {...props} />;
+    case "spring":
+      return <ServerCog aria-hidden="true" {...props} />;
+    case "websocket":
+      return <ArrowLeftRight aria-hidden="true" {...props} />;
+    case "sse":
+      return <Radio aria-hidden="true" {...props} />;
+    case "bubbletea":
+      return <SquareTerminal aria-hidden="true" {...props} />;
+    case "podman":
+      return <Container aria-hidden="true" {...props} />;
+    case "medusa":
+      return <ShoppingBag aria-hidden="true" {...props} />;
+    case "stripe":
+      return <CreditCard aria-hidden="true" {...props} />;
+    case "konva":
+      return <Shapes aria-hidden="true" {...props} />;
+    case "aggrid":
+      return <Table2 aria-hidden="true" {...props} />;
+
     case "accessibility":
       return <Accessibility aria-hidden="true" {...props} />;
     case "analytics":
@@ -238,4 +303,5 @@ export const TechnologyIcon = ({
         </svg>
       );
   }
-};
+});
+TechnologyIcon.displayName = "TechnologyIcon";

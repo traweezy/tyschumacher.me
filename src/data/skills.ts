@@ -6,21 +6,59 @@ export type SkillItem = {
   name: string;
 };
 
-export const coreToolItems: SkillItem[] = [
-  { name: "React 19", icon: "react", accentKey: "react" },
-  { name: "Next.js", icon: "nextdotjs", accentKey: "next" },
-  { name: "TypeScript", icon: "typescript", accentKey: "typescript" },
-  { name: "Java", icon: "openjdk", accentKey: "java" },
-  { name: "Go", icon: "go", accentKey: "go" },
-  { name: "Node.js", icon: "nodedotjs", accentKey: "node" },
-  { name: "PostgreSQL", icon: "postgresql", accentKey: "postgresql" },
-  { name: "GraphQL", icon: "graphql", accentKey: "graphql" },
-  { name: "Kubernetes", icon: "kubernetes", accentKey: "kubernetes" },
-  { name: "Docker", icon: "docker", accentKey: "docker" },
-  { name: "Tailwind CSS", icon: "tailwindcss", accentKey: "tailwind" },
-  { name: "Zustand", icon: "zustand", accentKey: "zustand" },
-  { name: "TanStack Query", icon: "reactquery", accentKey: "tanstack" },
-] as const;
+export type SkillGroup = { title: string; items: readonly SkillItem[] };
+
+export const skillGroups = [
+  {
+    title: "Languages & interfaces",
+    items: [
+      { name: "TypeScript", icon: "typescript", accentKey: "typescript" },
+      { name: "Java", icon: "openjdk", accentKey: "openjdk" },
+      { name: "Go", icon: "go", accentKey: "go" },
+      { name: "React", icon: "react", accentKey: "react" },
+      { name: "Next.js", icon: "nextdotjs", accentKey: "nextdotjs" },
+      { name: "Tailwind CSS", icon: "tailwindcss", accentKey: "tailwindcss" },
+      { name: "Zustand", icon: "zustand", accentKey: "zustand" },
+      { name: "TanStack Query", icon: "reactquery", accentKey: "reactquery" },
+    ],
+  },
+  {
+    title: "Backend & APIs",
+    items: [
+      { name: "Node.js", icon: "nodedotjs", accentKey: "nodedotjs" },
+      { name: "Spring Boot", icon: "spring", accentKey: "spring" },
+      { name: "PostgreSQL", icon: "postgresql", accentKey: "postgresql" },
+      { name: "Redis", icon: "redis", accentKey: "redis" },
+      { name: "GraphQL", icon: "graphql", accentKey: "graphql" },
+      { name: "gRPC", icon: "grpc", accentKey: "grpc" },
+    ],
+  },
+  {
+    title: "Messaging & live systems",
+    items: [
+      { name: "Apache Kafka", icon: "kafka", accentKey: "kafka" },
+      { name: "NATS", icon: "nats", accentKey: "nats" },
+      { name: "WebSockets", icon: "websocket", accentKey: "websocket" },
+      { name: "Server-sent events", icon: "sse", accentKey: "sse" },
+    ],
+  },
+  {
+    title: "Delivery & observability",
+    items: [
+      { name: "Kubernetes", icon: "kubernetes", accentKey: "kubernetes" },
+      { name: "Docker", icon: "docker", accentKey: "docker" },
+      { name: "Podman", icon: "podman", accentKey: "podman" },
+      { name: "Grafana", icon: "grafana", accentKey: "grafana" },
+      {
+        name: "OpenTelemetry",
+        icon: "opentelemetry",
+        accentKey: "opentelemetry",
+      },
+    ],
+  },
+] as const satisfies readonly SkillGroup[];
+
+export const coreToolItems = skillGroups.flatMap((group) => [...group.items]);
 
 export const buildPriorityItems: SkillItem[] = [
   { name: "Accessibility", icon: "accessibility", accentKey: "accessibility" },

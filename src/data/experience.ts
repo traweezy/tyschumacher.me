@@ -29,12 +29,12 @@ export const experiences: ExperienceEntry[] = [
     start: "Dec 2021",
     location: "Jersey City, NJ · Remote",
     caseLog: [
-      { label: "Surface", value: "Live odds, trader tools, analytics" },
+      { label: "Product", value: "Live odds, trader tools, analytics" },
       {
-        label: "Pressure",
+        label: "Focus",
         value: "Large event traffic and fast odds changes",
       },
-      { label: "Feedback", value: "Trader feedback and FullStory sessions" },
+      { label: "Practice", value: "Trader feedback and FullStory sessions" },
     ],
     workTypes: [
       {
@@ -70,10 +70,10 @@ export const experiences: ExperienceEntry[] = [
       },
     ],
     bullets: [
-      "Created Go and Java services that normalized live data providers and kept betting surfaces current during large event traffic.",
+      "Created Go and Java services that normalized live data providers and kept betting interfaces current during major events.",
       "Shipped React screens for live odds, trader tools, and internal analytics with virtualization and accessible patterns for long event windows.",
       "Used FullStory sessions and trader feedback to turn friction into concrete design and backlog changes.",
-      "Mentored engineers, reviewed designs, and kept delivery rituals focused on decisions instead of ceremony.",
+      "Mentored engineers, reviewed designs, and helped teams make delivery decisions.",
     ],
   },
   {
@@ -83,12 +83,12 @@ export const experiences: ExperienceEntry[] = [
     end: "Dec 2021",
     location: "New York, NY",
     caseLog: [
-      { label: "Surface", value: "Trading workbenches and services" },
+      { label: "Product", value: "Trading workbenches and services" },
       {
-        label: "Pressure",
+        label: "Focus",
         value: "Compliance-sensitive real-time workflows",
       },
-      { label: "Feedback", value: "Safer CI and deployment paths" },
+      { label: "Practice", value: "Safer CI and deployment paths" },
     ],
     workTypes: [
       {
@@ -117,25 +117,25 @@ export const experiences: ExperienceEntry[] = [
       },
     ],
     bullets: [
-      "Built Node.js and Java services for a high-volume trading platform, with attention to throughput and compliance paths.",
+      "Built Node.js and Java services for a high-volume trading platform, with attention to throughput and compliance requirements.",
       "Moved legacy Flash workbenches into modular React tools so traders could work in a modern interface and teams could iterate faster.",
       "Improved GitLab CI and Kubernetes deployment paths so releases were easier to inspect and recover.",
     ],
   },
   {
     company: "Lab49",
-    role: "Consultant Engineer",
+    role: "Front End Developer",
     start: "Jun 2017",
     end: "Dec 2017",
     location: "New York, NY",
     caseLog: [
-      { label: "Surface", value: "Bank research portals" },
+      { label: "Product", value: "Bank research portals" },
       {
-        label: "Pressure",
+        label: "Focus",
         value: "Accessibility, compliance, and performance",
       },
       {
-        label: "Feedback",
+        label: "Practice",
         value: "Requirements engineers could build against",
       },
     ],
@@ -177,20 +177,20 @@ export const experiences: ExperienceEntry[] = [
       },
     ],
     bullets: [
-      "Delivered React and Java work for trading research portals at global banks while balancing accessibility, compliance, and performance requirements.",
+      "Built React interfaces for bank research portals and collaborated with Java backend teams on accessibility, compliance, and performance requirements.",
       "Worked with product and legal teams to turn complex requirements into screens and services engineers could build.",
     ],
   },
   {
     company: "Twisted Rope",
-    role: "Full Stack Developer",
+    role: "Full Stack Web Developer",
     start: "Oct 2015",
     end: "Jun 2017",
     location: "Buffalo, NY",
     caseLog: [
-      { label: "Surface", value: "Hospitality and retail web apps" },
-      { label: "Pressure", value: "Responsive campaign delivery" },
-      { label: "Feedback", value: "Analytics and SEO foundations" },
+      { label: "Product", value: "Hospitality and retail web apps" },
+      { label: "Focus", value: "Responsive campaign delivery" },
+      { label: "Practice", value: "Analytics and SEO foundations" },
     ],
     workTypes: [
       { name: "Media", icon: "media", accentKey: "media", kind: "domain" },
@@ -205,7 +205,6 @@ export const experiences: ExperienceEntry[] = [
     stack: [
       { name: "React", icon: "react", accentKey: "react" },
       { name: "Node.js", icon: "nodedotjs", accentKey: "node" },
-      { name: "Tailwind CSS", icon: "tailwindcss", accentKey: "tailwind" },
       {
         name: "Accessibility",
         icon: "accessibility",

@@ -5,6 +5,7 @@ import { Command as CommandPrimitive } from "cmdk";
 import { useEffect, useEffectEvent, useMemo } from "react";
 import {
   BriefcaseBusiness,
+  Code2,
   Clipboard,
   Download,
   ExternalLink,
@@ -26,6 +27,7 @@ import {
   useToggleCommandOpen,
 } from "@/state/ui-store";
 import { runViewTransition } from "@/lib/view-transitions";
+import { resumeDownloadProps } from "@/lib/link-behavior";
 import { cn } from "@/lib/utils";
 import styles from "./command-palette.module.css";
 
@@ -43,7 +45,7 @@ type CommandAction =
       href: string;
       icon: LucideIcon;
       id: string;
-      kind: "Jump" | "Open";
+      kind: "Jump" | "Open" | "Download";
       keywords: string;
       title: string;
       type: "link";
@@ -92,6 +94,7 @@ const copyText = async (text: string): Promise<void> => {
 };
 
 const getSectionIcon = (id: string): LucideIcon => {
+  if (id === "projects") return Code2;
   if (id === "experience") {
     return BriefcaseBusiness;
   }
@@ -140,7 +143,7 @@ export const CommandPalette = () => {
         type: "link",
       })),
       {
-        description: "Switch between the avatar-aligned light and dark themes.",
+        description: "Switch between light and dark themes.",
         icon: Moon,
         id: "toggle-theme",
         kind: "Mode",
@@ -160,14 +163,17 @@ export const CommandPalette = () => {
       ...secondaryNav.map((item): CommandAction => ({
         description:
           item.id === "resume"
-            ? "Open the resume PDF in a new tab."
+            ? "Download the resume as a PDF."
             : `Open ${item.title} in a new tab.`,
         href: item.href,
         icon: getExternalIcon(item.id),
         id: item.id,
-        kind: "Open",
-        keywords: `${item.title} profile external resume`,
-        title: item.title,
+        kind: item.id === "resume" ? "Download" : "Open",
+        keywords:
+          item.id === "resume"
+            ? "resume cv pdf download"
+            : `${item.title} profile external`,
+        title: item.id === "resume" ? "Download resume" : item.title,
         type: "link",
       })),
     ],
@@ -181,12 +187,30 @@ export const CommandPalette = () => {
       if (href.startsWith("#")) {
         const el = document.querySelector(href);
         if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          const reduceMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+          ).matches;
+          el.scrollIntoView({
+            behavior: reduceMotion ? "instant" : "smooth",
+            block: "start",
+          });
+          window.history.replaceState(null, "", href);
+        } else {
+          router.push(`/${href}` as Route);
         }
         return;
       }
-      if (isExternal(href) || href.endsWith(".pdf")) {
-        window.open(href, "_blank", "noreferrer");
+      if (item.kind === "Download") {
+        const link = document.createElement("a");
+        link.href = href;
+        link.download = resumeDownloadProps.download;
+        document.body.append(link);
+        link.click();
+        link.remove();
+        return;
+      }
+      if (isExternal(href)) {
+        window.open(href, "_blank", "noopener,noreferrer");
         return;
       }
       runViewTransition(() => router.push(href as Route));
@@ -243,6 +267,7 @@ export const CommandPalette = () => {
               <CommandPrimitive.Item
                 key={item.id}
                 value={`${item.title} ${item.keywords}`}
+                aria-description={item.description}
                 className={styles.item}
                 onSelect={() => handleSelect(item)}
               >

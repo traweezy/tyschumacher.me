@@ -1,7 +1,8 @@
 export const primaryNav = [
   { id: "home", title: "Home", href: "#home" },
+  { id: "projects", title: "Projects", href: "#projects" },
   { id: "experience", title: "Experience", href: "#experience" },
-  { id: "about", title: "Approach", href: "#about" },
+  { id: "about", title: "Skills", href: "#about" },
   { id: "contact", title: "Contact", href: "#contact" },
 ] as const;
 

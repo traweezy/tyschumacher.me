@@ -42,7 +42,7 @@ describe("CommandPalette", () => {
     const scrollSpy = vi.spyOn(HTMLElement.prototype, "scrollIntoView");
 
     renderWithProviders(<CommandPalette />);
-    fireEvent.click(await screen.findByRole("option", { name: /^Approach$/i }));
+    fireEvent.click(await screen.findByRole("option", { name: /^Skills$/i }));
 
     expect(scrollSpy).toHaveBeenCalledWith({
       behavior: "smooth",
@@ -74,21 +74,31 @@ describe("CommandPalette", () => {
     expect(openSpy).toHaveBeenCalledWith(
       "https://github.com/traweezy",
       "_blank",
-      "noreferrer",
+      "noopener,noreferrer",
     );
   });
 
-  it("treats pdf links as external opens", async () => {
+  it("downloads the resume without opening another tab", async () => {
     useUIStore.setState({ isCommandOpen: true });
     const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
+    const clickSpy = vi
+      .spyOn(HTMLAnchorElement.prototype, "click")
+      .mockImplementation(() => undefined);
 
     renderWithProviders(<CommandPalette />);
-    fireEvent.click(await screen.findByRole("option", { name: /^Resume$/i }));
+    fireEvent.click(
+      await screen.findByRole("option", { name: /^Download resume$/i }),
+    );
 
-    expect(openSpy).toHaveBeenCalledWith(
+    expect(openSpy).not.toHaveBeenCalled();
+    expect(clickSpy).toHaveBeenCalledOnce();
+    expect(clickSpy.mock.instances[0]).toHaveAttribute(
+      "href",
       "/tyler-schumacher-resume.pdf",
-      "_blank",
-      "noreferrer",
+    );
+    expect(clickSpy.mock.instances[0]).toHaveAttribute(
+      "download",
+      "tyler-schumacher-resume.pdf",
     );
   });
 
@@ -118,9 +128,7 @@ describe("CommandPalette", () => {
     );
 
     expect(writeText).toHaveBeenCalledWith(
-      expect.stringContaining(
-        "Tyler Schumacher is a principal product engineer",
-      ),
+      expect.stringContaining("Tyler Schumacher is a software engineer"),
     );
     expect(useUIStore.getState().isCommandOpen).toBe(false);
   });

@@ -1,65 +1,59 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import type { Project } from "@/data/projects";
-import type { ProjectSlot } from "@/components/projects/layout";
-import { ProjectsGrid } from "@/components/projects/projects-grid";
-
-const baseProject: Project = {
-  slug: "test-project",
-  name: "Test Project",
-  summary: "Summary",
-  description: "Description",
-  role: "Engineer",
-  tech: ["React", "TypeScript", "Vitest"],
-  year: "2024",
-  image: { src: "/image.svg", alt: "Screenshot" },
-  links: [{ label: "View", href: "https://example.com" }],
-};
-
-const slot: ProjectSlot = { id: "flare", area: "flare", tone: "violet" };
+import { projects } from "@/data/projects";
+import { ProjectsGrid } from "./projects-grid";
 
 describe("ProjectsGrid", () => {
-  it("renders project content and external link", () => {
-    render(
-      <ProjectsGrid
-        projects={[
-          {
-            ...baseProject,
-            layout: slot,
-          },
-        ]}
-      />,
-    );
-
+  it("shows curated projects in order with honest status and source links", () => {
+    render(<ProjectsGrid projects={projects} />);
     expect(
-      screen.getByRole("heading", { name: "Test Project" }),
-    ).toBeInTheDocument();
-    expect(screen.getByText("Engineer")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "View" })).toHaveAttribute(
-      "target",
-      "_blank",
-    );
-    expect(screen.getAllByText(/React|TypeScript|Vitest/)).toHaveLength(3);
+      screen.getAllByRole("heading", { level: 3 }).map((el) => el.textContent),
+    ).toEqual([
+      "Stackctl",
+      "Remorseless Records",
+      "Relantern",
+      "QuantHelm",
+      "tyschumacher.me",
+    ]);
+    expect(screen.getAllByText("Work in progress")).toHaveLength(3);
+    expect(screen.getAllByText("Source private")).toHaveLength(1);
+    expect(screen.getByText("Live", { exact: true })).toBeInTheDocument();
+    expect(screen.getByText("Released", { exact: true })).toBeInTheDocument();
+    expect(screen.queryByText("Waypoint")).not.toBeInTheDocument();
+    for (const project of projects) {
+      expect(screen.getByText(project.availability)).toBeInTheDocument();
+      expect(screen.getByText(project.contribution)).toBeInTheDocument();
+      for (const link of project.links)
+        expect(
+          screen.getByRole("link", {
+            name: `${link.label} for ${project.name}`,
+          }),
+        ).toHaveAttribute("href", link.href);
+    }
+    expect(screen.getAllByRole("img")).toHaveLength(5);
+    for (const project of projects) {
+      expect(
+        screen.getByRole("img", { name: project.image.alt }),
+      ).toHaveAttribute("src", project.image.src);
+      expect(
+        screen.getByRole("link", {
+          name: `Open full screenshot of ${project.name}`,
+        }),
+      ).toHaveAttribute("href", project.image.src);
+    }
+    expect(
+      screen.queryByRole("link", {
+        name: /source for QuantHelm/,
+      }),
+    ).not.toBeInTheDocument();
   });
-
-  it("renders disabled call-to-action when link is unavailable", () => {
-    render(
-      <ProjectsGrid
-        projects={[
-          {
-            ...baseProject,
-            slug: "placeholder",
-            name: "Placeholder",
-            links: [{ label: "Coming soon", href: "#" }],
-            tech: [],
-            layout: slot,
-          },
-        ]}
-      />,
-    );
-
-    expect(screen.getByText("Coming soon").getAttribute("aria-disabled")).toBe(
-      "true",
-    );
+  it("ships engineering notes in HTML with native progressive disclosure", () => {
+    const { container } = render(<ProjectsGrid projects={projects} />);
+    expect(container.querySelectorAll("details")).toHaveLength(5);
+    expect(container.querySelectorAll("details[open]")).toHaveLength(0);
+    expect(
+      screen.getByText(projects[0].decisions[0].detail),
+    ).toBeInTheDocument();
+    expect(container.querySelector('a[href="#"]')).toBeNull();
   });
 });

@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 import {
-  ArrowUpRight,
-  FileText,
+  ChevronRight,
+  Download,
+  ExternalLink,
   Menu,
   Moon,
   Search,
@@ -30,6 +32,7 @@ import {
   useSetMobileNavOpen,
 } from "@/state/ui-store";
 import { runViewTransition } from "@/lib/view-transitions";
+import { newTabLinkProps, resumeDownloadProps } from "@/lib/link-behavior";
 import { cn } from "@/lib/utils";
 
 const scrollThreshold = 64;
@@ -302,37 +305,50 @@ export const SiteHeader = () => {
       return () => window.removeEventListener("hashchange", syncHash);
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntries = entries.filter((entry) => entry.isIntersecting);
-        if (!visibleEntries.length) {
-          return;
-        }
-
-        visibleEntries.sort((entryA, entryB) => {
-          if (entryB.intersectionRatio !== entryA.intersectionRatio) {
-            return entryB.intersectionRatio - entryA.intersectionRatio;
+    const intersectingSections = new Set<string>();
+    const createSectionObserver = () =>
+      new IntersectionObserver(
+        (entries) => {
+          // Deliveries contain only changed intersections. Retain sections
+          // still in the band, and prefer the later section at a boundary.
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              intersectingSections.add(entry.target.id);
+            } else {
+              intersectingSections.delete(entry.target.id);
+            }
           }
-          return entryA.boundingClientRect.top - entryB.boundingClientRect.top;
-        });
+          const matchingItem = primaryNav.findLast((item) =>
+            intersectingSections.has(item.id),
+          );
+          if (matchingItem) {
+            setActiveSection(matchingItem.id);
+          }
+        },
+        {
+          // Vertical percentage margins use viewport width, which can collapse
+          // the observer on wide screens. Keep a 64px band below the header.
+          rootMargin: `-128px 0px -${Math.max(0, window.innerHeight - 192)}px 0px`,
+          threshold: 0,
+        },
+      );
 
-        const activeId = visibleEntries[0]?.target.id;
-        const matchingItem = primaryNav.find((item) => item.id === activeId);
-        if (matchingItem) {
-          setActiveSection(matchingItem.id);
-        }
-      },
-      {
-        rootMargin: "-18% 0px -58% 0px",
-        threshold: [0.18, 0.35, 0.55, 0.72],
-      },
-    );
-
-    sections.forEach((section) => observer.observe(section));
+    let observer = createSectionObserver();
+    const observeSections = () =>
+      sections.forEach((section) => observer.observe(section));
+    const handleResize = () => {
+      observer.disconnect();
+      intersectingSections.clear();
+      observer = createSectionObserver();
+      observeSections();
+    };
+    observeSections();
+    window.addEventListener("resize", handleResize);
     window.addEventListener("hashchange", syncHash);
 
     return () => {
       observer.disconnect();
+      window.removeEventListener("resize", handleResize);
       window.removeEventListener("hashchange", syncHash);
     };
   }, []);
@@ -368,7 +384,7 @@ export const SiteHeader = () => {
               <span className="site-header__avatar-wrap">
                 <Image
                   src="/images/avatar.png"
-                  alt={`Portrait of ${profile.name}`}
+                  alt={`${profile.name}’s avatar`}
                   width={48}
                   height={48}
                   priority
@@ -376,8 +392,8 @@ export const SiteHeader = () => {
                 />
               </span>
             </button>
-            <a
-              href="#home"
+            <Link
+              href="/#home"
               className="site-header__identity-copy site-header__identity-link focus-ring"
             >
               <span className="site-header__name">{profile.name}</span>
@@ -386,7 +402,7 @@ export const SiteHeader = () => {
                 <span className="site-header__meta-dot" aria-hidden="true" />
                 <span>{profile.location}</span>
               </span>
-            </a>
+            </Link>
             <div
               id={workingModePopoverId}
               popover="auto"
@@ -429,7 +445,7 @@ export const SiteHeader = () => {
               {primaryNav.map((item) => (
                 <a
                   key={item.id}
-                  href={item.href}
+                  href={item.href.startsWith("#") ? `/${item.href}` : item.href}
                   className={cn(
                     "site-header__nav-link",
                     activeSection === item.id &&
@@ -473,12 +489,11 @@ export const SiteHeader = () => {
             {resumeLink ? (
               <a
                 href={resumeLink.href}
-                download
+                {...resumeDownloadProps}
                 className="site-header__utility site-header__utility--primary"
-                aria-label="Download resume (PDF)"
               >
-                <span>Resume</span>
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                <span>Download resume</span>
+                <Download className="h-4 w-4" aria-hidden="true" />
               </a>
             ) : null}
           </div>
@@ -531,7 +546,7 @@ export const SiteHeader = () => {
                     <div className="site-header__sheet-avatar-wrap">
                       <Image
                         src="/images/avatar.png"
-                        alt={`Portrait of ${profile.name}`}
+                        alt={`${profile.name}’s avatar`}
                         width={56}
                         height={56}
                         className="site-header__avatar"
@@ -556,7 +571,11 @@ export const SiteHeader = () => {
                       {primaryNav.map((item, index) => (
                         <SheetClose asChild key={item.id}>
                           <a
-                            href={item.href}
+                            href={
+                              item.href.startsWith("#")
+                                ? `/${item.href}`
+                                : item.href
+                            }
                             className={cn(
                               "site-header__sheet-link",
                               activeSection === item.id &&
@@ -572,7 +591,7 @@ export const SiteHeader = () => {
                               </span>
                               <span>{item.title}</span>
                             </span>
-                            <ArrowUpRight
+                            <ChevronRight
                               className="h-4 w-4"
                               aria-hidden="true"
                             />
@@ -593,21 +612,30 @@ export const SiteHeader = () => {
                         return (
                           <SheetClose asChild key={item.id}>
                             <a
-                              href={item.href}
+                              href={
+                                item.href.startsWith("#")
+                                  ? `/${item.href}`
+                                  : item.href
+                              }
                               className="site-header__sheet-link"
-                              target="_blank"
-                              rel="noreferrer"
+                              {...newTabLinkProps}
                             >
                               <span className="site-header__sheet-link-copy">
                                 <span
                                   className="site-header__sheet-index"
                                   aria-hidden="true"
                                 >
-                                  {item.id === "github" ? "GH" : "IN"}
+                                  <Icon
+                                    className="h-4 w-4"
+                                    aria-hidden="true"
+                                  />
                                 </span>
                                 <span>{item.title}</span>
                               </span>
-                              <Icon className="h-4 w-4" aria-hidden="true" />
+                              <ExternalLink
+                                className="h-4 w-4"
+                                aria-hidden="true"
+                              />
                             </a>
                           </SheetClose>
                         );
@@ -617,7 +645,7 @@ export const SiteHeader = () => {
                           <a
                             href={resumeLink.href}
                             className="site-header__sheet-link"
-                            download
+                            {...resumeDownloadProps}
                           >
                             <span className="site-header__sheet-link-copy">
                               <span
@@ -626,9 +654,9 @@ export const SiteHeader = () => {
                               >
                                 CV
                               </span>
-                              <span>{resumeLink.title}</span>
+                              <span>Download resume</span>
                             </span>
-                            <FileText className="h-4 w-4" aria-hidden="true" />
+                            <Download className="h-4 w-4" aria-hidden="true" />
                           </a>
                         </SheetClose>
                       ) : null}

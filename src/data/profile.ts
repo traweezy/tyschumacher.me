@@ -11,16 +11,16 @@ type Profile = {
 
 export const profile = {
   name: "Tyler Schumacher",
-  role: "Principal product engineer",
+  role: "Software engineer",
   location: "Buffalo, NY",
   email: "tyschumacher@proton.me",
   headline: "Software for teams that work live.",
   subhead:
     "I build interfaces and services for trading, sportsbook, and operations teams that need fast decisions, visible state, and reliable releases.",
   bio: [
-    "I like interfaces that make the next move obvious.",
-    "Most of my work sits between the product decision, the system behavior, and the team that has to support both.",
+    "I work across interfaces, services, and the systems that keep them running.",
+    "My background spans sportsbook, electronic trading, and internal platforms.",
   ],
   workingStyle:
-    "I turn ambiguous product pressure into web tools, services, and release paths teams can support.",
+    "I work with product teams to turn requirements into usable interfaces, reliable services, and maintainable releases.",
 } satisfies Profile;

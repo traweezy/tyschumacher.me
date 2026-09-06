@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { getExperiences } from "@/lib/content";
 import { Section } from "@/components/layout/section";
 import { ExperienceExplorer } from "@/components/sections/experience-explorer";
@@ -5,10 +6,10 @@ import { ExperienceExplorer } from "@/components/sections/experience-explorer";
 export const experienceHeadline =
   "Experience across live products and internal platforms";
 export const experienceCaption =
-  "Roles at the point where product decisions, system behavior, and release risk meet.";
+  "Building interfaces and services for sportsbook, financial markets, and client teams since 2015.";
 
-export const ExperienceSection = async () => {
-  const items = await getExperiences();
+export const ExperienceSection = memo(() => {
+  const items = getExperiences();
 
   return (
     <Section
@@ -21,7 +22,8 @@ export const ExperienceSection = async () => {
       <ExperienceExplorer initialExperiences={items} />
     </Section>
   );
-};
+});
+ExperienceSection.displayName = "ExperienceSection";
 
 export const ExperienceSectionSkeleton = () => (
   <Section

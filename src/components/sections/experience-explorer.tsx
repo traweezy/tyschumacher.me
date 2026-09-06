@@ -2,7 +2,6 @@
 
 import { memo, useCallback, useMemo, useState } from "react";
 import type { MouseEvent } from "react";
-import { VerticalTimelineElement } from "react-vertical-timeline-component";
 import { TechnologyIcon } from "@/components/ui/technology-icons";
 import type { ExperienceEntry } from "@/data/experience";
 import { runViewTransition } from "@/lib/view-transitions";
@@ -104,29 +103,18 @@ const ExperienceExplorerComponent = ({
         </div>
       </fieldset>
       <div className="experience-timeline" aria-live="polite">
-        <div
-          className="vertical-timeline vertical-timeline--two-columns experience-vertical-timeline"
-          aria-label="Experience timeline"
-        >
+        <ol className="career-list" aria-label="Experience timeline">
           {filteredExperiences.map((item) => {
             const chips = getExperienceChips(item);
 
             return (
-              <VerticalTimelineElement
+              <li
                 key={`${item.company}-${item.start}`}
-                className="experience-timeline__item"
-                date={getExperienceDates(item)}
-                dateClassName="experience-timeline__date"
-                icon={
-                  <span
-                    className="experience-timeline__dot"
-                    aria-hidden="true"
-                  />
-                }
-                iconClassName="experience-timeline__icon"
-                textClassName="experience-timeline__content"
-                visible
+                className="career-entry"
               >
+                <p className="career-entry__dates">
+                  {getExperienceDates(item)}
+                </p>
                 <article className="experience-card">
                   <div className="experience-card__meta type-body-sm">
                     <span className="experience-card__company">
@@ -188,10 +176,10 @@ const ExperienceExplorerComponent = ({
                     </ul>
                   ) : null}
                 </article>
-              </VerticalTimelineElement>
+              </li>
             );
           })}
-        </div>
+        </ol>
       </div>
     </div>
   );

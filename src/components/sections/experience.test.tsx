@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import type { ExperienceEntry } from "@/data/experience";
 import { renderWithProviders } from "@/test-utils/render-with-providers";
 
-const getExperiencesMock = vi.fn<() => Promise<ExperienceEntry[]>>();
+const getExperiencesMock = vi.fn<() => ExperienceEntry[]>();
 
 vi.mock("@/lib/content", () => ({
   getExperiences: () => getExperiencesMock(),
@@ -40,10 +40,10 @@ describe("ExperienceSection", () => {
   });
 
   it("renders fetched experience entries", async () => {
-    getExperiencesMock.mockResolvedValueOnce(sampleExperiences);
+    getExperiencesMock.mockReturnValueOnce(sampleExperiences);
     const { ExperienceSection } = await import("./experience");
 
-    renderWithProviders(await ExperienceSection());
+    renderWithProviders(<ExperienceSection />);
 
     expect(
       screen.getByRole("heading", {

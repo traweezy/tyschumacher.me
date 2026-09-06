@@ -1,90 +1,154 @@
-"use client";
-
 import Image from "next/image";
-import clsx from "clsx";
-import type { Project } from "@/data/projects";
-import type { ProjectSlot } from "./layout";
+import { memo } from "react";
+import {
+  ExternalLink,
+  FlaskConical,
+  Globe,
+  LockKeyhole,
+  PackageOpen,
+  Plus,
+} from "lucide-react";
+import { GitHubIcon } from "@/components/ui/brand-icons";
+import { TechnologyIcon } from "@/components/ui/technology-icons";
+import type { Project, ProjectTechnology } from "@/data/projects";
+import { newTabLinkProps } from "@/lib/link-behavior";
 import styles from "./projects-grid.module.css";
 
-type ProjectsGridProps = {
-  projects: ProjectWithSlot[];
-};
+type ProjectsGridProps = { projects: readonly Project[] };
+type ProjectCardProps = { project: Project; index: number };
 
-type ProjectWithSlot = Project & { layout: ProjectSlot };
+const linkIcons = {
+  source: GitHubIcon,
+  staging: FlaskConical,
+  demo: Globe,
+  site: Globe,
+  release: PackageOpen,
+} as const;
 
-const isExternalLink = (href: string) => /^https?:\/\//.test(href);
+export const ProjectTechnologies = memo<{
+  technologies: readonly ProjectTechnology[];
+  name: string;
+}>(({ technologies, name }) => (
+  <ul className={styles.tags} aria-label={`${name} technologies`}>
+    {technologies.map((technology) => (
+      <li key={technology.name} data-skill-accent={technology.icon}>
+        <TechnologyIcon
+          name={technology.icon}
+          className={styles.technologyIcon}
+        />
+        <span>{technology.name}</span>
+      </li>
+    ))}
+  </ul>
+));
+ProjectTechnologies.displayName = "ProjectTechnologies";
 
-export const ProjectsGrid = ({ projects }: ProjectsGridProps) => (
-  <div className={styles["projects-bento-grid"]}>
-    {projects.map((project) => {
-      const primaryLink = project.links[0];
-      const tech = project.tech.slice(0, 3);
-
-      return (
-        <article
-          key={project.slug}
-          className={clsx(
-            styles["projects-card"],
-            styles[`tone-${project.layout.tone}`],
-            styles[`area-${project.layout.area}`],
-          )}
-        >
-          <header className={styles["projects-card__header"]}>
-            <span className={styles["projects-card__eyebrow"]}>
-              {project.year}
+const ProjectCard = memo<ProjectCardProps>(({ project, index }) => (
+  <article
+    className={styles.card}
+    id={`project-${project.slug}`}
+    aria-labelledby={`${project.slug}-title`}
+    data-project={project.slug}
+  >
+    <div className={styles.cardHeader}>
+      <span className={styles.eyebrow}>
+        {String(index + 1).padStart(2, "0")} / {project.category}
+      </span>
+      <span className={styles.status} data-status={project.status}>
+        <span aria-hidden="true" />
+        {project.status}
+      </span>
+    </div>
+    <figure className={styles.figure}>
+      <a
+        href={project.image.src}
+        {...newTabLinkProps}
+        aria-label={`Open full screenshot of ${project.name}`}
+        className={styles.imageLink}
+        data-observe-click={`projects.${project.slug}.screenshot`}
+      >
+        <Image
+          src={project.image.src}
+          alt={project.image.alt}
+          width={project.image.width}
+          height={project.image.height}
+          sizes="(min-width: 1200px) 720px, (min-width: 768px) 55vw, 100vw"
+          className={styles.image}
+        />
+        <span className={styles.imageAction} aria-hidden="true">
+          <ExternalLink size={15} /> View screenshot
+        </span>
+      </a>
+      <figcaption>{project.image.caption}</figcaption>
+    </figure>
+    <div className={styles.cardBody}>
+      <div className={styles.titleRow}>
+        <h3 id={`${project.slug}-title`} className={styles.title}>
+          {project.name}
+        </h3>
+        <span className={styles.stage}>{project.stage}</span>
+      </div>
+      <p className={styles.summary}>{project.summary}</p>
+      <p className={styles.description}>{project.description}</p>
+      <ProjectTechnologies technologies={project.tech} name={project.name} />
+      <div className={styles.access}>
+        <div className={styles.links}>
+          {project.links.map((link, linkIndex) => {
+            const Icon = linkIcons[link.kind];
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                {...newTabLinkProps}
+                className={styles.link}
+                aria-label={`${link.label} for ${project.name}`}
+                data-observe-click={`projects.${project.slug}.link_${linkIndex}`}
+              >
+                <Icon width={17} height={17} aria-hidden="true" /> {link.label}
+                <ExternalLink size={15} aria-hidden="true" />
+              </a>
+            );
+          })}
+          {project.sourceVisibility === "private" ? (
+            <span className={styles.privateSource}>
+              <LockKeyhole size={15} aria-hidden="true" /> Source private
             </span>
-            <h3 className={styles["projects-card__title"]}>{project.name}</h3>
-          </header>
-          <div className={styles["projects-card__media"]}>
-            <Image
-              src={project.image.src}
-              alt={project.image.alt}
-              fill
-              sizes="(max-width: 720px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className={styles["projects-card__image"]}
-            />
-          </div>
-          <p className={styles["projects-card__summary"]}>{project.summary}</p>
-          <p className={styles["projects-card__description"]}>
-            {project.description}
-          </p>
-          <p className={styles["projects-card__role"]}>{project.role}</p>
-          {tech.length > 0 ? (
-            <div className={styles["projects-card__tech"]}>
-              {tech.map((item) => (
-                <span key={item} className={styles["projects-card__chip"]}>
-                  {item}
-                </span>
-              ))}
-            </div>
           ) : null}
-          {primaryLink ? (
-            <div className={styles["projects-card__cta"]}>
-              {primaryLink.href === "#" ? (
-                <span
-                  className={styles["projects-card__link"]}
-                  aria-disabled="true"
-                >
-                  {primaryLink.label}
-                </span>
-              ) : (
-                <a
-                  href={primaryLink.href}
-                  className={styles["projects-card__link"]}
-                  target={
-                    isExternalLink(primaryLink.href) ? "_blank" : undefined
-                  }
-                  rel={
-                    isExternalLink(primaryLink.href) ? "noreferrer" : undefined
-                  }
-                >
-                  {primaryLink.label}
-                </a>
-              )}
+        </div>
+        <p className={styles.availability}>{project.availability}</p>
+      </div>
+    </div>
+    <details className={styles.notes}>
+      <summary
+        data-observe-click={`projects.${project.slug}.engineering_notes`}
+      >
+        My contribution & engineering notes
+        <Plus size={18} className={styles.expandIcon} aria-hidden="true" />
+      </summary>
+      <div className={styles.notesBody}>
+        <p className={styles.contribution}>{project.contribution}</p>
+        <dl>
+          {project.decisions.map((decision) => (
+            <div key={decision.title}>
+              <dt>{decision.title}</dt>
+              <dd>{decision.detail}</dd>
             </div>
-          ) : null}
-        </article>
-      );
-    })}
+          ))}
+        </dl>
+        <p className={styles.evidence}>
+          <strong>Current state.</strong> {project.evidence}
+        </p>
+      </div>
+    </details>
+  </article>
+));
+ProjectCard.displayName = "ProjectCard";
+
+export const ProjectsGrid = memo<ProjectsGridProps>(({ projects }) => (
+  <div className={styles.grid}>
+    {projects.map((project, index) => (
+      <ProjectCard key={project.slug} project={project} index={index} />
+    ))}
   </div>
-);
+));
+ProjectsGrid.displayName = "ProjectsGrid";

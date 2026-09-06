@@ -1,10 +1,10 @@
 import { experiences } from "@/data/experience";
 import { projects } from "@/data/projects";
 
-export const getProjects = async () => {
+export const getProjects = () => {
   return projects;
 };
 
-export const getExperiences = async () => {
+export const getExperiences = () => {
   return experiences;
 };
