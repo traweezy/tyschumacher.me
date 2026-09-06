@@ -44,3 +44,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Generated supply-chain report
+/sbom.cdx.json
+/.pnpm-store/
