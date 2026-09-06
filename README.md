@@ -70,3 +70,16 @@ Production telemetry is disabled unless `NEXT_PUBLIC_OTEL_EXPORT_URL` is set at 
 Project cards distinguish work in progress, private source, local demos and verified staging links. Update screenshots and their capture context together with project claims. `agentRules: false` prevents Next.js from generating agent instruction files in this repository.
 
 The latest visual/content research and decisions are recorded in [the refinement audit](docs/portfolio-refinement.md).
+
+### Resume
+
+`pnpm resume:build` regenerates the downloadable PDF from the website's profile,
+experience, skills, and navigation data. `src/data/resume.ts` holds only the resume
+summary, positioning, phone number, and education. The generator uses the pinned
+Playwright Chromium installation (`pnpm exec playwright install chromium`) and
+refuses to replace the PDF if the content exceeds one Letter page.
+
+After changing shared content, regenerate the resume and inspect a PDF render
+before committing it. Preserve official titles and dates when reconciling LinkedIn;
+the website and resume can use shorter descriptions of the same contributions.
+LinkedIn remains a manually maintained source, not an automatic integration.

@@ -25,6 +25,7 @@
     "sbom": "pnpm sbom --sbom-format cyclonedx --sbom-type application --prod --out sbom.cdx.json",
     "audit": "pnpm audit --audit-level=moderate",
     "preview": "next start",
+    "resume:build": "node scripts/build-resume.mjs",
     "analyze": "next experimental-analyze"
   },
   "dependencies": {

@@ -3,6 +3,7 @@
     "target": "ES2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "strict": true,
     "noUncheckedIndexedAccess": true,
@@ -30,6 +31,7 @@
   },
   "include": [
     "next-env.d.ts",
+    "scripts/build-resume.mjs",
     "**/*.ts",
     "**/*.tsx",
     "types/**/*.d.ts",

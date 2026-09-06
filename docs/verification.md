@@ -195,3 +195,31 @@ ICO favicon declaration and a valid ICO response. Headed desktop and mobile
 screenshots, including actual Flameshot captures, confirm the badge removal,
 avatar favicon, readable text, and aligned highlights without horizontal overflow.
 Evidence is in `/tmp/portfolio-focus-20260906`.
+
+## Resume alignment
+
+Reconciled the downloadable resume with the current website and the saved
+September 6 LinkedIn profile refresh and recruiter audit. The saved audit records
+the published profile wording; direct LinkedIn access was unavailable during
+this follow-up. No LinkedIn changes were made. The senior frontend and full stack
+positioning, engineering roles, dates, and contributions are consistent across
+those sources. Education and phone information retain the original resume facts.
+
+The resume now includes the website's complete 23-technology list and a visible
+portfolio link. All four engineering roles and 11 contribution bullets remain.
+A maintained Playwright generator reads shared website data, escapes content,
+blocks network access, and refuses to replace the PDF when it exceeds one page.
+The initial overlong layout exercised that refusal without replacing the asset.
+Resume generation passes on Node 26.8.1 and Node 24.20.0.
+
+Poppler rendering and visual inspection confirm readable typography, aligned
+dates, and unclipped content on one Letter page. Independent PDF parsing confirms
+all shared source text, education, five clickable contact/destination links, and
+document accessibility tags. The PDF contains selectable text and embedded fonts.
+Temporary evidence is in `/tmp/portfolio-resume-sync-20260906`.
+
+Formatting, lint, strict typechecking, the production build, all 94 unit tests,
+and the resume download browser test pass. Coverage is 90.66% statements, 84.68%
+branches, 91.73% functions, and 90.92% lines. The dependency audit reports no known
+vulnerabilities. The browser check verifies downloads through the header, hero,
+mobile menu, and command palette without navigating away from the portfolio.

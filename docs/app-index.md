@@ -36,3 +36,11 @@ Update `src/data/projects.ts` and its evidence in `docs/portfolio-audit.md` toge
 Run `pnpm analyze` for the Next.js Turbopack bundle explorer when adding significant dependencies. It generates analysis output rather than a deployable application; run `pnpm build` again before previewing or deploying.
 
 Skill groups are curated in `src/data/skills.ts`. Every project technology uses a typed `{ name, icon }` entry; the compiler rejects missing or unknown icons. Project links specify source, staging or demo intent. Private repositories are labels, not inaccessible source links. Icons are decorative beside visible labels.
+
+`scripts/build-resume.mjs` renders the same profile, experience, skill groups, and
+destination links into the downloadable PDF. `src/data/resume.ts` contains its
+summary, positioning, phone, and education. Run `pnpm resume:build` after shared
+content changes and inspect the generated page before publication. The generator
+checks both layout dimensions and the resulting PDF page count before replacing
+the public asset. It runs on the supported Node 24 and 26 versions, with native
+TypeScript data imports, and participates in lint and strict typechecking.
