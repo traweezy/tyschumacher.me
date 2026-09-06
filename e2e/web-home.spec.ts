@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { SHARE_IMAGE_PATH } from "../src/lib/site";
 
 const canonical = "https://www.tyschumacher.me/";
 
@@ -12,23 +13,39 @@ test("serves complete metadata and crawler-readable share assets", async ({
   });
   expect(response.status()).toBe(200);
   const html = await response.text();
-  expect(html).toContain(
-    'property="og:image" content="https://www.tyschumacher.me/og.png"',
+  const head = html.slice(0, html.indexOf("</head>"));
+  const shareImageUrl = new URL(SHARE_IMAGE_PATH, canonical).href;
+  expect(head).toContain(`property="og:image" content="${shareImageUrl}"`);
+  expect(head).toContain(
+    `property="og:image:secure_url" content="${shareImageUrl}"`,
   );
-  expect(html).toContain(
-    'name="twitter:image" content="https://www.tyschumacher.me/og.png"',
-  );
+  expect(head).toContain(`name="twitter:image" content="${shareImageUrl}"`);
   const policy = response.headers()["content-security-policy"] ?? "";
   expect(policy).toContain("script-src 'self' 'nonce-");
   expect(policy).not.toContain("'unsafe-inline'");
   expect(policy).not.toContain("'unsafe-eval'");
   expect(response.headers()["x-content-type-options"]).toBe("nosniff");
-  const image = await request.get("/og.png");
+  const image = await request.get(SHARE_IMAGE_PATH, {
+    headers: { "user-agent": "LinkedInBot/1.0" },
+  });
+  expect(image.status()).toBe(200);
   expect(image.headers()["content-type"]).toContain("image/png");
   const bytes = await image.body();
   expect(bytes.readUInt32BE(16)).toBe(1200);
   expect(bytes.readUInt32BE(20)).toBe(630);
   expect(bytes.length).toBeLessThan(5_000_000);
+  const legacyImage = await request.get("/og-image.svg", {
+    headers: { "user-agent": "LinkedInBot/1.0" },
+    maxRedirects: 0,
+  });
+  expect(legacyImage.status()).toBe(308);
+  expect(legacyImage.headers()["location"]).toBe(SHARE_IMAGE_PATH);
+  const legacyFollowed = await request.get("/og-image.svg", {
+    headers: { "user-agent": "LinkedInBot/1.0" },
+  });
+  expect(legacyFollowed.status()).toBe(200);
+  expect(legacyFollowed.headers()["content-type"]).toContain("image/png");
+  expect(await legacyFollowed.body()).toEqual(bytes);
   const robots = await request.get("/robots.txt");
   expect(await robots.text()).toContain(`Sitemap: ${canonical}sitemap.xml`);
   expect(await (await request.get("/sitemap.xml")).text()).toContain(

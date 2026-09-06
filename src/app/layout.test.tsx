@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
+import { SHARE_IMAGE_PATH, SITE_URL } from "@/lib/site";
 
 vi.mock("next/font/google", () => ({
   Fraunces: () => ({ variable: "font-fraunces" }),
@@ -52,13 +53,13 @@ describe("RootLayout metadata", () => {
       throw new Error("Expected Open Graph image.");
     }
 
-    if (firstImage instanceof URL) {
-      expect(firstImage.pathname).toBe("/og.png");
-    } else if (typeof firstImage === "string") {
-      expect(firstImage).toBe("/og.png");
-    } else {
-      expect(firstImage.url).toBe("/og.png");
-    }
+    const imageUrl =
+      firstImage instanceof URL || typeof firstImage === "string"
+        ? firstImage
+        : firstImage.url;
+    expect(new URL(imageUrl, SITE_URL).href).toBe(
+      new URL(SHARE_IMAGE_PATH, SITE_URL).href,
+    );
     expect(viewport.themeColor).toEqual([
       { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
       { media: "(prefers-color-scheme: dark)", color: "#0b1017" },

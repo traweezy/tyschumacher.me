@@ -48,7 +48,7 @@ After deploying:
 
 1. Confirm the canonical URL is `https://www.tyschumacher.me/`, the home page returns 200, and a missing path returns 404.
 2. Open `/og.png`, `/robots.txt`, `/sitemap.xml`, `/manifest.webmanifest` and the resume PDF directly. Sharing requires publicly fetchable assets.
-3. Inspect the canonical home URL using [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) to refresh its cached preview. The site supplies a 1200 × 630 PNG for both Open Graph and Twitter.
+3. Inspect the canonical home URL using [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) to refresh its cached preview for new shares; LinkedIn may require sign-in. The site supplies a 1200 × 630 PNG for both Open Graph and Twitter. `SHARE_IMAGE_PATH` in `src/lib/site.ts` includes an image revision for cache updates; change it when replacing the PNG. The former `/og-image.svg` URL redirects to this image. Existing posts keep their original previews, and an existing Featured card may need to be edited or added again. See [LinkedIn's cache guidance](https://www.linkedin.com/help/linkedin/answer/a6233775).
 4. Check production logs and submit one intentional manual contact message if validating the configured provider.
 
 Rollback by redeploying the preceding successful Vercel deployment. This change has no database or content migrations. Remote settings, delivery and LinkedIn cache refresh are not validated by local tests.

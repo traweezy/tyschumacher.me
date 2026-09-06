@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import "./globals.css";
 import { Providers } from "./providers";
 import { profile } from "@/data/profile";
-import { SITE_URL } from "@/lib/site";
+import { SHARE_IMAGE_PATH, SITE_URL } from "@/lib/site";
 import { SiteHeader } from "@/components/layout/site-header";
 
 const themeModeStorageKey = "tyschumacher.theme-mode";
@@ -60,6 +60,7 @@ const geistMono = Geist_Mono({
 });
 
 const siteUrl = SITE_URL;
+const shareImageUrl = new URL(SHARE_IMAGE_PATH, siteUrl).href;
 const title = "Tyler Schumacher | Software for teams that work live";
 const description =
   "I build interfaces and services for trading, sportsbook, and operations teams that need fast decisions, visible state, and reliable releases.";
@@ -112,7 +113,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/og.png",
+        url: shareImageUrl,
+        secureUrl: shareImageUrl,
         type: "image/png",
         width: 1200,
         height: 630,
@@ -124,7 +126,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: [
       {
-        url: "/og.png",
+        url: shareImageUrl,
         alt: "Tyler Schumacher. Software for teams that work live.",
       },
     ],
