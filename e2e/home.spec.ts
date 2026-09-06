@@ -47,7 +47,7 @@ test.describe("Home experience", () => {
     });
     await workingModeTrigger.click();
     await expect(
-      page.getByText(/Calm interfaces for live work/i),
+      page.getByText(/Interfaces and services teams can rely on/i),
     ).toBeVisible();
     await page.keyboard.press("Escape");
 

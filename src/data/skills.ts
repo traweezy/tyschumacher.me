@@ -39,7 +39,7 @@ export const skillGroups = [
       { name: "Apache Kafka", icon: "kafka", accentKey: "kafka" },
       { name: "NATS", icon: "nats", accentKey: "nats" },
       { name: "WebSockets", icon: "websocket", accentKey: "websocket" },
-      { name: "Server-sent events", icon: "sse", accentKey: "sse" },
+      { name: "Server Sent Events", icon: "sse", accentKey: "sse" },
     ],
   },
   {

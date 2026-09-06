@@ -13,7 +13,7 @@ describe("contact schema", () => {
     });
     expect(contactFieldSchemas.name.meta()).toMatchObject({
       title: "Name",
-      description: "Single-line sender name for the contact request.",
+      description: "Sender name on one line for the contact request.",
       examples: ["Jordan Lee"],
     });
     expect(contactFieldSchemas.email.meta()).toMatchObject({
@@ -22,9 +22,7 @@ describe("contact schema", () => {
     });
     expect(contactFieldSchemas.message.meta()).toMatchObject({
       title: "Message",
-      examples: [
-        "Share the context, the constraint, and what good looks like.",
-      ],
+      examples: ["Tell me about the role or project you have in mind."],
     });
   });
 

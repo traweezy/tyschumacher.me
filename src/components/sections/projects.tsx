@@ -6,7 +6,7 @@ import styles from "@/components/projects/projects-grid.module.css";
 
 export const projectsHeadline = "Selected projects";
 export const projectsCaption =
-  "A look inside what I’m building now. Real interfaces, the decisions behind them, and a clear view of what’s ready to explore.";
+  "Projects I’m building, with screenshots, demos, source code, and notes on the engineering.";
 
 export const ProjectsSection = memo(() => (
   <Section

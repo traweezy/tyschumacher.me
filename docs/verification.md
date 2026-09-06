@@ -155,3 +155,23 @@ previously reviewed test/prose detections across the project repositories.
 Relantern's local account-provisioning handoff is ignored and excluded from
 Docker context; a real build-context sentinel check verified credential
 exclusions and preservation of example files.
+
+## Copy and punctuation review
+
+Reviewed the visible site copy, expandable project notes, profile popover,
+image descriptions, sharing text, form messages, and downloadable resume.
+Reworded awkward compounds and generic phrasing, corrected sentence punctuation,
+and used “to” for date ranges. Technical identifiers and destination URLs retain
+their required syntax. The resume preserves the existing career details,
+education, skills, and contact links in a single page.
+
+Formatting, lint, typecheck, production build, all 94 unit tests, and all 32
+browser tests passed. Coverage remains 90.76% statements, 84.68% branches,
+91.73% functions, and 91.03% lines. The dependency audit found no known
+vulnerabilities. The updated resume also passed the browser download test.
+
+The rendered website copy and image descriptions contain no prose dashes.
+Desktop and mobile screenshots were inspected, including an actual Flameshot
+desktop capture. The revised PDF was rendered with Poppler and visually checked;
+all 11 bullets extract correctly, and all three contact links remain clickable.
+Evidence is in `/tmp/portfolio-copy-20260906`.

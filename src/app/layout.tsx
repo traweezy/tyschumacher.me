@@ -125,7 +125,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/og.png",
-        alt: "Tyler Schumacher — Software for teams that work live.",
+        alt: "Tyler Schumacher. Software for teams that work live.",
       },
     ],
     title,

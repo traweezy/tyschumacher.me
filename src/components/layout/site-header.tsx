@@ -416,23 +416,23 @@ export const SiteHeader = () => {
               }}
             >
               <p className="site-header__popover-label type-eyebrow">
-                Working mode
+                How I work
               </p>
               <p className="site-header__popover-title">
-                Calm interfaces for live work.
+                Interfaces and services teams can rely on.
               </p>
               <dl className="site-header__popover-list">
                 <div>
-                  <dt>Lens</dt>
-                  <dd>State, constraint, next move</dd>
+                  <dt>Focus</dt>
+                  <dd>Clear system status and useful controls</dd>
                 </div>
                 <div>
-                  <dt>Bias</dt>
-                  <dd>Ship small, observe, keep rollback paths close</dd>
+                  <dt>Delivery</dt>
+                  <dd>Tested releases, monitoring, and recovery plans</dd>
                 </div>
                 <div>
-                  <dt>Fit</dt>
-                  <dd>Trading, sportsbook, and operator-heavy tools</dd>
+                  <dt>Experience</dt>
+                  <dd>Trading, sportsbook, and operations tools</dd>
                 </div>
               </dl>
             </div>

@@ -58,8 +58,8 @@ describe("ExperienceSection", () => {
 
     expect(screen.getByText("Company A")).toBeInTheDocument();
     expect(screen.getByText("Role A")).toBeInTheDocument();
-    expect(screen.getByText("Jan 2020 · Present")).toBeInTheDocument();
-    expect(screen.getByText("Feb 2018 · Mar 2020")).toBeInTheDocument();
+    expect(screen.getByText("Jan 2020 to Present")).toBeInTheDocument();
+    expect(screen.getByText("Feb 2018 to Mar 2020")).toBeInTheDocument();
     expect(
       screen.getByRole("list", {
         name: /work types, technologies, and skills used at Company A/i,

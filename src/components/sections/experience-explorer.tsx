@@ -23,7 +23,7 @@ const filterExperiences = (
 };
 
 const getExperienceDates = (experience: ExperienceEntry): string =>
-  `${experience.start} · ${experience.end ?? "Present"}`;
+  `${experience.start} to ${experience.end ?? "Present"}`;
 
 const getExperienceChips = (experience: ExperienceEntry) => [
   ...(experience.workTypes ?? []),

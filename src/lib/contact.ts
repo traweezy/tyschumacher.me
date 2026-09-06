@@ -24,35 +24,35 @@ export const isContactIdempotencyKey = (value: string): boolean =>
 const contactNameSchema = z
   .string()
   .trim()
-  .min(2, "Tell me your name")
-  .max(120, "Keep your name under 120 characters")
-  .refine((value) => !/[\r\n]/.test(value), "Use a single-line name")
+  .min(2, "Tell me your name.")
+  .max(120, "Use 120 characters or fewer for your name.")
+  .refine((value) => !/[\r\n]/.test(value), "Enter your name on one line.")
   .meta({
     title: "Name",
-    description: "Single-line sender name for the contact request.",
+    description: "Sender name on one line for the contact request.",
     examples: ["Jordan Lee"],
   });
 
 const contactEmailSchema = z
   .string()
   .trim()
-  .email("Use a valid email")
-  .max(254, "Keep your email under 254 characters")
+  .email("Use a valid email address.")
+  .max(254, "Use 254 characters or fewer for your email address.")
   .meta({
     title: "Email address",
-    description: "Reply-to email address for the contact request.",
+    description: "Email address for replying to the contact request.",
     examples: ["jordan@company.com"],
   });
 
 const contactMessageSchema = z
   .string()
   .trim()
-  .min(12, "Add more context so I can help")
-  .max(4000, "Keep your message under 4000 characters")
+  .min(12, "Add more context so I can help.")
+  .max(4000, "Use 4,000 characters or fewer for your message.")
   .meta({
     title: "Message",
     description: "Project context or question submitted through the form.",
-    examples: ["Share the context, the constraint, and what good looks like."],
+    examples: ["Tell me about the role or project you have in mind."],
   });
 
 export const contactSchema = z

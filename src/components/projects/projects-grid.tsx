@@ -136,7 +136,7 @@ const ProjectCard = memo<ProjectCardProps>(({ project, index }) => (
           ))}
         </dl>
         <p className={styles.evidence}>
-          <strong>Current state.</strong> {project.evidence}
+          <strong>Current state:</strong> {project.evidence}
         </p>
       </div>
     </details>

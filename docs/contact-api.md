@@ -3,6 +3,7 @@
 `POST /api/contact` accepts `application/json` with `name`, `email`, and `message`; the Zod contract is in `src/lib/contact.ts`. Use a UUID `Idempotency-Key` header for a logical submission and reuse it when retrying that submission. Resend handles delivery idempotency; no local message database exists.
 
 - Maximum body: 16,384 bytes, enforced against the actual stream and advertised size.
+- Field limits are inclusive: names have 2 to 120 characters, email addresses have at most 254, and messages have 12 to 4,000. Validation messages use complete sentences and state these limits directly.
 - Read deadline: 10 seconds. Resend request deadline: 10 seconds. Browser submit deadline: 15 seconds.
 - Delivery budget: ten validated submissions per minute per running instance. A denied request receives `Retry-After` seconds.
 - Supplied browser origins must match the request origin or the canonical portfolio origins. Requests without Origin are permitted for API clients; this is not an authentication control.

@@ -86,7 +86,7 @@ export async function POST(request: Request) {
     return problem(
       body.status,
       body.status === 413 ? "Payload too large" : "Invalid request",
-      "Invalid request payload. Keep your message under 4000 characters and try again.",
+      "The message could not be read. Use 4,000 characters or fewer and try again.",
     );
 
   const parsed = contactSchema.safeParse(body.value);
@@ -96,7 +96,7 @@ export async function POST(request: Request) {
     return problem(
       400,
       "Validation failed",
-      "Please double-check the highlighted fields.",
+      "Please check the highlighted fields.",
       { errors },
     );
   }

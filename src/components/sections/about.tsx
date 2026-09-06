@@ -8,15 +8,15 @@ import type { SkillItem } from "@/data/skills";
 const workingPractices = [
   {
     title: "Understand the workflow",
-    body: "Start with users, constraints, and the decisions the software needs to support.",
+    body: "I talk with the people using the software to understand their work and where they get stuck.",
   },
   {
     title: "Make behavior clear",
-    body: "Design readable interfaces and instrument the services behind them so teams can understand what happened.",
+    body: "I make system status visible in the interface and add logs and metrics to help diagnose problems.",
   },
   {
     title: "Plan for ownership",
-    body: "Review tradeoffs, test critical paths, and make releases and recovery part of the design.",
+    body: "I review technical decisions with the team, test critical workflows, and plan how to deploy and recover from failures.",
   },
 ] as const;
 

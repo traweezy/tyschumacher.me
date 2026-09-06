@@ -38,7 +38,7 @@ export const projects = [
     category: "Developer tooling",
     status: "Released",
     stage: "0.x · actively developed",
-    summary: "One command. A repeatable local backend stack.",
+    summary: "Run and manage your local backend services.",
     description:
       "A Go CLI and terminal dashboard for running local services with Podman, switching stack profiles, and finding health checks, ports, logs, and connection details in one place.",
     contribution:
@@ -51,14 +51,14 @@ export const projects = [
     ],
     decisions: [
       {
-        title: "Make local infrastructure inspectable",
+        title: "See what is running",
         detail:
           "Named profiles keep configuration together. The dashboard places service state, endpoints, and diagnostics alongside each other, with credentials masked by default and configuration changes previewed before saving.",
       },
       {
-        title: "Support people and automation",
+        title: "Use the dashboard or automate with the CLI",
         detail:
-          "The interactive dashboard complements documented CLI commands and structured JSON output. Release workflows include checksums, supply-chain metadata, and platform qualification checks.",
+          "The dashboard complements documented CLI commands, with JSON output for scripts. Releases include checksums, software provenance, and compatibility checks for each supported platform.",
       },
     ],
     evidence:
@@ -91,9 +91,9 @@ export const projects = [
     category: "Commerce & publishing",
     status: "Work in progress",
     stage: "Public staging",
-    summary: "An independent label, from discovery to checkout.",
+    summary: "A music store and publishing tools for an independent label.",
     description:
-      "A custom record-store experience connecting music and merch discovery, editorial publishing, cart, and checkout around the label’s identity.",
+      "An online record store where listeners can browse music and merchandise, read about releases, and place orders. The label can manage its catalog and publish editorial content in the same application.",
     contribution:
       "I’m building the Next.js storefront, Medusa workflows, editorial tools, and payment recovery paths.",
     tech: [
@@ -104,14 +104,14 @@ export const projects = [
     ],
     decisions: [
       {
-        title: "Treat checkout as a recoverable workflow",
+        title: "Recover interrupted payments",
         detail:
-          "Payment handling checks identity, mode, amount, and currency. Reconciliation jobs recover interrupted checkout state instead of relying solely on the browser’s success screen.",
+          "Payment handling checks identity, mode, amount, and currency. Reconciliation jobs check the payment provider and recover checkout state when a browser session is interrupted.",
       },
       {
         title: "Make publishing changes traceable",
         detail:
-          "Content commands use version checks and idempotency keys, then verify the durable result. Storefront and admin workflows share a commerce foundation without sharing the same user experience.",
+          "Content commands check versions, prevent duplicate changes with idempotency keys, and verify what was saved. The storefront and admin tools use the same commerce services, with separate interfaces for shoppers and staff.",
       },
     ],
     evidence:
@@ -144,9 +144,9 @@ export const projects = [
     category: "Developer intelligence",
     status: "Work in progress",
     stage: "Public demo",
-    summary: "What changed, why it matters, and the evidence behind it.",
+    summary: "Technical news with the sources behind each summary.",
     description:
-      "A developer-intelligence workspace that turns technical sources into a focused brief, with searchable stories and a visible trail from each claim to its evidence.",
+      "A reading workspace that collects technical news into searchable briefs. Each summary links its claims to source material so readers can check the details.",
     contribution:
       "I’m building the Go ingestion and search services, evidence validation, and Next.js reading workspace.",
     tech: [
@@ -159,16 +159,16 @@ export const projects = [
       {
         title: "Keep claims connected to evidence",
         detail:
-          "Extraction validates that every claim references supplied evidence spans. The reader keeps source material, confidence, and unresolved questions close to the summary.",
+          "During extraction, each claim must reference a passage from the supplied source material. Readers can inspect those passages, confidence estimates, and unresolved questions alongside the summary.",
       },
       {
         title: "Combine exact and semantic retrieval",
         detail:
-          "PostgreSQL full-text, trigram, and vector retrieval are combined with reciprocal-rank fusion. A separate fixture-only demo lets the interface be explored without private data or live providers.",
+          "PostgreSQL text, trigram, and vector searches find relevant stories. Reciprocal rank fusion combines their results. The public demo uses sample stories and runs without private data or live providers.",
       },
     ],
     evidence:
-      "The public demo uses illustrative stories and browser-local interactions. Live ingestion, delivery, and production-readiness work remain in progress.",
+      "The public demo uses sample stories, and its controls work locally in your browser. Live ingestion, delivery, and preparation for production remain in progress.",
     availability: "Public demo · illustrative stories · no account needed",
     sourceVisibility: "public",
     links: [
@@ -197,9 +197,9 @@ export const projects = [
     category: "Financial interfaces",
     status: "Work in progress",
     stage: "Public synthetic demo",
-    summary: "A clear view of positions, paper activity, and risk state.",
+    summary: "Track portfolio positions, simulated orders, and risk controls.",
     description:
-      "A financial dashboard for exploring portfolio positions, a paper-order ledger, and operational status, built around a deterministic Go foundation and a typed web interface.",
+      "A financial dashboard for reviewing positions, simulated trades, and system status. A Go backend and TypeScript interface share validated data contracts.",
     contribution:
       "I’m building the Go and PostgreSQL foundation, shared data contracts, and the Next.js dashboard with an isolated demo.",
     tech: [
@@ -212,16 +212,16 @@ export const projects = [
       {
         title: "Make financial state explicit",
         detail:
-          "The interface distinguishes positions, paper activity, risk controls, and reconciliation state. Validated contracts and exact-decimal values keep financial data consistent across the boundary.",
+          "The dashboard shows positions, simulated orders, risk controls, and reconciliation status separately. Validated contracts and exact decimal values keep financial data consistent between the API and interface.",
       },
       {
-        title: "Demonstrate the interface in isolation",
+        title: "Explore the dashboard with sample data",
         detail:
           "The demo reuses dashboard components with deterministic synthetic data. Sorting, filtering, pagination, and theme changes work locally without a database, broker, or external service.",
       },
     ],
     evidence:
-      "Public interface demo with synthetic positions and paper activity. Research, strategy execution, account access, and live trading are not available.",
+      "The public demo shows synthetic positions and simulated trades. Research, strategy execution, account access, and live trading are not available.",
     availability: "Public demo · synthetic data · no live trading",
     sourceVisibility: "private",
     links: [
@@ -233,7 +233,7 @@ export const projects = [
     ],
     image: {
       src: "/images/projects/quanthelm.webp",
-      alt: "QuantHelm’s synthetic demo dashboard showing portfolio totals, open positions, and a read-only demo notice.",
+      alt: "QuantHelm’s demo dashboard showing portfolio totals, open positions, and a notice that the data is synthetic and cannot be changed.",
       width: 1440,
       height: 1000,
       caption: "Portfolio dashboard · public demo · synthetic data",
@@ -245,9 +245,9 @@ export const projects = [
     category: "Personal website",
     status: "Live",
     stage: "Personal portfolio",
-    summary: "A portfolio built with the same care as the work it presents.",
+    summary: "My projects, engineering experience, and contact details.",
     description:
-      "My personal website: selected projects, engineering experience, and a direct way to get in touch. Designed for clear reading, keyboard access, and responsive light and dark themes.",
+      "I built this site to share my work and help people get in touch. It supports keyboard navigation, adapts to different screen sizes, and includes light and dark themes.",
     contribution:
       "I designed and built the site, from its visual identity and project presentation to sharing metadata, contact handling, and automated quality checks.",
     tech: [
@@ -260,16 +260,16 @@ export const projects = [
       {
         title: "Make the work easy to evaluate",
         detail:
-          "Project content renders on the server, with native expandable engineering notes, real screenshots, and explicit source and preview availability. The main project content stays usable without JavaScript.",
+          "Each project includes screenshots, engineering notes, and links to available demos and source code. Project content renders on the server and remains usable without JavaScript.",
       },
       {
-        title: "Treat the small web details as product work",
+        title: "Check sharing, accessibility, and contact forms",
         detail:
-          "The site includes raster social previews, canonical metadata, reduced-motion support, and bounded contact requests. Browser checks cover keyboard interaction, responsive layouts, light/dark accessibility, and crawler-facing assets.",
+          "Social previews include an image, and animations respect motion preferences. Contact requests have size limits and timeouts. Browser checks cover keyboard navigation, responsive layouts, accessibility in both themes, and assets used by search engines.",
       },
     ],
     evidence:
-      "The website presents five selected projects with real interface screenshots, accessible navigation, downloadable resume, and public demo and source links where available.",
+      "The site is live with five selected projects, screenshots, a downloadable resume, and links to available demos and public source code.",
     availability: "Live website · public source",
     sourceVisibility: "public",
     links: [

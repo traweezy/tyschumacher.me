@@ -55,7 +55,7 @@ describe("POST /api/contact", () => {
 
     expect(response.status).toBe(400);
     const payload = await response.json();
-    expect(payload.message).toMatch(/invalid/i);
+    expect(payload.message).toMatch(/message could not be read/i);
     expect(sendMock).not.toHaveBeenCalled();
   });
 
@@ -68,7 +68,7 @@ describe("POST /api/contact", () => {
     expect(response.status).toBe(400);
     const payload = await response.json();
     expect(payload.errors).toHaveLength(3);
-    expect(payload.message).toMatch(/double-check/i);
+    expect(payload.message).toMatch(/check the highlighted fields/i);
     expect(sendMock).not.toHaveBeenCalled();
   });
 
@@ -90,7 +90,7 @@ describe("POST /api/contact", () => {
       expect.arrayContaining([
         expect.objectContaining({
           field: "name",
-          message: "Use a single-line name",
+          message: "Enter your name on one line.",
         }),
       ]),
     );

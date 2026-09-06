@@ -117,7 +117,7 @@ describe("SiteHeader", () => {
       screen.getByRole("button", { name: /show working mode/i }),
     ).toHaveAttribute("aria-expanded", "false");
     expect(
-      screen.getByText(/Calm interfaces for live work/i),
+      screen.getByText(/Interfaces and services teams can rely on/i),
     ).toBeInTheDocument();
     expect(
       screen.queryByText(/staff and principal roles/i),
