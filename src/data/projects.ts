@@ -285,10 +285,10 @@ export const projects = [
       },
     ],
     image: {
-      src: "/images/projects/personal-website-425dd144ae98.webp",
-      alt: "Tyler Schumacher’s portfolio homepage with cobalt and rose accents, a profile summary, and project and contact links.",
+      src: "/images/projects/personal-website-ca36a4aa11a5.webp",
+      alt: "Tyler Schumacher’s portfolio homepage with a Buffalo skyline header, introduction, and project, contact, and resume links.",
       width: 1440,
-      height: 660,
+      height: 820,
       caption: "Homepage · personal portfolio",
     },
   },

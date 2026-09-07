@@ -1,5 +1,7 @@
 # Visual and content refinement
 
+The current header and timeline presentation is documented in [the header and timeline audit](hero-timeline-audit.md). It supersedes the profile card and chronology styling described below.
+
 Research and audit completed on 2026-09-06 before implementation. Changes remain local pending publication approval.
 
 ## Direction and evidence

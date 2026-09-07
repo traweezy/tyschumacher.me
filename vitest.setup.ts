@@ -221,11 +221,13 @@ vi.mock("next/image", () => {
     alt?: string;
     fill?: boolean;
     priority?: boolean;
+    preload?: boolean;
   }) => {
     const resolvedSrc = typeof src === "string" ? src : (src?.src ?? "");
-    const { fill, priority, ...imgProps } = rest;
+    const { fill, priority, preload, ...imgProps } = rest;
     void fill;
     void priority;
+    void preload;
     return React.createElement("img", { src: resolvedSrc, alt, ...imgProps });
   };
 

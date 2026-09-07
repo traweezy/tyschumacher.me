@@ -263,3 +263,42 @@ WebKit, including both themes, accessibility, search, downloads, and contact
 feedback. Headed Chromium and actual Flameshot desktop captures confirm the
 header and short landscape drawer still render correctly. Temporary screenshots
 are stored in `/tmp/portfolio-biome`.
+
+
+## Parallax header and experience timeline
+
+The supplied Buffalo skyline image now backs a visibly slower scrolling layer.
+“At a glance” is removed, experience precedes projects throughout navigation,
+and the experience rail, current role marker, filter contrast, and anchor
+spacing have been verified. The personal website project screenshot is current.
+Details and research references: [header and timeline audit](hero-timeline-audit.md).
+
+The final production build, Biome, strict typecheck, and all 94 unit tests pass.
+Coverage is 89.23% statements, 83.93% branches, 90.38% functions, and 89.47% lines.
+All 60 browser cases pass across the final full run and the focused rerun of the
+three hero/timeline cases. The latter corrects the test to use real Tab navigation
+when checking `:focus-visible`. Dependency audit reports no known vulnerabilities;
+the production CycloneDX SBOM is regenerated.
+
+The additional visual audit covers 15 configurations in Chromium, WebKit, and
+Firefox, from 320 × 568 to 2560 × 1440. It checks the hero, scroll state, all four
+content sections, timeline ending, project cards, light/dark themes, live changes
+to reduced motion, image loading, and content bounds. All configurations report
+zero accessibility violations, zero page exceptions, and zero horizontal text
+or control overflow. WebKit uses the local HTTPS preview; live TLS is checked
+separately after deployment. Firefox currently exercises the static fallback.
+
+Native headed Chromium was driven through desktop scrolling, dark theme,
+location filtering, projects, tablet/phone layouts, and a short landscape menu.
+Flameshot screenshots were inspected, including the corrected selected-filter
+text and the updated image crop. Before/after artifacts and per-section captures
+are retained locally under `/tmp/portfolio-hero/`.
+
+A 350 CSS pixel desktop scroll moves the image layer approximately 213 pixels
+relative to the document, so the skyline moves about 137 pixels on screen while
+the foreground moves 350. Phone samples show approximately 86 to 102 pixels of
+relative image travel. No new JavaScript animation loop or runtime dependency is
+needed. Local observed LCP ranges from 96 to 1980 ms and CLS remains below 0.007,
+including a cold image optimization request during concurrent browser checks.
+These are unthrottled local observations, not field performance percentiles.
+The 2048-pixel AVIF response is 42,921 bytes; the original WebP is 278,298 bytes.

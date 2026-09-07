@@ -16,8 +16,13 @@ describe("Section components", () => {
       screen.getByRole("heading", { name: /Tyler Schumacher/i }),
     ).toBeInTheDocument();
     expect(screen.getByText(/Software for teams that work live\./i)).toBeInTheDocument();
-    expect(screen.getByText(/At a glance/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Profile snapshot/i)).toBeInTheDocument();
+    expect(screen.queryByText(/At a glance/i)).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("navigation", { name: "Professional profiles and resume" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Download resume (PDF)" })).toHaveAttribute(
+      "download",
+    );
     expect(screen.queryByText(/Working console/i)).not.toBeInTheDocument();
   });
 

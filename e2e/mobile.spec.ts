@@ -1,6 +1,11 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { primaryNav } from "@/data/navigation";
+import { checkHeroMotion } from "./hero-checks";
+
+test("hero image, section order, and motion adapt to touch screens", async ({ page }) => {
+  await checkHeroMotion(page);
+});
 
 test.describe("Mobile navigation", () => {
   test("opens sheet navigation and closes after selection", async ({ page }) => {

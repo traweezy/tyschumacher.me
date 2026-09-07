@@ -19,12 +19,12 @@ test.describe("Home experience", () => {
     const skipLink = page.getByRole("link", { name: /Skip to content/i });
     await expect(skipLink).toHaveAttribute("href", "#main-content");
 
-    const snapshot = page.getByRole("complementary", {
-      name: "Profile snapshot",
+    const profiles = page.getByRole("navigation", {
+      name: "Professional profiles and resume",
     });
-    await expect(snapshot.getByText("At a glance")).toBeVisible();
+    await expect(page.getByText("At a glance", { exact: true })).toHaveCount(0);
     for (const link of secondaryNav) {
-      const profileLink = snapshot.getByRole("link", { name: link.title });
+      const profileLink = profiles.getByRole("link", { name: link.title });
       await expect(profileLink).toHaveAttribute("href", link.href);
       await expect(profileLink.locator("svg").first()).toBeVisible();
     }

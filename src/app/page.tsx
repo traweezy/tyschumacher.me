@@ -12,8 +12,8 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      <ProjectsSection />
       <ExperienceSection />
+      <ProjectsSection />
       <AboutSection />
       <ContactSection />
       <SiteFooter />

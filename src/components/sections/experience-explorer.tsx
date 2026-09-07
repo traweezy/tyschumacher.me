@@ -90,8 +90,17 @@ const ExperienceExplorerComponent = ({ initialExperiences }: ExperienceExplorerP
             const chips = getExperienceChips(item);
 
             return (
-              <li key={`${item.company}-${item.start}`} className="career-entry">
-                <p className="career-entry__dates">{getExperienceDates(item)}</p>
+              <li
+                key={`${item.company}-${item.start}`}
+                className="career-entry"
+                data-current={item.end ? undefined : "true"}
+              >
+                <div className="career-entry__period">
+                  <p className="career-entry__dates">{getExperienceDates(item)}</p>
+                  {!item.end && (
+                    <span className="career-entry__current">Current role</span>
+                  )}
+                </div>
                 <article className="experience-card">
                   <div className="experience-card__meta type-body-sm">
                     <span className="experience-card__company">{item.company}</span>
