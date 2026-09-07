@@ -36,6 +36,8 @@ target. Imports use Biome's ordering, with side-effect import boundaries preserv
 Tailwind v4 directives and CSS Modules are parsed. Git ignores exclude generated
 builds, coverage, reports, secrets, and TypeScript build state. The pre-existing
 legacy cleanup script remains excluded, and the legacy SVG asset is preserved.
+The old absolute symlink to the owner's global agent instructions is removed and
+ignored so clean CI checkouts do not contain a broken machine-specific link.
 
 `useSortedClasses` replaces the class-ordering plugin. This is a pinned nursery
 rule with [documented limitations](https://biomejs.dev/linter/rules/use-sorted-classes/),
