@@ -64,18 +64,20 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
   ],
-  webServer: [
-    {
-      command: `pnpm next start --port ${PORT}`,
-      url: baseURL,
-      reuseExistingServer: !process.env.CI,
-      timeout: 120_000,
-    },
-    {
-      command: `node e2e/https-preview.ts ${PORT}`,
-      url: `https://127.0.0.1:${PORT + 1}`,
-      ignoreHTTPSErrors: true,
-      reuseExistingServer: !process.env.CI,
-    },
-  ],
+  webServer: process.env.PLAYWRIGHT_BASE_URL
+    ? []
+    : [
+        {
+          command: `pnpm next start --port ${PORT}`,
+          url: baseURL,
+          reuseExistingServer: !process.env.CI,
+          timeout: 120_000,
+        },
+        {
+          command: `node e2e/https-preview.ts ${PORT}`,
+          url: `https://127.0.0.1:${PORT + 1}`,
+          ignoreHTTPSErrors: true,
+          reuseExistingServer: !process.env.CI,
+        },
+      ],
 });

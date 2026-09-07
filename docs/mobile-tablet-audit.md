@@ -65,6 +65,11 @@ Install the pinned Chromium and WebKit binaries with
 starts HTTP on `PORT` (3000 by default) and HTTPS on the next port. Reports and
 failure screenshots are retained as CI artifacts.
 
+To check a deployed site, set `PLAYWRIGHT_BASE_URL` to its HTTPS origin before
+running Playwright. This skips local preview servers and retains normal
+certificate validation. The mobile tests intercept contact submissions, so this
+check sends no email.
+
 This is browser emulation plus rendered desktop inspection, not a physical
 iPhone or iPad test. Native keyboard behavior, device-specific browser chrome,
 screen-reader behavior, and mobile network performance still benefit from a
