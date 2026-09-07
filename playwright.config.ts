@@ -11,7 +11,9 @@ export default defineConfig({
   fullyParallel: true,
   reporter: [["list"], ["html", { open: "never" }]],
   use: {
-    baseURL,
+    // Match production CSP and transport for every browser, including Chromium.
+    baseURL: secureBaseURL,
+    ignoreHTTPSErrors: !process.env.PLAYWRIGHT_BASE_URL,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
@@ -33,8 +35,6 @@ export default defineConfig({
       use: {
         ...devices["iPhone 17"],
         browserName: "webkit",
-        baseURL: secureBaseURL,
-        ignoreHTTPSErrors: !process.env.PLAYWRIGHT_BASE_URL,
       },
     },
     {
@@ -43,8 +43,6 @@ export default defineConfig({
       use: {
         ...devices["iPad Mini"],
         browserName: "webkit",
-        baseURL: secureBaseURL,
-        ignoreHTTPSErrors: !process.env.PLAYWRIGHT_BASE_URL,
       },
     },
     {

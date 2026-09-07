@@ -139,11 +139,7 @@ test.describe("Mobile navigation", () => {
       const image = card.locator("img");
       await image.scrollIntoViewIfNeeded();
       await expect
-        .poll(
-          () => image.evaluate((element: HTMLImageElement) => element.naturalWidth),
-          // Cold AVIF optimization can exceed the default wait on shared CI CPUs.
-          { timeout: 15_000, message: "Project screenshot should finish loading" },
-        )
+        .poll(() => image.evaluate((element: HTMLImageElement) => element.naturalWidth))
         .toBeGreaterThan(0);
       expect(
         await card.evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
