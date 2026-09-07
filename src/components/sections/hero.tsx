@@ -17,10 +17,10 @@ export const Hero = memo(() => (
     <div className="hero__art" aria-hidden="true">
       <Image
         className="hero__image"
-        src="/header.webp"
+        src="/images/hero/buffalo-engineering-2c3191e9019e.png"
         alt=""
         fill
-        sizes="(max-width: 1600px) 2048px, 100vw"
+        sizes="(max-width: 900px) 1920px, (max-width: 1920px) 2880px, 100vw"
         preload
       />
     </div>

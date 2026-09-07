@@ -14,4 +14,4 @@ Browser support data from [caniuse-lite](https://github.com/browserslist/caniuse
 
 ## Header artwork
 
-The Buffalo skyline header in `public/header.webp` was supplied by the portfolio owner for this website. The source file is retained intact; responsive crops and overlays are applied in CSS. The personal website project preview is an original browser capture of this updated design.
+The Buffalo skyline header in `public/images/hero/buffalo-engineering-2c3191e9019e.png` was supplied by the portfolio owner as `website-header-buffalo-engineering-v2-6k.png`. The 6516 × 2172 source file is retained intact; Next Image serves optimized sizes, and responsive crops and overlays are applied in CSS. The personal website project preview is an original browser capture of the portfolio.

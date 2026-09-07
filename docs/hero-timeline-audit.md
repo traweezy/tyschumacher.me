@@ -4,11 +4,16 @@ Reviewed September 6, 2026. This follows the mobile/tablet and Biome audits.
 
 ## Design and implementation
 
-The supplied `Pictures/header.webp` is copied intact to `public/header.webp`.
+The supplied `Pictures/website-header-buffalo-engineering-v2-6k.png` is copied
+intact to `public/images/hero/buffalo-engineering-2c3191e9019e.png`. This replaces
+the earlier banner with the owner's 6516 × 2172 artwork. Its filename contains
+the source hash so optimized image caches cannot retain the previous version.
+The separate LinkedIn crop is intended for the owner's LinkedIn profile.
 The hero uses a dark palette in either site theme, with a horizontal text scrim
 on desktop and a vertical fade on phones and portrait tablets. Responsive crops
-keep Buffalo City Hall visible. The mobile composition gives the skyline space
-above the introduction. The original artwork is not redrawn or altered.
+keep Buffalo City Hall and the new buffalo motif visible. The mobile composition
+gives the skyline space above the introduction. The original artwork is not
+redrawn or altered.
 
 The background moves more slowly than the foreground through a native CSS view
 timeline. Travel is capped between 144 and 256 CSS pixels, depending on viewport
@@ -24,8 +29,10 @@ animation](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactio
 No animation dependency or JavaScript scroll loop was added.
 
 The hero image is preloaded through Next Image. Its responsive `sizes` accounts
-for a wide source being cropped into a taller image layer, avoiding an undersized
-phone image. Explicit stylesheet dimensions preserve layout under the site's
+for a wide source being cropped into a taller image layer, requesting 1920 CSS
+pixels on phones and portrait tablets and 2880 on standard desktops. Next Image
+selects an available output width and format for the display. Explicit
+stylesheet dimensions preserve layout under the site's
 strict inline-style CSP. See [Next Image's sizing guidance](https://nextjs.org/docs/app/api-reference/components/image#sizes).
 
 “At a glance” is removed. The introduction retains direct project/contact

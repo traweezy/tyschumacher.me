@@ -1540,7 +1540,7 @@ a:focus-visible {
   }
 
   .hero__image {
-    object-position: 88% center;
+    object-position: 96% center;
   }
 
   .hero::after {

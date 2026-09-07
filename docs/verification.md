@@ -302,3 +302,22 @@ needed. Local observed LCP ranges from 96 to 1980 ms and CLS remains below 0.007
 including a cold image optimization request during concurrent browser checks.
 These are unthrottled local observations, not field performance percentiles.
 The 2048-pixel AVIF response is 42,921 bytes; the original WebP is 278,298 bytes.
+
+## Replacement high resolution banner
+
+The owner supplied a new 6516 × 2172 website banner. Its complete PNG source is
+preserved under a content-hashed filename, replacing the previous WebP. The
+mobile crop keeps both City Hall and the buffalo motif visible, and the website
+project preview has been recaptured. The parallax behavior is unchanged.
+
+The production build and dependency audit pass. Eight focused browser cases
+cover the header, navigation, timeline, motion, and phone/tablet layouts in
+Chromium and WebKit. Four headed Chromium configurations, from 390 to 2560
+pixels wide, have no hero accessibility violations, page errors, or horizontal
+overflow. Actual Flameshot desktop and phone captures were inspected before and
+after the replacement. Artifacts are in `/tmp/portfolio-banner-v2/`.
+
+With device pixel ratio 1, the optimized image is 72,003 bytes at 1920 pixels and
+190,483 bytes at 3840 pixels, below the 300 KB delivery target. Higher density
+displays select larger candidates. The original 11.8 MB PNG stays on the server;
+the header loads the optimized image response.
