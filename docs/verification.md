@@ -322,9 +322,13 @@ With device pixel ratio 1, the optimized image is 72,003 bytes at 1920 pixels an
 displays select larger candidates. The original 11.8 MB PNG stays on the server;
 the header loads the optimized image response.
 
-CI's Chrome phone thumbnail request remained pending over HTTP, including with
-a longer assertion wait. The same mobile flow passed locally with a cold image
-cache and two CPU cores, and on the live HTTPS site. All browser profiles now
-use the existing local HTTPS preview to match production transport and CSP.
-The normal image assertion timeout is retained. Certificate exceptions apply
+CI's Chrome phone thumbnail transformation request remained pending over HTTP
+and HTTPS, including with a longer assertion wait. The same mobile flow passed
+locally with a cold cache and two CPU cores, and on the live HTTPS site. The
+website screenshot is already a 131,234-byte WebP, so it now loads directly as a
+preoptimized asset. This avoids another runtime transformation of that image.
+The full resolution hero continues to use responsive Next Image delivery.
+
+All browser profiles use the local HTTPS preview to match production transport
+and CSP. Normal image assertions are retained. Certificate exceptions apply
 only to the local test certificate; deployed checks validate real TLS.

@@ -27,6 +27,7 @@ export type Project = {
     width: number;
     height: number;
     caption: string;
+    preoptimized?: boolean;
   };
 };
 
@@ -286,6 +287,7 @@ export const projects = [
     ],
     image: {
       src: "/images/projects/personal-website-838820f3dc2b.webp",
+      preoptimized: true,
       alt: "Tyler Schumacher’s portfolio homepage with a Buffalo skyline header, introduction, and project, contact, and resume links.",
       width: 1440,
       height: 820,
