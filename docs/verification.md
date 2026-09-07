@@ -321,3 +321,9 @@ With device pixel ratio 1, the optimized image is 72,003 bytes at 1920 pixels an
 190,483 bytes at 3840 pixels, below the 300 KB delivery target. Higher density
 displays select larger candidates. The original 11.8 MB PNG stays on the server;
 the header loads the optimized image response.
+
+CI twice reached the five-second image assertion limit while the new project
+thumbnail's first AVIF request was still pending. The same mobile flow passed
+locally. Its functional image-loading assertion now allows a bounded 15 seconds
+for cold optimization on shared runners; it still requires a decoded image.
+This changes the test wait, not the image delivery or performance targets.
