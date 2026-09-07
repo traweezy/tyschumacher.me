@@ -64,14 +64,7 @@ const skillLayout = [
   {
     title: "Frontend",
     icon: Monitor,
-    keys: [
-      "typescript",
-      "react",
-      "nextdotjs",
-      "tailwindcss",
-      "zustand",
-      "reactquery",
-    ],
+    keys: ["typescript", "react", "nextdotjs", "tailwindcss", "zustand", "reactquery"],
   },
   {
     title: "Backend & APIs",
@@ -215,8 +208,7 @@ try {
 
   const dimensions = await page.evaluate(() => {
     const sheet = document.querySelector(".sheet");
-    if (!(sheet instanceof HTMLElement))
-      throw new Error("Resume sheet missing.");
+    if (!(sheet instanceof HTMLElement)) throw new Error("Resume sheet missing.");
     return { height: sheet.scrollHeight, width: sheet.scrollWidth };
   });
 
@@ -234,16 +226,12 @@ try {
     outline: true,
   });
   // Chromium emits uncompressed page dictionaries; check actual pagination too.
-  const pageCount = [...pdf.toString("latin1").matchAll(/\/Type\s*\/Page\b/g)]
-    .length;
+  const pageCount = [...pdf.toString("latin1").matchAll(/\/Type\s*\/Page\b/g)].length;
   if (pageCount !== 1) {
     throw new Error(`Expected one PDF page, received ${pageCount}.`);
   }
 
-  const output = new URL(
-    "../public/tyler-schumacher-resume.pdf",
-    import.meta.url,
-  );
+  const output = new URL("../public/tyler-schumacher-resume.pdf", import.meta.url);
   await writeFile(output, pdf);
   console.log(`Created one-page resume: ${fileURLToPath(output)}`);
 } finally {

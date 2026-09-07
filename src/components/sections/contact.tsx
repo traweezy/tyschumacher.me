@@ -1,5 +1,5 @@
-import { Section } from "@/components/layout/section";
 import { ContactForm } from "@/components/forms/contact-form";
+import { Section } from "@/components/layout/section";
 export const ContactSection = () => (
   <Section
     id="contact"

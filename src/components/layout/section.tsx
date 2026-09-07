@@ -31,10 +31,7 @@ export const Section = ({
       <div className="section-shell">
         <header className="section-header">
           <div className="section-header__meta">
-            <p
-              id={`${id}-label`}
-              className="section-header__label type-eyebrow"
-            >
+            <p id={`${id}-label`} className="section-header__label type-eyebrow">
               {label}
             </p>
             {overline ? (
@@ -52,9 +49,7 @@ export const Section = ({
             ) : null}
           </div>
         </header>
-        <div className={cn("flex flex-col gap-10", contentClassName)}>
-          {children}
-        </div>
+        <div className={cn("flex flex-col gap-10", contentClassName)}>{children}</div>
       </div>
     </Container>
   </section>

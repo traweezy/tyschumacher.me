@@ -1,9 +1,8 @@
-import { devices, defineConfig } from "@playwright/test";
+import { defineConfig, devices } from "@playwright/test";
 
 const PORT = Number(process.env.PORT ?? 3000);
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://127.0.0.1:${PORT}`;
-const secureBaseURL =
-  process.env.PLAYWRIGHT_BASE_URL ?? `https://127.0.0.1:${PORT + 1}`;
+const secureBaseURL = process.env.PLAYWRIGHT_BASE_URL ?? `https://127.0.0.1:${PORT + 1}`;
 
 export default defineConfig({
   testDir: "e2e",

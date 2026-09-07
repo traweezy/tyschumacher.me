@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Hero } from "@/components/sections/hero";
 import { AboutSection } from "@/components/sections/about";
-import { ExperienceSection } from "@/components/sections/experience";
 import { ContactSection } from "@/components/sections/contact";
+import { ExperienceSection } from "@/components/sections/experience";
+import { Hero } from "@/components/sections/hero";
 import { experiences } from "@/data/experience";
 import { skills } from "@/data/skills";
 import { renderWithProviders } from "@/test-utils/render-with-providers";
@@ -15,9 +15,7 @@ describe("Section components", () => {
     expect(
       screen.getByRole("heading", { name: /Tyler Schumacher/i }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Software for teams that work live\./i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Software for teams that work live\./i)).toBeInTheDocument();
     expect(screen.getByText(/At a glance/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Profile snapshot/i)).toBeInTheDocument();
     expect(screen.queryByText(/Working console/i)).not.toBeInTheDocument();
@@ -62,11 +60,7 @@ describe("Section components", () => {
         name: /Let’s talk about your team/i,
       }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /send message/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByText(/tyschumacher@proton\.me/i),
-    ).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /send message/i })).toBeInTheDocument();
+    expect(screen.queryByText(/tyschumacher@proton\.me/i)).not.toBeInTheDocument();
   });
 });

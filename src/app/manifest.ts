@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
+
 const manifest = (): MetadataRoute.Manifest => ({
   name: "Tyler Schumacher · Product engineering",
   short_name: "Tyler Schumacher",
-  description:
-    "Independent projects, engineering experience, and ways to get in touch.",
+  description: "Independent projects, engineering experience, and ways to get in touch.",
   start_url: "/",
   display: "browser",
   background_color: "#faf8f5",

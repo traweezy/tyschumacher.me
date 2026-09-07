@@ -52,9 +52,7 @@ describe("ExperienceSection", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "All" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Remote" })).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "New York, NY" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "New York, NY" })).toBeInTheDocument();
 
     expect(screen.getByText("Company A")).toBeInTheDocument();
     expect(screen.getByText("Role A")).toBeInTheDocument();
@@ -85,9 +83,7 @@ describe("ExperienceSection", () => {
 
     renderWithProviders(<ExperienceSectionSkeleton />);
 
-    expect(
-      screen.getByRole("region", { name: /experience/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: /experience/i })).toBeInTheDocument();
     expect(screen.getAllByRole("listitem", { hidden: true })).toHaveLength(16);
   });
 });

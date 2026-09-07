@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import React from "react";
+import type React from "react";
 import { describe, expect, it, vi } from "vitest";
 import { SHARE_IMAGE_PATH, SITE_URL } from "@/lib/site";
 
@@ -78,9 +78,10 @@ describe("RootLayout component", () => {
       }),
     );
 
-    expect(
-      screen.getByRole("link", { name: /skip to content/i }),
-    ).toHaveAttribute("href", "#main-content");
+    expect(screen.getByRole("link", { name: /skip to content/i })).toHaveAttribute(
+      "href",
+      "#main-content",
+    );
     expect(screen.getByText("Global header")).toBeInTheDocument();
     expect(screen.getByRole("main")).toHaveTextContent("Page content");
   });
@@ -111,9 +112,7 @@ describe("RootLayout component", () => {
 
     expect(controlsInitializer).not.toBeNull();
     expect(controlsInitializer).toHaveAttribute("nonce", "test-nonce");
-    expect(controlsInitializer?.textContent).toContain(
-      "[data-theme-mode-toggle]",
-    );
+    expect(controlsInitializer?.textContent).toContain("[data-theme-mode-toggle]");
     expect(controlsInitializer?.textContent).toContain("aria-pressed");
   });
 });

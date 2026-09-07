@@ -1,5 +1,3 @@
-import Image from "next/image";
-import { memo } from "react";
 import {
   ExternalLink,
   FlaskConical,
@@ -8,6 +6,8 @@ import {
   PackageOpen,
   Plus,
 } from "lucide-react";
+import Image from "next/image";
+import { memo } from "react";
 import { GitHubIcon } from "@/components/ui/brand-icons";
 import { TechnologyIcon } from "@/components/ui/technology-icons";
 import type { Project, ProjectTechnology } from "@/data/projects";
@@ -32,10 +32,7 @@ export const ProjectTechnologies = memo<{
   <ul className={styles.tags} aria-label={`${name} technologies`}>
     {technologies.map((technology) => (
       <li key={technology.name} data-skill-accent={technology.icon}>
-        <TechnologyIcon
-          name={technology.icon}
-          className={styles.technologyIcon}
-        />
+        <TechnologyIcon name={technology.icon} className={styles.technologyIcon} />
         <span>{technology.name}</span>
       </li>
     ))}
@@ -119,9 +116,7 @@ const ProjectCard = memo<ProjectCardProps>(({ project, index }) => (
       </div>
     </div>
     <details className={styles.notes}>
-      <summary
-        data-observe-click={`projects.${project.slug}.engineering_notes`}
-      >
+      <summary data-observe-click={`projects.${project.slug}.engineering_notes`}>
         My contribution & engineering notes
         <Plus size={18} className={styles.expandIcon} aria-hidden="true" />
       </summary>

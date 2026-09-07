@@ -1,10 +1,7 @@
 const MAX_BODY_BYTES = 16_384;
 const READ_TIMEOUT_MS = 10_000;
-type BodyResult =
-  { ok: true; value: unknown } | { ok: false; status: 400 | 408 | 413 };
-export const readContactBody = async (
-  request: Request,
-): Promise<BodyResult> => {
+type BodyResult = { ok: true; value: unknown } | { ok: false; status: 400 | 408 | 413 };
+export const readContactBody = async (request: Request): Promise<BodyResult> => {
   if (Number(request.headers.get("content-length")) > MAX_BODY_BYTES)
     return { ok: false, status: 413 };
   const reader = request.body?.getReader();
@@ -62,10 +59,7 @@ export const createDeliveryBudget = (
       count = 0;
     }
     if (count >= limit)
-      return Math.max(
-        1,
-        Math.ceil((windowMs - (current - windowStart)) / 1000),
-      );
+      return Math.max(1, Math.ceil((windowMs - (current - windowStart)) / 1000));
     count += 1;
     return 0;
   };

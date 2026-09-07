@@ -13,9 +13,7 @@ test.describe("Dark mode preference", () => {
     ).toHaveAttribute("aria-pressed", "true");
   });
 
-  test("applies a stored theme preference before system dark", async ({
-    page,
-  }) => {
+  test("applies a stored theme preference before system dark", async ({ page }) => {
     await page.addInitScript(() => {
       window.localStorage.setItem("tyschumacher.theme-mode", "light");
     });

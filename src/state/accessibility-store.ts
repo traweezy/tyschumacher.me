@@ -11,9 +11,8 @@ export const useAccessibilityStore = create<AccessibilityState>()((set) => ({
   setPrefersReducedMotion: (value) => set({ prefersReducedMotion: value }),
 }));
 
-export const useAccessibilityState = <T>(
-  selector: (state: AccessibilityState) => T,
-) => useAccessibilityStore(useShallow(selector));
+export const useAccessibilityState = <T>(selector: (state: AccessibilityState) => T) =>
+  useAccessibilityStore(useShallow(selector));
 
 export const usePrefersReducedMotion = () =>
   useAccessibilityState((state) => state.prefersReducedMotion);

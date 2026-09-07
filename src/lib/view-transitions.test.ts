@@ -15,11 +15,7 @@ const replaceDocument = (handler: ProxyHandler<Document>) => {
   });
   return () => {
     if (originalDescriptor)
-      Object.defineProperty(
-        document,
-        "startViewTransition",
-        originalDescriptor,
-      );
+      Object.defineProperty(document, "startViewTransition", originalDescriptor);
     else Reflect.deleteProperty(document, "startViewTransition");
   };
 };

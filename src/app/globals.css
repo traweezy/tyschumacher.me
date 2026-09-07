@@ -95,14 +95,8 @@
 [data-skill-accent] {
   --chip-hue: 260;
   --chip-chroma: 0.13;
-  --skill-accent: oklch(
-    var(--chip-lightness) var(--chip-chroma) var(--chip-hue)
-  );
-  --chip-background: color-mix(
-    in srgb,
-    var(--skill-accent) 10%,
-    var(--surface-100)
-  );
+  --skill-accent: oklch(var(--chip-lightness) var(--chip-chroma) var(--chip-hue));
+  --chip-background: color-mix(in srgb, var(--skill-accent) 10%, var(--surface-100));
   --chip-border: color-mix(in srgb, var(--skill-accent) 24%, var(--border));
 }
 [data-skill-accent="react"],
@@ -201,11 +195,7 @@ body {
   background: var(--background-gradient);
   color: var(--text-primary);
   font-family:
-    var(--font-manrope),
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
+    var(--font-manrope), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   font-size: var(--font-size-body);
   line-height: var(--line-height-body);
@@ -239,21 +229,9 @@ body {
 
 .cosmic-background__layer--nebula {
   background:
-    radial-gradient(
-      70% 60% at 18% 22%,
-      rgba(111, 126, 255, 0.18),
-      transparent 78%
-    ),
-    radial-gradient(
-      55% 65% at 80% 30%,
-      rgba(255, 198, 237, 0.16),
-      transparent 78%
-    ),
-    radial-gradient(
-      60% 50% at 50% 84%,
-      rgba(246, 208, 160, 0.12),
-      transparent 82%
-    );
+    radial-gradient(70% 60% at 18% 22%, rgba(111, 126, 255, 0.18), transparent 78%),
+    radial-gradient(55% 65% at 80% 30%, rgba(255, 198, 237, 0.16), transparent 78%),
+    radial-gradient(60% 50% at 50% 84%, rgba(246, 208, 160, 0.12), transparent 82%);
   filter: blur(120px);
   transform: translate3d(0, 0, 0);
   mix-blend-mode: screen;
@@ -263,11 +241,7 @@ body {
 
 .cosmic-background__layer--grid {
   background-image:
-    radial-gradient(
-      circle at center,
-      rgba(148, 163, 184, 0.12),
-      transparent 65%
-    ),
+    radial-gradient(circle at center, rgba(148, 163, 184, 0.12), transparent 65%),
     repeating-linear-gradient(
       90deg,
       rgba(111, 126, 255, 0.12),
@@ -289,26 +263,10 @@ body {
 
 .cosmic-background__layer--stars {
   background-image:
-    radial-gradient(
-      1.2px 1.2px at 20px 20px,
-      rgba(156, 170, 215, 0.6),
-      transparent
-    ),
-    radial-gradient(
-      1.6px 1.6px at 60px 90px,
-      rgba(214, 214, 255, 0.55),
-      transparent
-    ),
-    radial-gradient(
-      2.4px 2.4px at 160px 120px,
-      rgba(255, 202, 224, 0.5),
-      transparent
-    ),
-    radial-gradient(
-      3px 3px at 210px 80px,
-      rgba(152, 170, 255, 0.45),
-      transparent
-    );
+    radial-gradient(1.2px 1.2px at 20px 20px, rgba(156, 170, 215, 0.6), transparent),
+    radial-gradient(1.6px 1.6px at 60px 90px, rgba(214, 214, 255, 0.55), transparent),
+    radial-gradient(2.4px 2.4px at 160px 120px, rgba(255, 202, 224, 0.5), transparent),
+    radial-gradient(3px 3px at 210px 80px, rgba(152, 170, 255, 0.45), transparent);
   background-size:
     160px 160px,
     240px 240px,
@@ -516,12 +474,7 @@ a:focus-visible {
   position: absolute;
   inset: 0;
   transform: translateX(-100%);
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.45),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
   animation: skeleton-wave 1.4s infinite;
 }
 
@@ -583,8 +536,7 @@ a:focus-visible {
   --section-accent-a: var(--avatar-cobalt);
   --section-accent-b: var(--avatar-pink);
   background: var(--header-bg);
-  border-bottom: 1px solid
-    color-mix(in srgb, var(--border-strong) 66%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--border-strong) 66%, transparent);
   backdrop-filter: blur(16px);
   box-shadow: 0 16px 36px -34px var(--shadow-color);
   transition:
@@ -698,8 +650,7 @@ a:focus-visible {
 
 .site-header__avatar-button:hover .site-header__avatar-wrap::after,
 .site-header__avatar-button:focus-visible .site-header__avatar-wrap::after,
-.site-header__avatar-button[aria-expanded="true"]
-  .site-header__avatar-wrap::after {
+.site-header__avatar-button[aria-expanded="true"] .site-header__avatar-wrap::after {
   opacity: 0.8;
   transform: translateX(34%) rotate(8deg);
 }
@@ -995,11 +946,7 @@ a:focus-visible {
   inset: 0 0 auto;
   height: 3px;
   border-radius: 1rem 1rem 0 0;
-  background: linear-gradient(
-    90deg,
-    var(--section-accent-a),
-    var(--section-accent-b)
-  );
+  background: linear-gradient(90deg, var(--section-accent-a), var(--section-accent-b));
 }
 
 .site-header__popover-label {
@@ -1281,11 +1228,7 @@ a:focus-visible {
   display: block;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    var(--section-accent-a),
-    var(--section-accent-b)
-  );
+  background: linear-gradient(90deg, var(--section-accent-a), var(--section-accent-b));
   transform-origin: left;
   scale: var(--progress-scale, 0) 1;
   transition: scale 0.2s ease;
@@ -2063,6 +2006,7 @@ a:focus-visible {
   }
 }
 
+/* biome-ignore-start lint/complexity/noImportantStyles: Reduced motion must override component and utility animation rules. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -2081,3 +2025,4 @@ a:focus-visible {
   transition-duration: 0s !important;
   scroll-behavior: auto !important;
 }
+/* biome-ignore-end lint/complexity/noImportantStyles: End of reduced motion overrides. */

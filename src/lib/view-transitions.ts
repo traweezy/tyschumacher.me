@@ -11,9 +11,7 @@ const prefersReducedMotion = (): boolean =>
 
 export const runViewTransition = (callback: () => void) => {
   const viewTransitionDocument =
-    typeof document === "undefined"
-      ? undefined
-      : (document as ViewTransitionDocument);
+    typeof document === "undefined" ? undefined : (document as ViewTransitionDocument);
   const startViewTransition = viewTransitionDocument?.startViewTransition;
 
   if (typeof startViewTransition !== "function" || prefersReducedMotion()) {

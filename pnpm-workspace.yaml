@@ -6,7 +6,6 @@ minimumReleaseAgeStrict: true
 
 allowBuilds:
   lefthook: false
-  unrs-resolver: true
 
 overrides:
   bidi-js: 1.0.3

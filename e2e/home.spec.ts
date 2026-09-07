@@ -9,14 +9,10 @@ const commandShortcut = process.platform === "darwin" ? "Meta+K" : "Control+K";
 test.describe.configure({ mode: "serial" });
 
 test.describe("Home experience", () => {
-  test("renders hero, navigation, and scrolls to experience", async ({
-    page,
-  }) => {
+  test("renders hero, navigation, and scrolls to experience", async ({ page }) => {
     await page.goto("/");
 
-    await expect(
-      page.getByRole("heading", { name: /Tyler Schumacher/i }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Tyler Schumacher/i })).toBeVisible();
     const nav = page.getByRole("navigation", { name: /primary/i });
     await expect(nav).toBeVisible();
 
@@ -38,9 +34,10 @@ test.describe("Home experience", () => {
     });
     await expect(viewExperience).toHaveAttribute("href", "#projects");
 
-    await expect(
-      page.getByRole("link", { name: /Get in touch/i }),
-    ).toHaveAttribute("href", "#contact");
+    await expect(page.getByRole("link", { name: /Get in touch/i })).toHaveAttribute(
+      "href",
+      "#contact",
+    );
 
     const workingModeTrigger = page.getByRole("button", {
       name: /Show working mode/i,
@@ -64,25 +61,17 @@ test.describe("Home experience", () => {
     page,
   }) => {
     await page.addInitScript(() => {
-      if (
-        typeof window === "undefined" ||
-        typeof window.CSS?.supports !== "function"
-      ) {
+      if (typeof window === "undefined" || typeof window.CSS?.supports !== "function") {
         return;
       }
       const css = window.CSS;
       const originalSupports = css.supports.bind(css);
-      const override: typeof css.supports = (
-        ...args: [string] | [string, string]
-      ) => {
+      const override: typeof css.supports = (...args: [string] | [string, string]) => {
         const [first, second] = args;
         if (typeof first === "string" && first.includes("animation-timeline")) {
           return false;
         }
-        if (
-          typeof second === "string" &&
-          second.includes("animation-timeline")
-        ) {
+        if (typeof second === "string" && second.includes("animation-timeline")) {
           return false;
         }
         if (args.length === 1) {
@@ -187,9 +176,7 @@ test.describe("Home experience", () => {
     await expect(submitButton).toBeDisabled();
 
     const status = page.getByRole("status");
-    await expect(status).toHaveText(
-      /Thanks! I’ll reach out within two business days\./i,
-    );
+    await expect(status).toHaveText(/Thanks! I’ll reach out within two business days\./i);
 
     await expect(submitButton).toHaveText("Send message");
     await expect(submitButton).toBeEnabled();
@@ -214,9 +201,7 @@ test.describe("Home experience", () => {
     await page.goto("/");
     await page.getByLabel("Name").fill("Playwright User");
     await page.getByLabel("Email").fill("broken-address@example.com");
-    await page
-      .getByLabel(/How can I help/i)
-      .fill("Message with invalid email.");
+    await page.getByLabel(/How can I help/i).fill("Message with invalid email.");
     await page.locator('form button[type="submit"]').click();
 
     await expect(page.getByText(/Zap! That address bounced/i)).toBeVisible();
@@ -238,9 +223,7 @@ test.describe("Home experience", () => {
     const experienceSection = page.getByRole("region", { name: /Experience/i });
     await expect(experienceSection).toBeVisible();
 
-    await experienceSection
-      .getByRole("button", { name: "New York, NY" })
-      .click();
+    await experienceSection.getByRole("button", { name: "New York, NY" }).click();
     await expect(experienceSection.locator(".experience-card")).toHaveCount(2);
   });
 
@@ -257,9 +240,7 @@ test.describe("Home experience", () => {
     await expect(page.getByRole("main")).toBeInViewport();
   });
 
-  test("command palette button toggles and closes with escape", async ({
-    page,
-  }) => {
+  test("command palette button toggles and closes with escape", async ({ page }) => {
     await page.goto("/");
 
     const paletteButton = page
@@ -269,19 +250,13 @@ test.describe("Home experience", () => {
 
     const dialog = page.getByRole("dialog", { name: /command palette/i });
     await expect(dialog).toHaveAttribute("data-state", "open");
-    await expect(
-      dialog.getByRole("group", { name: /Quick actions/i }),
-    ).toBeVisible();
+    await expect(dialog.getByRole("group", { name: /Quick actions/i })).toBeVisible();
 
     await page.keyboard.press("Escape");
-    await expect(page.locator('[cmdk-dialog][data-state="open"]')).toHaveCount(
-      0,
-    );
+    await expect(page.locator('[cmdk-dialog][data-state="open"]')).toHaveCount(0);
   });
 
-  test("command palette filters items and displays an empty state", async ({
-    page,
-  }) => {
+  test("command palette filters items and displays an empty state", async ({ page }) => {
     await page.goto("/");
 
     const paletteButton = page
@@ -301,9 +276,7 @@ test.describe("Home experience", () => {
     await expect(options.first()).toHaveText(/GitHub/i);
   });
 
-  test("command palette external quick action opens in a new tab", async ({
-    page,
-  }) => {
+  test("command palette external quick action opens in a new tab", async ({ page }) => {
     await page.goto("/");
 
     const paletteButton = page
@@ -335,10 +308,7 @@ test.describe("Home experience", () => {
     );
     expect((await response.body()).subarray(0, 5).toString()).toBe("%PDF-");
 
-    for (const region of [
-      page.locator("header.site-header"),
-      page.locator("#home"),
-    ]) {
+    for (const region of [page.locator("header.site-header"), page.locator("#home")]) {
       const action = region.getByRole("link", {
         name: "Download resume (PDF)",
       });
@@ -349,17 +319,12 @@ test.describe("Home experience", () => {
       expect(await download.failure()).toBeNull();
     }
 
-    await page
-      .getByRole("button", { name: "Open command palette" })
-      .first()
-      .click();
+    await page.getByRole("button", { name: "Open command palette" }).first().click();
     const dialog = page.getByRole("dialog", { name: "Command palette" });
     await dialog.getByRole("combobox").fill("resume");
     await expect(dialog.getByRole("option")).toHaveCount(1);
     const paletteDownload = page.waitForEvent("download");
-    await dialog
-      .getByRole("option", { name: "Download resume", exact: true })
-      .click();
+    await dialog.getByRole("option", { name: "Download resume", exact: true }).click();
     expect((await paletteDownload).suggestedFilename()).toBe(
       "tyler-schumacher-resume.pdf",
     );
@@ -369,9 +334,7 @@ test.describe("Home experience", () => {
     await page.getByRole("button", { name: "Open navigation" }).click();
     const navigation = page.getByRole("dialog", { name: "Site navigation" });
     const mobileDownload = page.waitForEvent("download");
-    await navigation
-      .getByRole("link", { name: "Download resume (PDF)" })
-      .click();
+    await navigation.getByRole("link", { name: "Download resume (PDF)" }).click();
     expect((await mobileDownload).suggestedFilename()).toBe(
       "tyler-schumacher-resume.pdf",
     );
@@ -380,9 +343,7 @@ test.describe("Home experience", () => {
     expect(context.pages()).toHaveLength(originalTabs);
   });
 
-  test("renders all experience entries with expected metadata", async ({
-    page,
-  }) => {
+  test("renders all experience entries with expected metadata", async ({ page }) => {
     await page.goto("/");
 
     const experienceRegion = page.getByRole("region", { name: /Experience/i });
@@ -404,9 +365,7 @@ test.describe("Home experience", () => {
       }
     }
     await expect(
-      experienceRegion
-        .locator(".experience-card__tech")
-        .filter({ hasText: /^Git$/ }),
+      experienceRegion.locator(".experience-card__tech").filter({ hasText: /^Git$/ }),
     ).toHaveCount(0);
   });
 
@@ -418,12 +377,8 @@ test.describe("Home experience", () => {
     const aboutRegion = page.getByRole("region", { name: /Skills/i });
     await expect(aboutRegion).toBeVisible();
 
-    await expect(
-      aboutRegion.getByRole("heading", { name: "How I work" }),
-    ).toBeVisible();
-    await expect(
-      aboutRegion.getByText(/Understand the workflow/i),
-    ).toBeVisible();
+    await expect(aboutRegion.getByRole("heading", { name: "How I work" })).toBeVisible();
+    await expect(aboutRegion.getByText(/Understand the workflow/i)).toBeVisible();
 
     const skillChips = aboutRegion.locator(".about-skill");
     await expect(skillChips).toHaveCount(skills.length);
@@ -435,9 +390,7 @@ test.describe("Home experience", () => {
     }
   });
 
-  test("shows contact guidance without exposing direct email", async ({
-    page,
-  }) => {
+  test("shows contact guidance without exposing direct email", async ({ page }) => {
     await page.goto("/");
 
     const contactRegion = page.getByRole("region", { name: /Contact/i });
@@ -446,9 +399,7 @@ test.describe("Home experience", () => {
     const status = page.getByRole("status");
     await expect(status).toHaveText("");
 
-    await expect(
-      contactRegion.getByText(new RegExp(profile.email, "i")),
-    ).toHaveCount(0);
+    await expect(contactRegion.getByText(new RegExp(profile.email, "i"))).toHaveCount(0);
   });
 
   test("validates contact form fields on blur", async ({ page }) => {
@@ -463,9 +414,7 @@ test.describe("Home experience", () => {
 
     await expect(page.getByText(/Tell me your name/i)).toBeVisible();
     await expect(page.getByText(/Use a valid email/i)).toBeVisible();
-    await expect(
-      page.getByText(/Add more context so I can help/i),
-    ).toBeVisible();
+    await expect(page.getByText(/Add more context so I can help/i)).toBeVisible();
   });
 
   test("contact form surfaces service outages with actionable guidance", async ({
@@ -491,9 +440,7 @@ test.describe("Home experience", () => {
 
     const status = page.getByRole("status");
     await expect(status).toHaveText(/Email service is not configured/i);
-    await expect(
-      page.getByText(/Email service is not configured/i),
-    ).toBeVisible();
+    await expect(page.getByText(/Email service is not configured/i)).toBeVisible();
   });
 
   test("contact form falls back when error responses cannot be parsed", async ({

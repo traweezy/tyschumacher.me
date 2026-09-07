@@ -54,11 +54,11 @@ A local build or staging screenshot does not prove that the deployed bytes equal
 
 ## Upgrade record and deliberate holds
 
-All direct dependency versions were checked against registry stable tags. The final `pnpm outdated` result contains only ESLint.
+All direct dependency versions were checked against registry stable tags. At that stage, the only remaining update was ESLint; the subsequent [Biome migration](biome-migration.md) removes that dependency and compatibility hold.
 
 - Next.js 16.3.4, React 19.2.8, Tailwind 4.3.3, pnpm 12.3.4, Vite 8.2.2, Vitest 5.0.0, Playwright 1.63.0 and the current stable app libraries are locked.
-- Typechecking uses native TypeScript 7.0.2. The official `@typescript/typescript6` compatibility package remains aliased as `typescript` because Next.js and lint tooling consume the JavaScript API, which TypeScript 7 does not yet expose. This follows [Microsoft’s TypeScript 7 migration guidance](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/).
-- ESLint stays on 9.39.5: the current `eslint-plugin-react` peer range does not support ESLint 10. The user accepted this compatibility hold. Do not bypass peer validation to force the major upgrade.
+- Typechecking uses native TypeScript 7.0.2. The official `@typescript/typescript6` compatibility package remains aliased as `typescript` because Next.js consumes the JavaScript API, which TypeScript 7 does not yet expose. This follows [Microsoft’s TypeScript 7 migration guidance](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/).
+- The initial ESLint 9 compatibility hold was superseded by the owner-requested migration to Biome 2.5.12. ESLint, Prettier, and their plugins are removed.
 - Local/primary CI uses Node 26.8.1. Node 24 remains the deployment compatibility target because [Vercel’s runtime support](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions) currently stops at 24.
 - pnpm 12 uses its canonical peer lockfile and explicit build-script approvals. A 24-hour minimum release age is enforced. `bidi-js` is held at 1.0.3 while the new 1.1.0 release is inside that window; review before removing the override. Other overrides retain patched transitive dependency floors.
 - The package is now ESM. Vitest uses `import.meta.dirname`; jsdom 30 tests extend the actual document rather than replacing its read-only global.

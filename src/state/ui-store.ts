@@ -23,13 +23,8 @@ export const useUIStore = create<UIState>()((set) => ({
 export const useUIState = <T>(selector: (state: UIState) => T) =>
   useUIStore(useShallow(selector));
 
-export const useIsCommandOpen = () =>
-  useUIState((state) => state.isCommandOpen);
-export const useSetCommandOpen = () =>
-  useUIState((state) => state.setCommandOpen);
-export const useIsMobileNavOpen = () =>
-  useUIState((state) => state.isMobileNavOpen);
-export const useSetMobileNavOpen = () =>
-  useUIState((state) => state.setMobileNavOpen);
-export const useToggleCommandOpen = () =>
-  useUIState((state) => state.toggleCommandOpen);
+export const useIsCommandOpen = () => useUIState((state) => state.isCommandOpen);
+export const useSetCommandOpen = () => useUIState((state) => state.setCommandOpen);
+export const useIsMobileNavOpen = () => useUIState((state) => state.isMobileNavOpen);
+export const useSetMobileNavOpen = () => useUIState((state) => state.setMobileNavOpen);
+export const useToggleCommandOpen = () => useUIState((state) => state.toggleCommandOpen);

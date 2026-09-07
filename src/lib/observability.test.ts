@@ -148,10 +148,7 @@ describe("observability", () => {
 
   it("configures an OTLP exporter when an endpoint is available", async () => {
     vi.stubEnv("NODE_ENV", "production");
-    vi.stubEnv(
-      "NEXT_PUBLIC_OTEL_EXPORT_URL",
-      "https://otel.example.com/v1/traces",
-    );
+    vi.stubEnv("NEXT_PUBLIC_OTEL_EXPORT_URL", "https://otel.example.com/v1/traces");
     const { initObservability } = await importObservability();
 
     initObservability();
@@ -177,10 +174,7 @@ describe("observability", () => {
 
     expect(otelMocks.consoleSpanExporter).toHaveBeenCalledTimes(1);
     expect(otelMocks.simpleSpanProcessor).toHaveBeenCalledTimes(1);
-    expect(startActiveSpan).toHaveBeenCalledWith(
-      "contact-submit",
-      expect.any(Function),
-    );
+    expect(startActiveSpan).toHaveBeenCalledWith("contact-submit", expect.any(Function));
     expect(span.setAttribute).toHaveBeenCalledWith("component", "ui");
     expect(span.setAttribute).toHaveBeenCalledWith("target", "contact-submit");
     expect(span.end).toHaveBeenCalledTimes(1);
@@ -211,14 +205,10 @@ describe("observability", () => {
   it("reports initialization failures without throwing", async () => {
     vi.stubEnv("NODE_ENV", "development");
     const error = new Error("provider failed");
-    const consoleError = vi
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-    otelMocks.webTracerProvider.mockImplementationOnce(
-      function WebTracerProvider() {
-        throw error;
-      },
-    );
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    otelMocks.webTracerProvider.mockImplementationOnce(function WebTracerProvider() {
+      throw error;
+    });
     const { initObservability } = await importObservability();
 
     initObservability();

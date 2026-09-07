@@ -1,9 +1,9 @@
-import { memo } from "react";
 import { ArrowDown, Download, ExternalLink, Mail } from "lucide-react";
+import { memo } from "react";
 import { Container } from "@/components/layout/container";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/brand-icons";
-import { profile } from "@/data/profile";
 import { secondaryNav } from "@/data/navigation";
+import { profile } from "@/data/profile";
 import { newTabLinkProps, resumeDownloadProps } from "@/lib/link-behavior";
 
 const profileLinks = {
@@ -64,7 +64,7 @@ export const Hero = memo(() => (
                 </div>
               ))}
             </dl>
-            <div
+            <nav
               className="hero__profile-links"
               aria-label="Professional profiles and resume"
             >
@@ -84,7 +84,7 @@ export const Hero = memo(() => (
                   </a>
                 );
               })}
-            </div>
+            </nav>
           </div>
         </aside>
       </div>

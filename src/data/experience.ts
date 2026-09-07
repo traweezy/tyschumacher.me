@@ -32,8 +32,7 @@ export const experiences: ExperienceEntry[] = [
       { label: "Product", value: "Live odds, trader tools, analytics" },
       {
         label: "Focus",
-        value:
-          "Keeping complex interfaces responsive and clear as information changes.",
+        value: "Keeping complex interfaces responsive and clear as information changes.",
       },
       {
         label: "Personal impact",

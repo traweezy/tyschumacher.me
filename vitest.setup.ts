@@ -39,9 +39,7 @@ const localStorageMock = createStorage();
 
 const tanstackEventTarget = new EventTarget();
 tanstackEventTarget.addEventListener("tanstack-connect", () => {
-  tanstackEventTarget.dispatchEvent(
-    new CustomEvent("tanstack-connect-success"),
-  );
+  tanstackEventTarget.dispatchEvent(new CustomEvent("tanstack-connect-success"));
 });
 
 Object.defineProperty(globalThis, "__TANSTACK_EVENT_TARGET__", {
@@ -62,10 +60,7 @@ Object.defineProperty(window, "localStorage", {
 
 vi.stubGlobal("localStorage", localStorageMock);
 
-const createMediaQueryList = (
-  query: string,
-  matches = false,
-): MediaQueryList => {
+const createMediaQueryList = (query: string, matches = false): MediaQueryList => {
   const mediaList: MediaQueryList = {
     matches,
     media: query,
@@ -90,7 +85,7 @@ const createMediaQueryList = (
     },
     dispatchEvent: (event: Event) => {
       const entry = listeners.get(query);
-      entry?.forEach((listener) => listener(event as MediaQueryListEvent));
+      for (const listener of entry ?? []) listener(event as MediaQueryListEvent);
       return true;
     },
   } as MediaQueryList;

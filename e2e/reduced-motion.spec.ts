@@ -3,9 +3,7 @@ import { expect, test } from "@playwright/test";
 const commandShortcut = process.platform === "darwin" ? "Meta+K" : "Control+K";
 
 test.describe("Reduced motion preference", () => {
-  test("sets reduced motion state and removes command transitions", async ({
-    page,
-  }) => {
+  test("sets reduced motion state and removes command transitions", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
 

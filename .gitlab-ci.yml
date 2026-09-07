@@ -84,8 +84,7 @@ lint:
   extends: .pnpm_job
   stage: quality
   script:
-    - pnpm format:check
-    - pnpm lint
+    - pnpm check:ci
 
 typecheck:
   extends: .pnpm_job
@@ -106,7 +105,7 @@ build-and-e2e:
   stage: build
   script:
     - pnpm build
-    - pnpm exec playwright install --with-deps chromium
+    - pnpm exec playwright install --with-deps chromium webkit
     - pnpm test:e2e
   artifacts:
     when: always

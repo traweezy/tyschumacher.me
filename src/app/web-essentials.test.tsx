@@ -1,11 +1,12 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import robots from "./robots";
-import sitemap from "./sitemap";
+import { SITE_URL } from "@/lib/site";
+import ErrorPage from "./error";
 import manifest from "./manifest";
 import NotFound from "./not-found";
-import ErrorPage from "./error";
-import { SITE_URL } from "@/lib/site";
+import robots from "./robots";
+import sitemap from "./sitemap";
+
 describe("web essentials", () => {
   it("advertises one canonical homepage and a fetchable sitemap", () => {
     expect(robots()).toMatchObject({
@@ -19,9 +20,10 @@ describe("web essentials", () => {
   });
   it("offers recovery from missing and failed pages", () => {
     const view = render(<NotFound />);
-    expect(
-      screen.getByRole("link", { name: "Explore projects" }),
-    ).toHaveAttribute("href", "/#projects");
+    expect(screen.getByRole("link", { name: "Explore projects" })).toHaveAttribute(
+      "href",
+      "/#projects",
+    );
     view.unmount();
     const reset = vi.fn();
     const log = vi.spyOn(console, "error").mockImplementation(() => undefined);

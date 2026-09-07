@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  contactFieldSchemas,
-  contactSchema,
-  getContactJsonSchema,
-} from "@/lib/contact";
+import { contactFieldSchemas, contactSchema, getContactJsonSchema } from "@/lib/contact";
 
 describe("contact schema", () => {
   it("keeps documentation metadata on the Zod schemas", () => {

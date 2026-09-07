@@ -1,17 +1,14 @@
+import { Command as CommandPrimitive } from "cmdk";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import type { ComponentPropsWithoutRef, ElementRef } from "react";
 import { forwardRef } from "react";
-import { Command as CommandPrimitive } from "cmdk";
 import { cn } from "@/lib/utils";
 
-export const CommandDialog = ({
-  children,
-  ...props
-}: DialogPrimitive.DialogProps) => (
+export const CommandDialog = ({ children, ...props }: DialogPrimitive.DialogProps) => (
   <DialogPrimitive.Root {...props}>
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-200 data-[state=open]:opacity-100 motion-reduce:transition-none" />
-      <DialogPrimitive.Content className="paper fixed left-1/2 top-20 z-50 w-[min(600px,calc(100vw-2rem))] -translate-x-1/2 rounded-3xl border border-[var(--border)] p-0 text-[var(--foreground)] shadow-2xl focus:outline-none transition-all duration-200 motion-reduce:transition-none data-[state=closed]:pointer-events-none data-[state=closed]:translate-y-4 data-[state=closed]:opacity-0 data-[state=open]:translate-y-0 data-[state=open]:opacity-100">
+      <DialogPrimitive.Overlay className="fixed inset-0 bg-black/60 opacity-0 backdrop-blur-sm transition-opacity duration-200 data-[state=open]:opacity-100 motion-reduce:transition-none" />
+      <DialogPrimitive.Content className="paper fixed top-20 left-1/2 z-50 w-[min(600px,calc(100vw-2rem))] -translate-x-1/2 rounded-3xl border border-[var(--border)] p-0 text-[var(--foreground)] shadow-2xl transition-all duration-200 focus:outline-none data-[state=closed]:pointer-events-none data-[state=closed]:translate-y-4 data-[state=open]:translate-y-0 data-[state=closed]:opacity-0 data-[state=open]:opacity-100 motion-reduce:transition-none">
         <DialogPrimitive.Title className="visually-hidden">
           Command palette
         </DialogPrimitive.Title>
@@ -55,7 +52,7 @@ export const CommandInput = forwardRef<
       )}
       {...props}
     />
-    <kbd className="rounded-full border border-[var(--border)] bg-[var(--background)] px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[var(--foreground)]/60">
+    <kbd className="rounded-full border border-[var(--border)] bg-[var(--background)] px-2 py-1 font-semibold text-[10px] text-[var(--foreground)]/60 uppercase tracking-wide">
       ⏎
     </kbd>
   </div>
@@ -115,7 +112,7 @@ export const CommandItem = forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      "flex cursor-pointer items-center justify-between rounded-xl px-3 py-2 text-sm text-[var(--foreground)] transition-colors duration-150 aria-selected:bg-[var(--accent-soft)] aria-selected:text-[var(--accent)]",
+      "flex cursor-pointer items-center justify-between rounded-xl px-3 py-2 text-[var(--foreground)] text-sm transition-colors duration-150 aria-selected:bg-[var(--accent-soft)] aria-selected:text-[var(--accent)]",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
       className,
     )}

@@ -1,12 +1,10 @@
 "use client";
 
-import { memo, useCallback, useMemo, useState } from "react";
 import type { MouseEvent } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { TechnologyIcon } from "@/components/ui/technology-icons";
 import type { ExperienceEntry } from "@/data/experience";
 import { runViewTransition } from "@/lib/view-transitions";
-
-const EXPERIENCE_FILTER_SELECTOR = "[data-location-filter]";
 
 const dedupe = (values: string[]): string[] => Array.from(new Set(values));
 
@@ -17,9 +15,7 @@ const filterExperiences = (
   if (filter === "All") {
     return experiences;
   }
-  return experiences.filter((experience) =>
-    experience.location.includes(filter),
-  );
+  return experiences.filter((experience) => experience.location.includes(filter));
 };
 
 const getExperienceDates = (experience: ExperienceEntry): string =>
@@ -34,9 +30,7 @@ type ExperienceExplorerProps = {
   initialExperiences: ExperienceEntry[];
 };
 
-const ExperienceExplorerComponent = ({
-  initialExperiences,
-}: ExperienceExplorerProps) => {
+const ExperienceExplorerComponent = ({ initialExperiences }: ExperienceExplorerProps) => {
   const [locationFilter, setLocationFilter] = useState("All");
   const experiences = initialExperiences;
 
@@ -50,20 +44,13 @@ const ExperienceExplorerComponent = ({
 
   const filteredExperiences = useMemo(
     () =>
-      filterExperiences(
-        experiences,
-        locationFilter === "All" ? "All" : locationFilter,
-      ),
+      filterExperiences(experiences, locationFilter === "All" ? "All" : locationFilter),
     [experiences, locationFilter],
   );
 
   const handleFilterClick = useCallback(
-    (event: MouseEvent<HTMLDivElement>) => {
-      const filterButton =
-        event.target instanceof Element
-          ? event.target.closest<HTMLButtonElement>(EXPERIENCE_FILTER_SELECTOR)
-          : null;
-      const nextFilter = filterButton?.dataset.locationFilter;
+    (event: MouseEvent<HTMLButtonElement>) => {
+      const nextFilter = event.currentTarget.dataset.locationFilter;
 
       if (!nextFilter || nextFilter === locationFilter) {
         return;
@@ -76,18 +63,13 @@ const ExperienceExplorerComponent = ({
 
   return (
     <div className="experience-explorer">
-      <fieldset
-        className="experience-filters"
-        aria-label="Filter experience by location"
-      >
-        <div
-          className="experience-filters__options"
-          onClick={handleFilterClick}
-        >
+      <fieldset className="experience-filters" aria-label="Filter experience by location">
+        <div className="experience-filters__options">
           {availableLocations.map((option) => (
             <button
               key={option}
               type="button"
+              onClick={handleFilterClick}
               data-location-filter={option}
               className={
                 option === locationFilter
@@ -108,32 +90,18 @@ const ExperienceExplorerComponent = ({
             const chips = getExperienceChips(item);
 
             return (
-              <li
-                key={`${item.company}-${item.start}`}
-                className="career-entry"
-              >
-                <p className="career-entry__dates">
-                  {getExperienceDates(item)}
-                </p>
+              <li key={`${item.company}-${item.start}`} className="career-entry">
+                <p className="career-entry__dates">{getExperienceDates(item)}</p>
                 <article className="experience-card">
                   <div className="experience-card__meta type-body-sm">
-                    <span className="experience-card__company">
-                      {item.company}
-                    </span>
-                    <span className="experience-card__location">
-                      {item.location}
-                    </span>
+                    <span className="experience-card__company">{item.company}</span>
+                    <span className="experience-card__location">{item.location}</span>
                   </div>
-                  <h3 className="experience-card__role type-heading-3">
-                    {item.role}
-                  </h3>
+                  <h3 className="experience-card__role type-heading-3">{item.role}</h3>
                   {item.caseLog ? (
                     <dl className="experience-card__case-log">
                       {item.caseLog.map((entry) => (
-                        <div
-                          key={entry.label}
-                          className="experience-card__case"
-                        >
+                        <div key={entry.label} className="experience-card__case">
                           <dt>{entry.label}</dt>
                           <dd>{entry.value}</dd>
                         </div>
@@ -159,10 +127,7 @@ const ExperienceExplorerComponent = ({
                           data-chip-kind={technology.kind ?? "technology"}
                           data-skill-accent={technology.accentKey}
                         >
-                          <span
-                            className="experience-card__tech-mark"
-                            aria-hidden="true"
-                          >
+                          <span className="experience-card__tech-mark" aria-hidden="true">
                             <TechnologyIcon
                               name={technology.icon}
                               className="experience-card__tech-icon"

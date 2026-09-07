@@ -12,17 +12,14 @@ test("header controls stay separate and reachable at phone and tablet breakpoint
   for (const width of [320, 360, 640, 768, 960, 961, 1024, 1194, 1280, 1366]) {
     await page.setViewportSize({ width, height: 900 });
     const failures = await page.getByRole("banner").evaluate((header) => {
-      const controls = [
-        ...header.querySelectorAll<HTMLElement>("a, button"),
-      ].filter(
+      const controls = [...header.querySelectorAll<HTMLElement>("a, button")].filter(
         (element) =>
           element.checkVisibility({ checkVisibilityCSS: true }) &&
           element.getBoundingClientRect().width > 0,
       );
       return controls.flatMap((element, index) => {
         const rect = element.getBoundingClientRect();
-        const label =
-          element.getAttribute("aria-label") ?? element.textContent?.trim();
+        const label = element.getAttribute("aria-label") ?? element.textContent?.trim();
         const failures: string[] = [];
         if (
           rect.left < 0 ||
@@ -40,10 +37,8 @@ test("header controls stay separate and reachable at phone and tablet breakpoint
           if (element.contains(other) || other.contains(element)) continue;
           const next = other.getBoundingClientRect();
           if (
-            Math.min(rect.right, next.right) >
-              Math.max(rect.left, next.left) + 1 &&
-            Math.min(rect.bottom, next.bottom) >
-              Math.max(rect.top, next.top) + 1
+            Math.min(rect.right, next.right) > Math.max(rect.left, next.left) + 1 &&
+            Math.min(rect.bottom, next.bottom) > Math.max(rect.top, next.top) + 1
           )
             failures.push(`Overlapping: ${label}`);
         }
@@ -68,26 +63,21 @@ test("project images reserve their full space while downloads are delayed", asyn
   try {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    const boxes = await page
-      .locator("[data-project] img")
-      .evaluateAll((images) =>
-        images.map((image) => {
-          const rect = image.getBoundingClientRect();
-          return {
-            width: rect.width,
-            height: rect.height,
-            expectedRatio:
-              Number(image.getAttribute("height")) /
-              Number(image.getAttribute("width")),
-          };
-        }),
-      );
+    const boxes = await page.locator("[data-project] img").evaluateAll((images) =>
+      images.map((image) => {
+        const rect = image.getBoundingClientRect();
+        return {
+          width: rect.width,
+          height: rect.height,
+          expectedRatio:
+            Number(image.getAttribute("height")) / Number(image.getAttribute("width")),
+        };
+      }),
+    );
     expect(boxes).toHaveLength(5);
     for (const box of boxes) {
       expect(box.height).toBeGreaterThan(100);
-      expect(Math.abs(box.height - box.width * box.expectedRatio)).toBeLessThan(
-        1,
-      );
+      expect(Math.abs(box.height - box.width * box.expectedRatio)).toBeLessThan(1);
     }
   } finally {
     releaseImages();
@@ -107,9 +97,7 @@ test("serves complete metadata and crawler-readable share assets", async ({
   const head = html.slice(0, html.indexOf("</head>"));
   const shareImageUrl = new URL(SHARE_IMAGE_PATH, canonical).href;
   expect(head).toContain(`property="og:image" content="${shareImageUrl}"`);
-  expect(head).toContain(
-    `property="og:image:secure_url" content="${shareImageUrl}"`,
-  );
+  expect(head).toContain(`property="og:image:secure_url" content="${shareImageUrl}"`);
   expect(head).toContain(`name="twitter:image" content="${shareImageUrl}"`);
   const policy = response.headers()["content-security-policy"] ?? "";
   expect(policy).toContain("script-src 'self' 'nonce-");
@@ -130,7 +118,7 @@ test("serves complete metadata and crawler-readable share assets", async ({
     maxRedirects: 0,
   });
   expect(legacyImage.status()).toBe(308);
-  expect(legacyImage.headers()["location"]).toBe(SHARE_IMAGE_PATH);
+  expect(legacyImage.headers().location).toBe(SHARE_IMAGE_PATH);
   const legacyFollowed = await request.get("/og-image.svg", {
     headers: { "user-agent": "LinkedInBot/1.0" },
   });
@@ -160,17 +148,14 @@ test("serves complete metadata and crawler-readable share assets", async ({
   const favicon = page.locator('link[rel="icon"]');
   await expect(favicon).toHaveCount(1);
   await expect(favicon).toHaveAttribute("href", /^\/favicon\.ico\?v=.+$/);
-  const faviconResponse = await request.get(
-    (await favicon.getAttribute("href")) ?? "",
-  );
+  const faviconResponse = await request.get((await favicon.getAttribute("href")) ?? "");
   expect(faviconResponse.status()).toBe(200);
   const faviconBytes = await faviconResponse.body();
   expect(faviconBytes.readUInt16LE(0)).toBe(0);
   expect(faviconBytes.readUInt16LE(2)).toBe(1);
   expect(
-    new URL(
-      (await page.locator('link[rel="canonical"]').getAttribute("href")) ?? "",
-    ).href,
+    new URL((await page.locator('link[rel="canonical"]').getAttribute("href")) ?? "")
+      .href,
   ).toBe(canonical);
   const brokenAnchors = await page
     .locator('a[href^="#"], a[href^="/#"]')
@@ -232,9 +217,7 @@ test("project evidence supports keyboard navigation and remains usable without J
 });
 
 for (const mode of ["light", "dark"] as const) {
-  test(`has no WCAG A/AA violations or overflow in ${mode} mode`, async ({
-    page,
-  }) => {
+  test(`has no WCAG A/AA violations or overflow in ${mode} mode`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: mode, reducedMotion: "reduce" });
     await page.addInitScript(
       (theme) => localStorage.setItem("tyschumacher.theme-mode", theme),
@@ -257,14 +240,10 @@ for (const mode of ["light", "dark"] as const) {
   });
 }
 
-test("returns a genuine 404 with a working path back to projects", async ({
-  page,
-}) => {
+test("returns a genuine 404 with a working path back to projects", async ({ page }) => {
   const response = await page.goto("/missing-project");
   expect(response?.status()).toBe(404);
-  await expect(
-    page.locator('meta[name="robots"][content="noindex"]'),
-  ).toHaveCount(1);
+  await expect(page.locator('meta[name="robots"][content="noindex"]')).toHaveCount(1);
   await page.getByRole("link", { name: /Explore projects/i }).click();
   await expect(page).toHaveURL(/\/#projects$/);
   await expect(
@@ -272,9 +251,7 @@ test("returns a genuine 404 with a working path back to projects", async ({
   ).toBeVisible();
 });
 
-test("tracks sections while scrolling on wide and narrow viewports", async ({
-  page,
-}) => {
+test("tracks sections while scrolling on wide and narrow viewports", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   for (const width of [1920, 1440, 390]) {
@@ -285,10 +262,7 @@ test("tracks sections while scrolling on wide and narrow viewports", async ({
         .evaluate((section) =>
           section.scrollIntoView({ block: "start", behavior: "instant" }),
         );
-      await expect(page.getByRole("banner")).toHaveAttribute(
-        "data-active-section",
-        id,
-      );
+      await expect(page.getByRole("banner")).toHaveAttribute("data-active-section", id);
     }
   }
   await page.setViewportSize({ width: 1440, height: 1060 });
@@ -299,9 +273,7 @@ test("tracks sections while scrolling on wide and narrow viewports", async ({
   );
   await page
     .locator('[data-project="personal-website"]')
-    .evaluate((card) =>
-      card.scrollIntoView({ block: "center", behavior: "instant" }),
-    );
+    .evaluate((card) => card.scrollIntoView({ block: "center", behavior: "instant" }));
   await expect(page.getByRole("banner")).toHaveAttribute(
     "data-active-section",
     "projects",
@@ -312,9 +284,7 @@ test("all project technologies and evidence links have visible icons", async ({
   page,
 }) => {
   await page.goto("/#projects");
-  const technologyLists = page.locator(
-    '#projects ul[aria-label$="technologies"]',
-  );
+  const technologyLists = page.locator('#projects ul[aria-label$="technologies"]');
   await expect(technologyLists).toHaveCount(5);
   for (const list of await technologyLists.all()) {
     for (const item of await list.getByRole("listitem").all()) {
@@ -336,15 +306,9 @@ test("project previews distinguish staging, public demos, and private source", a
 }) => {
   await page.goto("/#projects");
   const section = page.locator("#projects");
-  await expect(
-    section.getByRole("heading", { name: "More projects" }),
-  ).toHaveCount(0);
-  await expect(
-    section.getByText("Work in progress", { exact: true }),
-  ).toHaveCount(3);
-  await expect(
-    section.getByText("Source private", { exact: true }),
-  ).toHaveCount(1);
+  await expect(section.getByRole("heading", { name: "More projects" })).toHaveCount(0);
+  await expect(section.getByText("Work in progress", { exact: true })).toHaveCount(3);
+  await expect(section.getByText("Source private", { exact: true })).toHaveCount(1);
   await expect(
     section.getByRole("link", { name: "View source for Relantern" }),
   ).toHaveAttribute("href", "https://github.com/traweezy/relantern");
@@ -360,9 +324,9 @@ test("project previews distinguish staging, public demos, and private source", a
   await expect(
     section.getByRole("link", { name: "Try demo for QuantHelm" }),
   ).toHaveAttribute("href", "https://web-demo-b7d9.up.railway.app/demo");
-  await expect(
-    section.locator('a[href*="localhost"], a[href*="127.0.0.1"]'),
-  ).toHaveCount(0);
+  await expect(section.locator('a[href*="localhost"], a[href*="127.0.0.1"]')).toHaveCount(
+    0,
+  );
   await expect(section.getByRole("article")).toHaveCount(5);
   await expect(
     section.getByRole("heading", { name: "Waypoint", exact: true }),
@@ -382,9 +346,7 @@ test("project previews distinguish staging, public demos, and private source", a
       .poll(() =>
         screenshot.evaluate(
           (img) =>
-            img instanceof HTMLImageElement &&
-            img.complete &&
-            img.naturalWidth > 0,
+            img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0,
         ),
       )
       .toBe(true);
@@ -421,15 +383,10 @@ test("project previews distinguish staging, public demos, and private source", a
     expect(mobile[index]?.y).toBeGreaterThan(mobile[index - 1]?.y ?? 0);
 });
 
-test("destination links announce and open a separate tab", async ({
-  page,
-  context,
-}) => {
+test("destination links announce and open a separate tab", async ({ page, context }) => {
   await page.goto("/");
   const originalURL = page.url();
-  const destinations = page.locator(
-    'a[href^="https://"], a[href^="/images/projects/"]',
-  );
+  const destinations = page.locator('a[href^="https://"], a[href^="/images/projects/"]');
   for (const link of await destinations.all()) {
     await expect(link).toHaveAttribute("target", "_blank");
     await expect(link).toHaveAttribute("rel", "noopener noreferrer");
@@ -443,10 +400,7 @@ test("destination links announce and open a separate tab", async ({
       body: "<title>Demo destination</title>",
     }),
   );
-  for (const name of [
-    "Try demo for Relantern",
-    "Open full screenshot of Relantern",
-  ]) {
+  for (const name of ["Try demo for Relantern", "Open full screenshot of Relantern"]) {
     const popupPromise = context.waitForEvent("page");
     await page.getByRole("link", { name, exact: true }).click();
     const popup = await popupPromise;

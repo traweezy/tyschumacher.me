@@ -197,9 +197,7 @@ describe("POST /api/contact", () => {
       }),
     );
     expect(emailPayload?.text).toContain("Name: <Philip & Fry>");
-    expect(emailPayload?.text).toContain(
-      'Delivery <urgent> & "fragile" package',
-    );
+    expect(emailPayload?.text).toContain('Delivery <urgent> & "fragile" package');
     expect(emailPayload?.html).toContain("&lt;Philip &amp; Fry&gt;");
     expect(emailPayload?.html).toContain(
       "Delivery &lt;urgent&gt; &amp; &quot;fragile&quot; package",
@@ -256,17 +254,13 @@ describe("POST /api/contact", () => {
       createRequest({}, { Origin: "https://attacker.example" }),
     );
     expect(response.status).toBe(403);
-    expect(response.headers.get("content-type")).toContain(
-      "application/problem+json",
-    );
+    expect(response.headers.get("content-type")).toContain("application/problem+json");
     expect(await response.json()).toMatchObject({
       type: "about:blank",
       status: 403,
       instance: "/api/contact",
     });
-    const wrongType = await POST(
-      createRequest("{}", { "Content-Type": "text/plain" }),
-    );
+    const wrongType = await POST(createRequest("{}", { "Content-Type": "text/plain" }));
     expect(wrongType.status).toBe(415);
     const oversized = await POST(createRequest("x".repeat(17000)));
     expect(oversized.status).toBe(413);

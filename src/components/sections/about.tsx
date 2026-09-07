@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { Section } from "@/components/layout/section";
 import { TechnologyIcon } from "@/components/ui/technology-icons";
-import { buildPriorityItems, skillGroups } from "@/data/skills";
 import type { SkillItem } from "@/data/skills";
+import { buildPriorityItems, skillGroups } from "@/data/skills";
 
 const workingPractices = [
   {
@@ -23,11 +23,7 @@ const SkillList = memo<{ items: readonly SkillItem[]; label: string }>(
   ({ items, label }) => (
     <ul className="about-skills" aria-label={label}>
       {items.map((skill) => (
-        <li
-          key={skill.name}
-          className="about-skill"
-          data-skill-accent={skill.accentKey}
-        >
+        <li key={skill.name} className="about-skill" data-skill-accent={skill.accentKey}>
           <span className="about-skill__mark" aria-hidden="true">
             <TechnologyIcon name={skill.icon} className="about-skill__icon" />
           </span>
@@ -62,9 +58,7 @@ export const AboutSection = memo(() => (
         {workingPractices.map((practice) => (
           <li key={practice.title}>
             <h4 className="skills-group__title">{practice.title}</h4>
-            <p className="type-body-sm text-[var(--text-secondary)]">
-              {practice.body}
-            </p>
+            <p className="type-body-sm text-[var(--text-secondary)]">{practice.body}</p>
           </li>
         ))}
       </ol>

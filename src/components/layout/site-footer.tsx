@@ -2,8 +2,8 @@
 
 import { ArrowUp, ExternalLink } from "lucide-react";
 import { Container } from "@/components/layout/container";
-import { Button } from "@/components/ui/button";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/brand-icons";
+import { Button } from "@/components/ui/button";
 import { secondaryNav } from "@/data/navigation";
 import { newTabLinkProps } from "@/lib/link-behavior";
 
@@ -15,11 +15,11 @@ export const SiteFooter = () => {
 
   return (
     <footer
-      className="border-t border-[var(--border)] bg-[var(--surface-0)] py-12 backdrop-blur"
+      className="border-[var(--border)] border-t bg-[var(--surface-0)] py-12 backdrop-blur"
       role="contentinfo"
     >
       <Container className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-        <div className="flex flex-col gap-2 text-sm text-[var(--text-secondary)]">
+        <div className="flex flex-col gap-2 text-[var(--text-secondary)] text-sm">
           <span>© {year} Tyler Schumacher. All opinions are my own.</span>
           <span>Software engineer in Buffalo, New York.</span>
         </div>

@@ -33,8 +33,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Check formatting
-        run: pnpm format:check
+      - name: Check formatting, imports, and lint with Biome
+        run: pnpm check:ci
 
       - name: Audit dependencies
         run: pnpm audit --audit-level=moderate
@@ -48,9 +48,6 @@ jobs:
           name: production-sbom
           path: sbom.cdx.json
           retention-days: 30
-
-      - name: Lint
-        run: pnpm lint
 
   typecheck:
     runs-on: ubuntu-latest

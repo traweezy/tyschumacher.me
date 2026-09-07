@@ -87,8 +87,7 @@ export const getContactValidationErrors = (
   error.issues.map((issue) => {
     const field = issue.path[0];
     return {
-      field:
-        typeof field === "string" && isContactField(field) ? field : "form",
+      field: typeof field === "string" && isContactField(field) ? field : "form",
       message: issue.message,
     };
   });

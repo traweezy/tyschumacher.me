@@ -32,9 +32,10 @@ describe("ProjectsGrid", () => {
     }
     expect(screen.getAllByRole("img")).toHaveLength(5);
     for (const project of projects) {
-      expect(
-        screen.getByRole("img", { name: project.image.alt }),
-      ).toHaveAttribute("src", project.image.src);
+      expect(screen.getByRole("img", { name: project.image.alt })).toHaveAttribute(
+        "src",
+        project.image.src,
+      );
       expect(
         screen.getByRole("link", {
           name: `Open full screenshot of ${project.name}`,
@@ -51,9 +52,7 @@ describe("ProjectsGrid", () => {
     const { container } = render(<ProjectsGrid projects={projects} />);
     expect(container.querySelectorAll("details")).toHaveLength(5);
     expect(container.querySelectorAll("details[open]")).toHaveLength(0);
-    expect(
-      screen.getByText(projects[0].decisions[0].detail),
-    ).toBeInTheDocument();
+    expect(screen.getByText(projects[0].decisions[0].detail)).toBeInTheDocument();
     expect(container.querySelector('a[href="#"]')).toBeNull();
   });
 });

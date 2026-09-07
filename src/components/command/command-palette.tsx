@@ -1,20 +1,11 @@
 "use client";
 
-import { Dialog as DialogPrimitive } from "radix-ui";
 import { Command as CommandPrimitive } from "cmdk";
-import {
-  memo,
-  useCallback,
-  useEffect,
-  useEffectEvent,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import type { LucideIcon } from "lucide-react";
 import {
   BriefcaseBusiness,
-  Code2,
   Clipboard,
+  Code2,
   Download,
   ExternalLink,
   Moon,
@@ -25,19 +16,28 @@ import {
   Waypoints,
   X,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import type { Route } from "next";
 import { useRouter } from "next/navigation";
+import { Dialog as DialogPrimitive } from "radix-ui";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useEffectEvent,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { primaryNav, secondaryNav } from "@/data/navigation";
 import { profile } from "@/data/profile";
+import { resumeDownloadProps } from "@/lib/link-behavior";
+import { cn } from "@/lib/utils";
+import { runViewTransition } from "@/lib/view-transitions";
 import {
   useIsCommandOpen,
   useSetCommandOpen,
   useToggleCommandOpen,
 } from "@/state/ui-store";
-import { runViewTransition } from "@/lib/view-transitions";
-import { resumeDownloadProps } from "@/lib/link-behavior";
-import { cn } from "@/lib/utils";
 import styles from "./command-palette.module.css";
 
 const sections = primaryNav.filter((item) => item.href.startsWith("#"));
@@ -167,11 +167,7 @@ const CommandSearch = memo(() => {
         <kbd className={styles.shortcut}>⌘K</kbd>
       )}
       <DialogPrimitive.Close asChild>
-        <button
-          type="button"
-          className={styles.control}
-          aria-label="Close search"
-        >
+        <button type="button" className={styles.control} aria-label="Close search">
           <X size={20} aria-hidden="true" />
         </button>
       </DialogPrimitive.Close>
@@ -199,19 +195,21 @@ export const CommandPalette = () => {
 
   const quickActions = useMemo<CommandAction[]>(
     () => [
-      ...sections.map((item): CommandAction => ({
-        description:
-          item.id === "home"
-            ? "Return to the top of the page."
-            : `Jump to the ${item.title.toLowerCase()} section.`,
-        href: item.href,
-        icon: getSectionIcon(item.id),
-        id: item.id,
-        kind: "Jump",
-        keywords: `${item.title} section navigation`,
-        title: item.title,
-        type: "link",
-      })),
+      ...sections.map(
+        (item): CommandAction => ({
+          description:
+            item.id === "home"
+              ? "Return to the top of the page."
+              : `Jump to the ${item.title.toLowerCase()} section.`,
+          href: item.href,
+          icon: getSectionIcon(item.id),
+          id: item.id,
+          kind: "Jump",
+          keywords: `${item.title} section navigation`,
+          title: item.title,
+          type: "link",
+        }),
+      ),
       {
         description: "Switch between light and dark themes.",
         icon: Moon,
@@ -230,22 +228,24 @@ export const CommandPalette = () => {
         title: "Copy intro",
         type: "copy-intro",
       },
-      ...secondaryNav.map((item): CommandAction => ({
-        description:
-          item.id === "resume"
-            ? "Download the resume as a PDF."
-            : `Open ${item.title} in a new tab.`,
-        href: item.href,
-        icon: getExternalIcon(item.id),
-        id: item.id,
-        kind: item.id === "resume" ? "Download" : "Open",
-        keywords:
-          item.id === "resume"
-            ? "resume cv pdf download"
-            : `${item.title} profile external`,
-        title: item.id === "resume" ? "Download resume" : item.title,
-        type: "link",
-      })),
+      ...secondaryNav.map(
+        (item): CommandAction => ({
+          description:
+            item.id === "resume"
+              ? "Download the resume as a PDF."
+              : `Open ${item.title} in a new tab.`,
+          href: item.href,
+          icon: getExternalIcon(item.id),
+          id: item.id,
+          kind: item.id === "resume" ? "Download" : "Open",
+          keywords:
+            item.id === "resume"
+              ? "resume cv pdf download"
+              : `${item.title} profile external`,
+          title: item.id === "resume" ? "Download resume" : item.title,
+          type: "link",
+        }),
+      ),
     ],
     [],
   );
@@ -321,10 +321,7 @@ export const CommandPalette = () => {
         <CommandPrimitive.Empty className={styles.empty}>
           Nothing found. Try another keyword.
         </CommandPrimitive.Empty>
-        <CommandPrimitive.Group
-          heading="Quick actions"
-          className={styles.group}
-        >
+        <CommandPrimitive.Group heading="Quick actions" className={styles.group}>
           {quickActions.map((item) => {
             const CommandIcon = item.icon;
 

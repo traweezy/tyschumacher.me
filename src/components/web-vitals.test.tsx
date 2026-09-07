@@ -1,6 +1,7 @@
 import { render, waitFor } from "@testing-library/react";
 import { beforeEach, expect, it, vi } from "vitest";
 import { WebVitals } from "./web-vitals";
+
 const mocks = vi.hoisted(() => ({
   hook: vi.fn(),
   mode: vi.fn(),

@@ -1,12 +1,19 @@
 import { memo } from "react";
-import { getExperiences } from "@/lib/content";
 import { Section } from "@/components/layout/section";
 import { ExperienceExplorer } from "@/components/sections/experience-explorer";
+import { getExperiences } from "@/lib/content";
 
 export const experienceHeadline =
   "Experience across live products and internal platforms";
 export const experienceCaption =
   "Building interfaces and services for sportsbook, financial markets, and client teams since 2015.";
+
+const skeletonSlots = [
+  "experience-1",
+  "experience-2",
+  "experience-3",
+  "experience-4",
+] as const;
 
 export const ExperienceSection = memo(() => {
   const items = getExperiences();
@@ -34,8 +41,8 @@ export const ExperienceSectionSkeleton = () => (
     contentClassName="experience-grid"
   >
     <ol className="experience-list" aria-hidden>
-      {Array.from({ length: 4 }).map((_, index) => (
-        <li key={index} className="experience-card experience-card--pending">
+      {skeletonSlots.map((slot) => (
+        <li key={slot} className="experience-card experience-card--pending">
           <div className="experience-card__meta type-body-sm">
             <span className="skeleton h-3 w-28 rounded-full" />
             <span className="skeleton h-3 w-32 rounded-full" />

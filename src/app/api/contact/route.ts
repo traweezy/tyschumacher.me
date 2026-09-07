@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
-import { ContactEmailClient } from "@/lib/resend-client";
-import { SITE_URL } from "@/lib/site";
-import { contactProblem } from "@/lib/http-problem";
-import { createDeliveryBudget, readContactBody } from "@/lib/contact-request";
 import {
   contactSchema,
   createContactIdempotencyKey,
   getContactValidationErrors,
   isContactIdempotencyKey,
 } from "@/lib/contact";
+import { createDeliveryBudget, readContactBody } from "@/lib/contact-request";
+import { contactProblem } from "@/lib/http-problem";
+import { ContactEmailClient } from "@/lib/resend-client";
+import { SITE_URL } from "@/lib/site";
 
 const claimDelivery = createDeliveryBudget(Date.now);
 
@@ -71,15 +71,8 @@ export async function POST(request: Request) {
       "This form must be submitted from the portfolio site.",
     );
   }
-  if (
-    request.headers.get("content-type")?.split(";")[0]?.trim() !==
-    "application/json"
-  ) {
-    return problem(
-      415,
-      "Unsupported media type",
-      "Use an application/json request.",
-    );
+  if (request.headers.get("content-type")?.split(";")[0]?.trim() !== "application/json") {
+    return problem(415, "Unsupported media type", "Use an application/json request.");
   }
   const body = await readContactBody(request);
   if (!body.ok)
@@ -93,12 +86,9 @@ export async function POST(request: Request) {
 
   if (!parsed.success) {
     const errors = getContactValidationErrors(parsed.error);
-    return problem(
-      400,
-      "Validation failed",
-      "Please check the highlighted fields.",
-      { errors },
-    );
+    return problem(400, "Validation failed", "Please check the highlighted fields.", {
+      errors,
+    });
   }
 
   const idempotencyKey = getResendIdempotencyKey(request);

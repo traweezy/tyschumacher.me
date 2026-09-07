@@ -18,13 +18,12 @@ pnpm build
 pnpm preview
 ```
 
-Native TypeScript 7 runs the standalone typecheck; the official TypeScript 6 compatibility alias supplies the JavaScript API required by Next.js and ESLint. ESLint 9 is intentionally held for React plugin compatibility. See the [upgrade record](docs/portfolio-audit.md#upgrade-record-and-deliberate-holds).
+Native TypeScript 7 runs the standalone typecheck; the official TypeScript 6 compatibility alias supplies the JavaScript API required by Next.js. Biome 2.5.12 handles linting, formatting, and import organization. See the [tooling guide](docs/biome-migration.md).
 
 ## Quality gates
 
 ```sh
-pnpm format:check
-pnpm lint
+pnpm check
 pnpm typecheck
 pnpm test:coverage
 pnpm audit --audit-level=moderate
@@ -35,6 +34,8 @@ pnpm test:e2e
 ```
 
 Stop a running dev server before browser tests: Playwright can reuse port 3000 and should validate the production build. Tests cover projects, navigation, contact responses, keyboard interaction, themes, reduced motion, crawler metadata, no-JavaScript project reading, light/dark accessibility and 320–1920 px layouts. Phone and tablet profiles run in Chromium and WebKit. OpenSSL provides a temporary certificate for the local WebKit HTTPS preview on port 3001. Coverage thresholds are 80% across all four metrics. Reports go to `coverage/`, `playwright-report/` and `test-results/`.
+
+`pnpm check:fix` applies safe Biome fixes; `pnpm format` formats supported files. CI uses `pnpm check:ci`, and the commit hook runs `pnpm check` plus typechecking. The workspace recommends the Biome editor extension. Markdown and YAML remain manually formatted because stable Biome does not support them yet.
 
 `pnpm analyze` opens Next.js’s Turbopack bundle explorer. `pnpm test:diagnostics` investigates asynchronous leaks. `pnpm test:e2e:coverage` collects browser V8 coverage. Generated SBOMs are ignored locally and uploaded in CI.
 

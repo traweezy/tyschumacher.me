@@ -56,9 +56,7 @@ describe("CommandPalette", () => {
     const querySelectorSpy = vi.spyOn(document, "querySelector");
 
     renderWithProviders(<CommandPalette />);
-    fireEvent.click(
-      await screen.findByRole("option", { name: /^Experience$/i }),
-    );
+    fireEvent.click(await screen.findByRole("option", { name: /^Experience$/i }));
 
     expect(querySelectorSpy).toHaveBeenCalledWith("#experience");
     expect(useUIStore.getState().isCommandOpen).toBe(false);
@@ -86,9 +84,7 @@ describe("CommandPalette", () => {
       .mockImplementation(() => undefined);
 
     renderWithProviders(<CommandPalette />);
-    fireEvent.click(
-      await screen.findByRole("option", { name: /^Download resume$/i }),
-    );
+    fireEvent.click(await screen.findByRole("option", { name: /^Download resume$/i }));
 
     expect(openSpy).not.toHaveBeenCalled();
     expect(clickSpy).toHaveBeenCalledOnce();
@@ -111,26 +107,17 @@ describe("CommandPalette", () => {
     });
 
     renderWithProviders(<CommandPalette />);
-    fireEvent.click(
-      await screen.findByRole("option", { name: /^Toggle theme$/i }),
-    );
+    fireEvent.click(await screen.findByRole("option", { name: /^Toggle theme$/i }));
 
-    expect(document.documentElement).toHaveAttribute(
-      "data-theme",
-      "civic-dark",
-    );
+    expect(document.documentElement).toHaveAttribute("data-theme", "civic-dark");
     expect(window.localStorage.getItem("tyschumacher.theme-mode")).toBe("dark");
     expect(useUIStore.getState().isCommandOpen).toBe(false);
 
     useUIStore.setState({ isCommandOpen: true });
-    fireEvent.click(
-      await screen.findByRole("option", { name: /^Copy intro$/i }),
-    );
+    fireEvent.click(await screen.findByRole("option", { name: /^Copy intro$/i }));
 
     expect(writeText).toHaveBeenCalledWith(
-      expect.stringContaining(
-        "Tyler Schumacher is a senior full stack engineer",
-      ),
+      expect.stringContaining("Tyler Schumacher is a senior full stack engineer"),
     );
     expect(useUIStore.getState().isCommandOpen).toBe(false);
   });

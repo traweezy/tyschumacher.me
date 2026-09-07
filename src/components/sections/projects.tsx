@@ -1,8 +1,8 @@
 import { memo } from "react";
-import { getProjects } from "@/lib/content";
 import { Section } from "@/components/layout/section";
 import { ProjectsGrid } from "@/components/projects/projects-grid";
 import styles from "@/components/projects/projects-grid.module.css";
+import { getProjects } from "@/lib/content";
 
 export const projectsHeadline = "Selected projects";
 export const projectsCaption =

@@ -1,18 +1,13 @@
 "use client";
 
-import React, {
-  useEffect,
-  useEffectEvent,
-  useState,
-  type ReactNode,
-} from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { type ReactNode, useEffect, useEffectEvent, useState } from "react";
+import { WebVitals } from "@/components/web-vitals";
+import { getTelemetryMode } from "@/lib/telemetry-config";
 import {
   usePrefersReducedMotion,
   useSetPrefersReducedMotion,
 } from "@/state/accessibility-store";
-import { getTelemetryMode } from "@/lib/telemetry-config";
-import { WebVitals } from "@/components/web-vitals";
 
 type ProvidersProps = {
   children: ReactNode;

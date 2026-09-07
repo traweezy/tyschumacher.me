@@ -1,6 +1,7 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
 import { Resend } from "resend";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { ContactEmailClient } from "./resend-client";
+
 afterEach(() => vi.restoreAllMocks());
 describe("email HTTP timeout", () => {
   it("bounds the actual SDK fetch and preserves existing cancellation", async () => {

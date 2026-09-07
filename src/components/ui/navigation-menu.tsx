@@ -1,6 +1,6 @@
 import { NavigationMenu as NavigationMenuPrimitive } from "radix-ui";
-import { forwardRef } from "react";
 import type { ComponentPropsWithoutRef, ElementRef } from "react";
+import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
 export const NavigationMenu = forwardRef<
@@ -9,10 +9,7 @@ export const NavigationMenu = forwardRef<
 >(({ className, ...props }, ref) => (
   <NavigationMenuPrimitive.Root
     ref={ref}
-    className={cn(
-      "relative z-40 flex w-full items-center justify-center",
-      className,
-    )}
+    className={cn("relative z-40 flex w-full items-center justify-center", className)}
     {...props}
   />
 ));

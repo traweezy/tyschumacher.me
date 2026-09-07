@@ -1,15 +1,15 @@
 "use client";
 
-import { useMemo } from "react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import {
+  type ContactValues,
   contactFieldSchemas,
   contactSchema,
   createContactIdempotencyKey,
   isContactField,
-  type ContactValues,
 } from "@/lib/contact";
 import styles from "./contact-form.module.css";
 
@@ -110,8 +110,7 @@ export const ContactForm = () => {
           ? data.errors
               .filter(
                 (error): error is { field: string; message: string } =>
-                  typeof error?.field === "string" &&
-                  typeof error?.message === "string",
+                  typeof error?.field === "string" && typeof error?.message === "string",
               )
               .map((error) => ({
                 field: error.field,
@@ -193,11 +192,7 @@ export const ContactForm = () => {
       return message;
     }
     return null;
-  }, [
-    contactMutation.error,
-    contactMutation.isError,
-    contactMutation.isSuccess,
-  ]);
+  }, [contactMutation.error, contactMutation.isError, contactMutation.isSuccess]);
 
   return (
     <form
@@ -217,9 +212,7 @@ export const ContactForm = () => {
           >
             {(field) => (
               <div className={styles.field}>
-                <label htmlFor={`contact-${fieldConfig.name}`}>
-                  {fieldConfig.label}
-                </label>
+                <label htmlFor={`contact-${fieldConfig.name}`}>{fieldConfig.label}</label>
                 <input
                   id={`contact-${fieldConfig.name}`}
                   name={fieldConfig.name}
@@ -232,10 +225,7 @@ export const ContactForm = () => {
                   placeholder={fieldConfig.placeholder}
                   autoComplete={fieldConfig.autoComplete}
                 />
-                <span
-                  id={`contact-${fieldConfig.name}-error`}
-                  className={styles.error}
-                >
+                <span id={`contact-${fieldConfig.name}-error`} className={styles.error}>
                   {getErrorMessage(field.state.meta.errors[0])}
                 </span>
               </div>
@@ -251,9 +241,7 @@ export const ContactForm = () => {
         >
           {(field) => (
             <div className={styles.field}>
-              <label htmlFor={`contact-${fieldConfig.name}`}>
-                {fieldConfig.label}
-              </label>
+              <label htmlFor={`contact-${fieldConfig.name}`}>{fieldConfig.label}</label>
               <textarea
                 id={`contact-${fieldConfig.name}`}
                 name={fieldConfig.name}
@@ -265,10 +253,7 @@ export const ContactForm = () => {
                 aria-describedby={`contact-${fieldConfig.name}-error`}
                 placeholder={fieldConfig.placeholder}
               />
-              <span
-                id={`contact-${fieldConfig.name}-error`}
-                className={styles.error}
-              >
+              <span id={`contact-${fieldConfig.name}-error`} className={styles.error}>
                 {getErrorMessage(field.state.meta.errors[0])}
               </span>
             </div>

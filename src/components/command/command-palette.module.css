@@ -10,7 +10,7 @@
   position: fixed;
   top: calc(
     var(--viewport-top, 0px) +
-      max(var(--dialog-gutter), env(safe-area-inset-top))
+    max(var(--dialog-gutter), env(safe-area-inset-top))
   );
   left: 50%;
   transform: translateX(-50%);
@@ -18,8 +18,8 @@
   width: min(640px, calc(100% - 1.5rem));
   max-height: calc(
     var(--viewport-height, 100dvh) -
-      max(var(--dialog-gutter), env(safe-area-inset-top)) -
-      max(var(--dialog-gutter), env(safe-area-inset-bottom))
+    max(var(--dialog-gutter), env(safe-area-inset-top)) -
+    max(var(--dialog-gutter), env(safe-area-inset-bottom))
   );
   display: flex;
 }

@@ -1,33 +1,15 @@
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import type { ComponentPropsWithoutRef } from "react";
-import {
-  act,
-  fireEvent,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { afterEach, assert, beforeEach, describe, expect, test, vi } from "vitest";
 import { SiteHeader } from "@/components/layout/site-header";
 import { primaryNav } from "@/data/navigation";
 import { useUIStore } from "@/state/ui-store";
 import { renderWithProviders } from "@/test-utils/render-with-providers";
 
 vi.mock("next/image", () => ({
-  default: ({
-    alt,
-    src,
-    width,
-    height,
-    className,
-  }: ComponentPropsWithoutRef<"img">) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      alt={alt}
-      src={src}
-      width={width}
-      height={height}
-      className={className}
-    />
+  default: ({ alt, src, width, height, className }: ComponentPropsWithoutRef<"img">) => (
+    // biome-ignore lint/performance/noImgElement: Mock next/image with a native element in DOM tests.
+    <img alt={alt} src={src} width={width} height={height} className={className} />
   ),
 }));
 
@@ -56,6 +38,12 @@ class MockIntersectionObserver {
     );
   }
 }
+
+const requireSection = (id: string): HTMLElement => {
+  const section = document.getElementById(id);
+  assert(section, `Missing section: ${id}`);
+  return section;
+};
 
 const themeModeStorageKey = "tyschumacher.theme-mode";
 
@@ -107,21 +95,18 @@ describe("SiteHeader", () => {
     renderWithProviders(<SiteHeader />);
     const navigation = screen.getByRole("navigation", { name: /primary/i });
     expect(navigation).toBeInTheDocument();
-    expect(
-      screen.getByRole("link", { name: /Experience/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Experience/i })).toBeInTheDocument();
     expect(
       screen.getByRole("img", { name: /tyler schumacher’s avatar/i }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /show working mode/i }),
-    ).toHaveAttribute("aria-expanded", "false");
+    expect(screen.getByRole("button", { name: /show working mode/i })).toHaveAttribute(
+      "aria-expanded",
+      "false",
+    );
     expect(
       screen.getByText(/Interfaces and services teams can rely on/i),
     ).toBeInTheDocument();
-    expect(
-      screen.queryByText(/staff and principal roles/i),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/staff and principal roles/i)).not.toBeInTheDocument();
   });
 
   test("toggles the Civic theme mode from the app bar", () => {
@@ -130,24 +115,17 @@ describe("SiteHeader", () => {
     expect(
       screen.queryByRole("combobox", { name: /preview theme/i }),
     ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("group", { name: /theme mode/i }),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("group", { name: /theme mode/i })).not.toBeInTheDocument();
     const darkModeToggles = screen.getAllByRole("button", {
       name: /switch to dark theme/i,
     });
 
     expect(darkModeToggles[0]).toHaveAttribute("aria-pressed", "false");
-    expect(document.documentElement).toHaveAttribute(
-      "data-theme",
-      "civic-light",
-    );
-    fireEvent.click(darkModeToggles[0]!);
+    expect(document.documentElement).toHaveAttribute("data-theme", "civic-light");
+    assert(darkModeToggles[0]);
+    fireEvent.click(darkModeToggles[0]);
 
-    expect(document.documentElement).toHaveAttribute(
-      "data-theme",
-      "civic-dark",
-    );
+    expect(document.documentElement).toHaveAttribute("data-theme", "civic-dark");
     expect(document.documentElement).toHaveAttribute("data-theme-mode", "dark");
     expect(window.localStorage.getItem(themeModeStorageKey)).toBe("dark");
     expect(
@@ -231,10 +209,7 @@ describe("SiteHeader", () => {
     renderWithProviders(<SiteHeader />);
 
     await waitFor(() =>
-      expect(document.documentElement).toHaveAttribute(
-        "data-theme",
-        "civic-dark",
-      ),
+      expect(document.documentElement).toHaveAttribute("data-theme", "civic-dark"),
     );
     expect(document.documentElement).toHaveAttribute("data-theme-mode", "dark");
     expect(
@@ -256,10 +231,7 @@ describe("SiteHeader", () => {
         screen.getAllByRole("button", { name: /switch to light theme/i })[0],
       ).toHaveAttribute("aria-pressed", "true"),
     );
-    expect(document.documentElement).toHaveAttribute(
-      "data-theme",
-      "civic-dark",
-    );
+    expect(document.documentElement).toHaveAttribute("data-theme", "civic-dark");
   });
 
   test("opens command palette via keyboard shortcut", async () => {
@@ -287,13 +259,13 @@ describe("SiteHeader", () => {
     expect(observer).toBeDefined();
     observer?.trigger([
       {
-        target: document.getElementById("about")!,
+        target: requireSection("about"),
         isIntersecting: false,
         intersectionRatio: 0,
         boundingClientRect: { top: 220 } as DOMRectReadOnly,
       },
       {
-        target: document.getElementById("experience")!,
+        target: requireSection("experience"),
         isIntersecting: true,
         intersectionRatio: 0.72,
         boundingClientRect: { top: 140 } as DOMRectReadOnly,
@@ -317,7 +289,7 @@ describe("SiteHeader", () => {
     );
     expect(observer).toBeDefined();
     const home = {
-      target: document.getElementById("home")!,
+      target: requireSection("home"),
       isIntersecting: true,
       intersectionRatio: 0.1,
       boundingClientRect: { top: -360 } as DOMRectReadOnly,
@@ -326,7 +298,7 @@ describe("SiteHeader", () => {
       observer?.trigger([
         home,
         {
-          target: document.getElementById("projects")!,
+          target: requireSection("projects"),
           isIntersecting: true,
           intersectionRatio: 0.006,
           boundingClientRect: { top: 176 } as DOMRectReadOnly,
@@ -340,9 +312,7 @@ describe("SiteHeader", () => {
       ),
     );
     act(() => {
-      observer?.trigger([
-        { ...home, isIntersecting: false, intersectionRatio: 0 },
-      ]);
+      observer?.trigger([{ ...home, isIntersecting: false, intersectionRatio: 0 }]);
     });
     expect(screen.getByRole("link", { name: /^Projects$/ })).toHaveAttribute(
       "aria-current",
@@ -380,9 +350,9 @@ describe("SiteHeader", () => {
     expect(progress?.style.getPropertyValue("--progress-scale")).toBe("0.2");
     expect(screen.getByRole("banner")).toHaveClass("site-header--condensed");
 
-    fireEvent.click(
-      screen.getAllByRole("button", { name: /Open command palette/i })[0]!,
-    );
+    const trigger = screen.getAllByRole("button", { name: /Open command palette/i })[0];
+    assert(trigger);
+    fireEvent.click(trigger);
     expect(await screen.findByText(/Quick actions/i)).toBeInTheDocument();
   });
 
@@ -407,11 +377,7 @@ describe("SiteHeader", () => {
       within(dialog).getByRole("navigation", { name: /Mobile navigation/i }),
     ).toBeInTheDocument();
     expect(within(dialog).getByText(/Buffalo, NY/i)).toBeInTheDocument();
-    expect(
-      within(dialog).getByRole("link", { name: /GitHub/i }),
-    ).toBeInTheDocument();
-    expect(
-      within(dialog).getByRole("link", { name: /Resume/i }),
-    ).toBeInTheDocument();
+    expect(within(dialog).getByRole("link", { name: /GitHub/i })).toBeInTheDocument();
+    expect(within(dialog).getByRole("link", { name: /Resume/i })).toBeInTheDocument();
   });
 });

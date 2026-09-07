@@ -1,6 +1,6 @@
 import { Slot as SlotPrimitive } from "radix-ui";
-import { forwardRef } from "react";
 import type { ButtonHTMLAttributes } from "react";
+import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
 type Variant = "primary" | "outline" | "ghost" | "subtle";
@@ -38,12 +38,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         ref={ref}
-        className={cn(
-          base,
-          variantStyles[variant],
-          sizeStyles[size],
-          className,
-        )}
+        className={cn(base, variantStyles[variant], sizeStyles[size], className)}
         {...props}
       />
     );

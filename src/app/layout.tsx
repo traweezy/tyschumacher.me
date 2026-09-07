@@ -2,10 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist_Mono, Manrope } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
-import { Providers } from "./providers";
+import { SiteHeader } from "@/components/layout/site-header";
 import { profile } from "@/data/profile";
 import { SHARE_IMAGE_PATH, SITE_URL } from "@/lib/site";
-import { SiteHeader } from "@/components/layout/site-header";
+import { Providers } from "./providers";
 
 const themeModeStorageKey = "tyschumacher.theme-mode";
 const themeModeInitializerScript = `(() => {
@@ -134,9 +134,7 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.webmanifest",
   icons: {
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
     icon: [{ url: "/favicon.ico?v=ad3d0b3", type: "image/x-icon" }],
   },
 };
@@ -171,18 +169,20 @@ export default async function RootLayout({
           data-theme-initializer
           nonce={nonce}
           suppressHydrationWarning
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: Static theme bootstrap protected by the response CSP nonce.
           dangerouslySetInnerHTML={{ __html: themeModeInitializerScript }}
         />
         <script
           type="application/ld+json"
           nonce={nonce}
           suppressHydrationWarning
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: Repository-owned structured data, escaped for embedding in a script element.
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+          }}
         />
       </head>
-      <body
-        className={`${manrope.variable} ${fraunces.variable} ${geistMono.variable}`}
-      >
+      <body className={`${manrope.variable} ${fraunces.variable} ${geistMono.variable}`}>
         <Providers>
           <a href="#main-content" className="skip-link">
             Skip to content
@@ -192,6 +192,7 @@ export default async function RootLayout({
             data-theme-controls-initializer
             nonce={nonce}
             suppressHydrationWarning
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: Static control bootstrap protected by the response CSP nonce.
             dangerouslySetInnerHTML={{ __html: themeControlsInitializerScript }}
           />
           <main id="main-content" tabIndex={-1}>

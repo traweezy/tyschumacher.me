@@ -30,9 +30,7 @@ describe("utils", () => {
         "transition-all data-[state=open]:opacity-100 motion-reduce:transition-none",
         "data-[state=open]:opacity-0",
       ),
-    ).toBe(
-      "transition-all motion-reduce:transition-none data-[state=open]:opacity-0",
-    );
+    ).toBe("transition-all motion-reduce:transition-none data-[state=open]:opacity-0");
   });
 
   it("formats date range with an end date", () => {

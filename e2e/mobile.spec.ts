@@ -1,11 +1,9 @@
-import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { expect, test } from "@playwright/test";
 import { primaryNav } from "@/data/navigation";
 
 test.describe("Mobile navigation", () => {
-  test("opens sheet navigation and closes after selection", async ({
-    page,
-  }) => {
+  test("opens sheet navigation and closes after selection", async ({ page }) => {
     await page.goto("/");
 
     const openNavButton = page.getByRole("button", {
@@ -19,9 +17,7 @@ test.describe("Mobile navigation", () => {
     await expect(mobileNav).toBeVisible();
 
     for (const item of primaryNav) {
-      await expect(
-        mobileNav.getByRole("link", { name: item.title }),
-      ).toBeVisible();
+      await expect(mobileNav.getByRole("link", { name: item.title })).toBeVisible();
     }
 
     await mobileNav.getByRole("link", { name: /Skills/i }).click();
@@ -32,9 +28,7 @@ test.describe("Mobile navigation", () => {
     expect(hash).toBe("#about");
   });
 
-  test("keeps menu links and dismissal reachable on short screens", async ({
-    page,
-  }) => {
+  test("keeps menu links and dismissal reachable on short screens", async ({ page }) => {
     await page.setViewportSize({ width: 640, height: 360 });
     await page.goto("/");
     const trigger = page.getByRole("button", {
@@ -48,14 +42,10 @@ test.describe("Mobile navigation", () => {
     await expect(resume).toBeInViewport({ ratio: 1 });
     const downloadEvent = page.waitForEvent("download");
     await resume.tap();
-    expect((await downloadEvent).suggestedFilename()).toBe(
-      "tyler-schumacher-resume.pdf",
-    );
+    expect((await downloadEvent).suggestedFilename()).toBe("tyler-schumacher-resume.pdf");
     await expect(dialog).not.toBeVisible();
     await trigger.tap();
-    await dialog
-      .getByRole("button", { name: "Close navigation", exact: true })
-      .tap();
+    await dialog.getByRole("button", { name: "Close navigation", exact: true }).tap();
     await expect(trigger).toBeFocused();
     await trigger.tap();
     await page.setViewportSize({ width: 1366, height: 1024 });
@@ -79,9 +69,7 @@ test.describe("Mobile navigation", () => {
     const dialog = page.getByRole("dialog", { name: "Command palette" });
     const input = dialog.getByRole("combobox");
     await input.fill("no-such-resource");
-    await expect(
-      dialog.getByText("Nothing found. Try another keyword."),
-    ).toBeVisible();
+    await expect(dialog.getByText("Nothing found. Try another keyword.")).toBeVisible();
     await dialog.getByRole("button", { name: "Clear", exact: true }).tap();
     await expect(input).toBeFocused();
     await expect(input).toHaveValue("");
@@ -106,29 +94,31 @@ test.describe("Mobile navigation", () => {
         return Boolean(box && box.y >= 40 && box.y + box.height <= 340);
       })
       .toBe(true);
-    await expect(
-      dialog.getByRole("button", { name: "Close search" }),
-    ).toBeInViewport({ ratio: 1 });
+    await expect(dialog.getByRole("button", { name: "Close search" })).toBeInViewport({
+      ratio: 1,
+    });
     const lastOption = dialog.getByRole("option").last();
     await lastOption.scrollIntoViewIfNeeded();
     const dialogBox = await dialog.boundingBox();
     const optionBox = await lastOption.boundingBox();
-    expect(optionBox!.y + optionBox!.height).toBeLessThanOrEqual(
-      dialogBox!.y + dialogBox!.height,
+    if (!dialogBox || !optionBox)
+      throw new Error("Search controls have no rendered bounds.");
+    expect(optionBox.y + optionBox.height).toBeLessThanOrEqual(
+      dialogBox.y + dialogBox.height,
     );
     await dialog.getByRole("button", { name: "Close search" }).tap();
     await expect(dialog).not.toBeVisible();
     await page.evaluate(() => {
-      Reflect.deleteProperty(window.visualViewport!, "height");
-      Reflect.deleteProperty(window.visualViewport!, "offsetTop");
+      const viewport = window.visualViewport;
+      if (!viewport) throw new Error("Visual viewport is unavailable.");
+      Reflect.deleteProperty(viewport, "height");
+      Reflect.deleteProperty(viewport, "offsetTop");
     });
     await trigger.tap();
     await input.fill("resume");
     const downloadEvent = page.waitForEvent("download");
     await dialog.getByRole("option", { name: /Download resume/ }).tap();
-    expect((await downloadEvent).suggestedFilename()).toBe(
-      "tyler-schumacher-resume.pdf",
-    );
+    expect((await downloadEvent).suggestedFilename()).toBe("tyler-schumacher-resume.pdf");
     await expect(dialog).not.toBeVisible();
   });
 
@@ -144,14 +134,10 @@ test.describe("Mobile navigation", () => {
       const image = card.locator("img");
       await image.scrollIntoViewIfNeeded();
       await expect
-        .poll(() =>
-          image.evaluate((element: HTMLImageElement) => element.naturalWidth),
-        )
+        .poll(() => image.evaluate((element: HTMLImageElement) => element.naturalWidth))
         .toBeGreaterThan(0);
       expect(
-        await card.evaluate(
-          (element) => element.scrollWidth <= element.clientWidth + 1,
-        ),
+        await card.evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
       ).toBe(true);
       for (const link of await card.getByRole("link").all()) {
         await expect(link).toHaveAttribute("target", "_blank");
@@ -169,15 +155,11 @@ test.describe("Mobile navigation", () => {
     await popup.close();
     await page.getByRole("button", { name: "Buffalo, NY", exact: true }).tap();
     await expect(
-      page
-        .getByRole("list", { name: "Experience timeline" })
-        .locator("article"),
+      page.getByRole("list", { name: "Experience timeline" }).locator("article"),
     ).toHaveCount(1);
     await page.getByRole("button", { name: "All", exact: true }).tap();
     await expect(
-      page
-        .getByRole("list", { name: "Experience timeline" })
-        .locator("article"),
+      page.getByRole("list", { name: "Experience timeline" }).locator("article"),
     ).toHaveCount(4);
     await page.getByRole("link", { name: "Back to top" }).tap();
     await expect(page).toHaveURL(/#home$/);
@@ -200,10 +182,7 @@ test.describe("Mobile navigation", () => {
     await page.goto("/");
     for (const colorScheme of ["light", "dark"] as const) {
       await page.emulateMedia({ colorScheme });
-      await expect(page.locator("html")).toHaveAttribute(
-        "data-theme-mode",
-        colorScheme,
-      );
+      await expect(page.locator("html")).toHaveAttribute("data-theme-mode", colorScheme);
       await page
         .getByRole("textbox", { name: "Email", exact: true })
         .fill("invalid-email");
@@ -216,27 +195,19 @@ test.describe("Mobile navigation", () => {
     }
     for (const input of await page.locator("form input, form textarea").all()) {
       expect(
-        await input.evaluate((element) =>
-          parseFloat(getComputedStyle(element).fontSize),
-        ),
+        await input.evaluate((element) => parseFloat(getComputedStyle(element).fontSize)),
       ).toBeGreaterThanOrEqual(16);
     }
-    await page
-      .getByRole("textbox", { name: "Name", exact: true })
-      .fill("Mobile audit");
+    await page.getByRole("textbox", { name: "Name", exact: true }).fill("Mobile audit");
     await page
       .getByRole("textbox", { name: "Email", exact: true })
       .fill("audit@example.com");
     await page
       .getByRole("textbox", { name: "How can I help?", exact: true })
-      .fill(
-        "This message stays inside the mocked browser test and is never sent.",
-      );
+      .fill("This message stays inside the mocked browser test and is never sent.");
     await page.getByRole("button", { name: "Send message", exact: true }).tap();
     await expect(page.getByRole("status")).toContainText("Thanks!");
-    await page
-      .getByRole("button", { name: "Open navigation", exact: true })
-      .tap();
+    await page.getByRole("button", { name: "Open navigation", exact: true }).tap();
     expect(
       (
         await new AxeBuilder({ page })

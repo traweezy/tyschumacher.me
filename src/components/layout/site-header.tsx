@@ -1,8 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useEffectEvent, useRef, useState } from "react";
 import {
   ChevronRight,
   Download,
@@ -13,7 +10,12 @@ import {
   Sun,
   X,
 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
+import { CommandPalette } from "@/components/command/command-palette";
 import { Container } from "@/components/layout/container";
+import { GitHubIcon, LinkedInIcon } from "@/components/ui/brand-icons";
 import {
   Sheet,
   SheetClose,
@@ -22,18 +24,16 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { GitHubIcon, LinkedInIcon } from "@/components/ui/brand-icons";
-import { CommandPalette } from "@/components/command/command-palette";
 import { primaryNav, secondaryNav } from "@/data/navigation";
 import { profile } from "@/data/profile";
+import { newTabLinkProps, resumeDownloadProps } from "@/lib/link-behavior";
+import { cn } from "@/lib/utils";
+import { runViewTransition } from "@/lib/view-transitions";
 import {
   useIsMobileNavOpen,
   useSetCommandOpen,
   useSetMobileNavOpen,
 } from "@/state/ui-store";
-import { runViewTransition } from "@/lib/view-transitions";
-import { newTabLinkProps, resumeDownloadProps } from "@/lib/link-behavior";
-import { cn } from "@/lib/utils";
 
 const scrollThreshold = 64;
 type PrimaryNavId = (typeof primaryNav)[number]["id"];
@@ -106,9 +106,7 @@ const readPreviewMode = (fallback: ThemeModeId): ThemeModeId => {
 
 export const SiteHeader = () => {
   const [condensed, setCondensed] = useState(false);
-  const [activeSection, setActiveSection] = useState<PrimaryNavId>(
-    primaryNav[0].id,
-  );
+  const [activeSection, setActiveSection] = useState<PrimaryNavId>(primaryNav[0].id);
   const [previewMode, setPreviewMode] = useState<ThemeModeId>(() =>
     readPreviewMode(defaultThemeMode),
   );
@@ -152,8 +150,7 @@ export const SiteHeader = () => {
     window.clearTimeout(popoverCloseTimerRef.current);
     popoverCloseTimerRef.current = null;
   };
-  const getWorkingModePopover = () =>
-    document.getElementById(workingModePopoverId);
+  const getWorkingModePopover = () => document.getElementById(workingModePopoverId);
   const isPopoverOpen = (popover: HTMLElement): boolean => {
     try {
       return popover.matches(":popover-open");
@@ -164,11 +161,7 @@ export const SiteHeader = () => {
   const showWorkingModePopover = () => {
     clearPopoverCloseTimer();
     const popover = getWorkingModePopover();
-    if (
-      !popover ||
-      typeof popover.showPopover !== "function" ||
-      isPopoverOpen(popover)
-    ) {
+    if (!popover || typeof popover.showPopover !== "function" || isPopoverOpen(popover)) {
       return;
     }
 
@@ -244,8 +237,7 @@ export const SiteHeader = () => {
     };
 
     mediaQuery.addEventListener("change", handleSystemModeChange);
-    return () =>
-      mediaQuery.removeEventListener("change", handleSystemModeChange);
+    return () => mediaQuery.removeEventListener("change", handleSystemModeChange);
   }, []);
 
   useEffect(() => {
@@ -258,8 +250,7 @@ export const SiteHeader = () => {
     };
 
     window.addEventListener(themeModeChangeEvent, handleThemeModeChange);
-    return () =>
-      window.removeEventListener(themeModeChangeEvent, handleThemeModeChange);
+    return () => window.removeEventListener(themeModeChangeEvent, handleThemeModeChange);
   }, []);
 
   useEffect(() => {
@@ -276,14 +267,12 @@ export const SiteHeader = () => {
     if (!progressEl || typeof window === "undefined") {
       return;
     }
-    if (CSS && CSS.supports && CSS.supports("(animation-timeline: scroll())")) {
+    if (CSS?.supports?.("(animation-timeline: scroll())")) {
       return;
     }
     const updateProgress = () => {
-      const scrollable =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const progress =
-        scrollable <= 0 ? 0 : Math.min(window.scrollY / scrollable, 1);
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollable <= 0 ? 0 : Math.min(window.scrollY / scrollable, 1);
       progressEl.style.setProperty("--progress-scale", progress.toString());
     };
     updateProgress();
@@ -344,8 +333,9 @@ export const SiteHeader = () => {
       );
 
     let observer = createSectionObserver();
-    const observeSections = () =>
-      sections.forEach((section) => observer.observe(section));
+    const observeSections = () => {
+      for (const section of sections) observer.observe(section);
+    };
     const handleResize = () => {
       observer.disconnect();
       intersectingSections.clear();
@@ -413,8 +403,9 @@ export const SiteHeader = () => {
                 <span>{profile.location}</span>
               </span>
             </Link>
-            <div
+            <section
               id={workingModePopoverId}
+              aria-label="How I work"
               popover="auto"
               className="site-header__working-mode-popover"
               onBlur={scheduleHideWorkingModePopover}
@@ -425,9 +416,7 @@ export const SiteHeader = () => {
                 setIsWorkingModeOpen(isPopoverOpen(event.currentTarget));
               }}
             >
-              <p className="site-header__popover-label type-eyebrow">
-                How I work
-              </p>
+              <p className="site-header__popover-label type-eyebrow">How I work</p>
               <p className="site-header__popover-title">
                 Interfaces and services teams can rely on.
               </p>
@@ -445,12 +434,9 @@ export const SiteHeader = () => {
                   <dd>Trading, sportsbook, and operations tools</dd>
                 </div>
               </dl>
-            </div>
+            </section>
           </div>
-          <nav
-            className="site-header__desktop-nav"
-            aria-label="Primary navigation"
-          >
+          <nav className="site-header__desktop-nav" aria-label="Primary navigation">
             <div className="site-header__nav">
               {primaryNav.map((item) => (
                 <a
@@ -458,12 +444,9 @@ export const SiteHeader = () => {
                   href={item.href.startsWith("#") ? `/${item.href}` : item.href}
                   className={cn(
                     "site-header__nav-link",
-                    activeSection === item.id &&
-                      "site-header__nav-link--active",
+                    activeSection === item.id && "site-header__nav-link--active",
                   )}
-                  aria-current={
-                    activeSection === item.id ? "location" : undefined
-                  }
+                  aria-current={activeSection === item.id ? "location" : undefined}
                 >
                   {item.title}
                 </a>
@@ -534,9 +517,7 @@ export const SiteHeader = () => {
                 <button
                   type="button"
                   className="site-header__icon-button"
-                  aria-label={
-                    isMobileNavOpen ? "Close navigation" : "Open navigation"
-                  }
+                  aria-label={isMobileNavOpen ? "Close navigation" : "Open navigation"}
                 >
                   {isMobileNavOpen ? (
                     <X className="h-5 w-5" aria-hidden="true" />
@@ -548,8 +529,7 @@ export const SiteHeader = () => {
               <SheetContent className="site-header__sheet">
                 <SheetTitle className="sr-only">Site navigation</SheetTitle>
                 <SheetDescription className="sr-only">
-                  Browse page sections, external profiles, and the resume
-                  download.
+                  Browse page sections, external profiles, and the resume download.
                 </SheetDescription>
                 <div className="site-header__sheet-toolbar">
                   <span className="type-eyebrow">Navigation</span>
@@ -577,27 +557,19 @@ export const SiteHeader = () => {
                     <div className="site-header__sheet-copy">
                       <p className="site-header__sheet-name">{profile.name}</p>
                       <p className="site-header__sheet-role">{profile.role}</p>
-                      <p className="site-header__sheet-meta">
-                        {profile.location}
-                      </p>
+                      <p className="site-header__sheet-meta">{profile.location}</p>
                     </div>
                   </div>
                   <nav
                     className="site-header__sheet-section"
                     aria-label="Mobile navigation"
                   >
-                    <p className="site-header__sheet-label type-eyebrow">
-                      Sections
-                    </p>
+                    <p className="site-header__sheet-label type-eyebrow">Sections</p>
                     <div className="site-header__sheet-links">
                       {primaryNav.map((item, index) => (
                         <SheetClose asChild key={item.id}>
                           <a
-                            href={
-                              item.href.startsWith("#")
-                                ? `/${item.href}`
-                                : item.href
-                            }
+                            href={item.href.startsWith("#") ? `/${item.href}` : item.href}
                             className={cn(
                               "site-header__sheet-link",
                               activeSection === item.id &&
@@ -613,31 +585,23 @@ export const SiteHeader = () => {
                               </span>
                               <span>{item.title}</span>
                             </span>
-                            <ChevronRight
-                              className="h-4 w-4"
-                              aria-hidden="true"
-                            />
+                            <ChevronRight className="h-4 w-4" aria-hidden="true" />
                           </a>
                         </SheetClose>
                       ))}
                     </div>
                   </nav>
                   <div className="site-header__sheet-section">
-                    <p className="site-header__sheet-label type-eyebrow">
-                      Elsewhere
-                    </p>
+                    <p className="site-header__sheet-label type-eyebrow">Elsewhere</p>
                     <div className="site-header__sheet-links">
                       {socialLinks.map((item) => {
-                        const Icon =
-                          item.id === "github" ? GitHubIcon : LinkedInIcon;
+                        const Icon = item.id === "github" ? GitHubIcon : LinkedInIcon;
 
                         return (
                           <SheetClose asChild key={item.id}>
                             <a
                               href={
-                                item.href.startsWith("#")
-                                  ? `/${item.href}`
-                                  : item.href
+                                item.href.startsWith("#") ? `/${item.href}` : item.href
                               }
                               className="site-header__sheet-link"
                               {...newTabLinkProps}
@@ -647,17 +611,11 @@ export const SiteHeader = () => {
                                   className="site-header__sheet-index"
                                   aria-hidden="true"
                                 >
-                                  <Icon
-                                    className="h-4 w-4"
-                                    aria-hidden="true"
-                                  />
+                                  <Icon className="h-4 w-4" aria-hidden="true" />
                                 </span>
                                 <span>{item.title}</span>
                               </span>
-                              <ExternalLink
-                                className="h-4 w-4"
-                                aria-hidden="true"
-                              />
+                              <ExternalLink className="h-4 w-4" aria-hidden="true" />
                             </a>
                           </SheetClose>
                         );

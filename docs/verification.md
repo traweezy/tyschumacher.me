@@ -243,3 +243,23 @@ parsing verifies all shared content and links. Formatting, lint, strict typechec
 production build, 94 unit tests, and all 19 main browser tests pass; coverage is
 above every configured threshold and the dependency audit has no known findings.
 Evidence is in `/tmp/portfolio-resume-header-20260906`.
+
+
+## Biome migration
+
+The owner requested replacing the lint and format stack with Biome. Biome 2.5.12
+now supplies the shared local, editor, hook, and CI configuration. The earlier
+Prettier and ESLint results above are historical; neither package remains in the
+current dependency graph. See [Biome tooling](biome-migration.md) for rule mappings,
+format support, class sorting limitations, and local timing observations.
+
+The frozen install, Biome CI check, strict typecheck, production build, 94 unit
+tests, and all 53 browser tests pass locally. Coverage is 89.25% statements,
+83.78% branches, 90.42% functions, and 89.49% lines. The dependency audit reports
+no known vulnerabilities, and the production CycloneDX SBOM is regenerated.
+
+The browser suite covers desktop, phone and tablet behavior in Chromium and
+WebKit, including both themes, accessibility, search, downloads, and contact
+feedback. Headed Chromium and actual Flameshot desktop captures confirm the
+header and short landscape drawer still render correctly. Temporary screenshots
+are stored in `/tmp/portfolio-biome`.

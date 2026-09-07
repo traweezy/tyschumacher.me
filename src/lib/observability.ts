@@ -1,6 +1,6 @@
 "use client";
 
-import { trace, context } from "@opentelemetry/api";
+import { context, trace } from "@opentelemetry/api";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 import { resourceFromAttributes } from "@opentelemetry/resources";
 import {
@@ -10,10 +10,7 @@ import {
   type SpanProcessor,
 } from "@opentelemetry/sdk-trace-base";
 import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
-import {
-  getTelemetryExportUrl,
-  getTelemetryMode,
-} from "@/lib/telemetry-config";
+import { getTelemetryExportUrl, getTelemetryMode } from "@/lib/telemetry-config";
 
 let tracerInitialized = false;
 const instrumentedElements = new WeakSet<Element>();
@@ -22,10 +19,7 @@ const attachClickInstrumentation = (): void => {
   const tracer = trace.getTracer("tyschumacher.me");
 
   const handleElement = (element: Element) => {
-    if (
-      !(element instanceof HTMLElement) ||
-      instrumentedElements.has(element)
-    ) {
+    if (!(element instanceof HTMLElement) || instrumentedElements.has(element)) {
       return;
     }
     const spanName = element.dataset.observeClick ?? "interaction";
