@@ -12,14 +12,19 @@ const nextConfig: NextConfig = {
       destination: SHARE_IMAGE_PATH,
       permanent: true,
     },
+    {
+      source: "/tyler-schumacher-resume.pdf",
+      destination: "/Tyler_Schumacher_Resume.pdf",
+      permanent: true,
+    },
   ],
   headers: async () => [
     {
-      source: "/tyler-schumacher-resume.pdf",
+      source: "/Tyler_Schumacher_Resume.pdf",
       headers: [
         {
           key: "Content-Disposition",
-          value: 'attachment; filename="tyler-schumacher-resume.pdf"',
+          value: 'attachment; filename="Tyler_Schumacher_Resume.pdf"',
         },
       ],
     },

@@ -6,7 +6,7 @@ export const newTabLinkProps = {
 } as const;
 
 export const resumeDownloadProps = {
-  download: "tyler-schumacher-resume.pdf",
+  download: "Tyler_Schumacher_Resume.pdf",
   title: "Download resume (PDF)",
   "aria-label": "Download resume (PDF)",
 } as const;

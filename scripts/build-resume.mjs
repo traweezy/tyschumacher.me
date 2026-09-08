@@ -8,6 +8,7 @@ import {
   Container,
   Database,
   ExternalLink,
+  FolderGit2,
   GitFork,
   Globe,
   GraduationCap,
@@ -25,6 +26,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { experiences } from "../src/data/experience.ts";
 import { secondaryNav } from "../src/data/navigation.ts";
 import { profile } from "../src/data/profile.ts";
+import { projects } from "../src/data/projects.ts";
 import { resume } from "../src/data/resume.ts";
 import { coreToolItems } from "../src/data/skills.ts";
 import { SITE_URL } from "../src/lib/site.ts";
@@ -96,6 +98,19 @@ const skillGroups = skillLayout.map((group) => ({
     return item;
   }),
 }));
+const selectedProjects = resume.projects.map((resumeProject) => {
+  const project = projects.find((item) => item.slug === resumeProject.slug);
+  if (!project) throw new Error(`Unknown resume project: ${resumeProject.slug}`);
+  const sourceLink = project.links.find((item) => item.kind === "source");
+  if (!sourceLink)
+    throw new Error(`Resume project has no public source: ${project.slug}`);
+  return {
+    description: resumeProject.description,
+    name: project.name,
+    technologies: project.tech.map((item) => item.name),
+    url: sourceLink.href,
+  };
+});
 const groupedKeys = skillLayout.flatMap((group) => group.keys);
 if (
   groupedKeys.length !== coreToolItems.length ||
@@ -114,33 +129,37 @@ const html = `<!doctype html>
     <style>
       @page { size: Letter; margin: 0; }
       * { box-sizing: border-box; }
-      body { margin: 0; color: #242831; font: 10.5pt/1.24 Arial, sans-serif; }
-      .sheet { width: 8.5in; padding-bottom: 30pt; }
-      header { display: grid; grid-template-columns: 1.25fr 1fr; align-items: center; gap: 20pt; padding: 26pt 40pt; background: #252a34; color: #fff; border-bottom: 3pt solid #74c8c1; }
-      h1 { margin: 0 0 9pt; font-size: 28pt; line-height: 1.15; letter-spacing: normal; }
-      .title { margin: 0; font-size: 12pt; line-height: 1.4; }
-      .contacts { display: grid; gap: 7pt; }
-      .contact { display: flex; justify-content: flex-end; align-items: center; gap: 10pt; font-size: 9.5pt; line-height: 1.5; }
+      body { margin: 0; color: #242831; font: 9.1pt/1.2 Arial, sans-serif; }
+      .sheet { width: 8.5in; padding-bottom: 20pt; }
+      header { display: grid; grid-template-columns: 1.35fr 1fr; align-items: center; gap: 18pt; padding: 20pt 36pt; background: #252a34; color: #fff; border-bottom: 3pt solid #74c8c1; }
+      h1 { margin: 0 0 6pt; font-size: 25pt; line-height: 1.12; letter-spacing: normal; }
+      .title { margin: 0; font-size: 10.5pt; line-height: 1.3; }
+      .contacts { display: grid; gap: 5pt; }
+      .contact { display: flex; justify-content: flex-end; align-items: center; gap: 8pt; font-size: 8.4pt; line-height: 1.35; }
       .contact-item { display: inline-flex; align-items: center; gap: 4pt; white-space: nowrap; }
       svg { flex: none; width: 11pt; height: 11pt; }
       header svg { color: #9cddd5; width: 10pt; height: 10pt; }
       a { color: inherit; text-decoration-thickness: 0.5pt; text-underline-offset: 2pt; }
-      main { padding: 14pt 40pt 0; }
+      main { padding: 10pt 36pt 0; }
       p { margin: 0; }
-      h2 { display: flex; align-items: center; gap: 6pt; margin: 10pt 0 6pt; padding-bottom: 4pt; border-bottom: 0.6pt solid #b9bfc4; font-size: 11pt; line-height: 1.2; letter-spacing: 0.8pt; text-transform: uppercase; }
+      h2 { display: flex; align-items: center; gap: 6pt; margin: 7pt 0 4pt; padding-bottom: 3pt; border-bottom: 0.6pt solid #b9bfc4; font-size: 10pt; line-height: 1.15; letter-spacing: 0.7pt; text-transform: uppercase; }
       h2 svg, .skill-label svg { color: #286f69; }
-      article { break-inside: avoid; margin-bottom: 7pt; }
+      article { break-inside: avoid; margin-bottom: 4pt; }
       .row { display: flex; justify-content: space-between; align-items: baseline; gap: 8pt; }
-      h3 { margin: 0; font-size: 11pt; line-height: 1.25; }
-      .dates, .location { font-size: 9pt; color: #4b515c; white-space: nowrap; }
-      .role { margin-top: 1pt; font-size: 10pt; }
-      ul { margin: 4pt 0 0; padding-left: 12pt; }
-      li { margin-bottom: 1pt; padding-left: 1pt; }
-      .skill-row { display: grid; grid-template-columns: 112pt 1fr; gap: 10pt; align-items: center; padding: 2.5pt 0; font-size: 9.5pt; line-height: 1.35; }
+      h3 { margin: 0; font-size: 9.7pt; line-height: 1.18; }
+      .dates, .location { font-size: 8pt; color: #4b515c; white-space: nowrap; }
+      .role { margin-top: 1pt; font-size: 8.8pt; }
+      ul { margin: 2pt 0 0; padding-left: 11pt; }
+      li { margin-bottom: 0.5pt; padding-left: 1pt; }
+      .project { margin-bottom: 3pt; }
+      .project .row { align-items: center; }
+      .project p { margin-top: 1pt; }
+      .project h3 a { color: #286f69; }
+      .skill-row { display: grid; grid-template-columns: 104pt 1fr; gap: 8pt; align-items: center; padding: 1.5pt 0; font-size: 8.4pt; line-height: 1.25; }
       .skill-label { display: flex; align-items: center; gap: 6pt; font-weight: 700; }
       .skill-row + .skill-row { border-top: 0.4pt solid #e1e6e8; }
       .education { margin-bottom: 0; }
-      .education p { margin-top: 2pt; font-size: 10pt; }
+      .education p { margin-top: 1pt; font-size: 8.8pt; }
     </style>
   </head>
   <body>
@@ -172,6 +191,20 @@ const html = `<!doctype html>
                 <p class="location">${escapeHtml(entry.location)}</p>
               </div>
               <ul>${entry.bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}</ul>
+            </article>`,
+            )
+            .join("")}
+        </section>
+        <section class="projects" aria-labelledby="projects">
+          <h2 id="projects">${icon(FolderGit2)}Selected projects</h2>
+          ${selectedProjects
+            .map(
+              (project) => `<article class="project">
+              <div class="row">
+                <h3>${link(project.url, project.name, GitFork)}</h3>
+                <p class="dates">${escapeHtml(project.technologies.join(", "))}</p>
+              </div>
+              <p>${escapeHtml(project.description)}</p>
             </article>`,
             )
             .join("")}
@@ -231,7 +264,7 @@ try {
     throw new Error(`Expected one PDF page, received ${pageCount}.`);
   }
 
-  const output = new URL("../public/tyler-schumacher-resume.pdf", import.meta.url);
+  const output = new URL("../public/Tyler_Schumacher_Resume.pdf", import.meta.url);
   await writeFile(output, pdf);
   console.log(`Created one-page resume: ${fileURLToPath(output)}`);
 } finally {

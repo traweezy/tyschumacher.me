@@ -44,7 +44,7 @@ const sections = primaryNav.filter((item) => item.href.startsWith("#"));
 const isExternal = (href: string) => /^https?:\/\//.test(href);
 const themeModeStorageKey = "tyschumacher.theme-mode";
 const themeModeChangeEvent = "tyschumacher:theme-mode";
-const profileIntro = `${profile.name} is a ${profile.role.toLowerCase()} building tools for sportsbook, trading, and operations teams.`;
+const profileIntro = `${profile.name} is a ${profile.role.toLowerCase()} with ${profile.experience} of experience building tools for sportsbook, trading, and operations teams.`;
 
 type ThemeModeId = "light" | "dark";
 

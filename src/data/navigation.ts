@@ -7,7 +7,7 @@ export const primaryNav = [
 ] as const;
 
 export const secondaryNav = [
-  { id: "resume", title: "Resume", href: "/tyler-schumacher-resume.pdf" },
+  { id: "resume", title: "Resume", href: "/Tyler_Schumacher_Resume.pdf" },
   { id: "github", title: "GitHub", href: "https://github.com/traweezy" },
   {
     id: "linkedin",

@@ -27,7 +27,7 @@ export const experiences: ExperienceEntry[] = [
     company: "Caesars Sportsbook",
     role: "Senior Full Stack Developer",
     start: "Dec 2021",
-    location: "Jersey City, NJ · Remote",
+    location: "Jersey City, New Jersey, Remote",
     caseLog: [
       { label: "Product", value: "Live odds, trader tools, analytics" },
       {
@@ -74,10 +74,10 @@ export const experiences: ExperienceEntry[] = [
       },
     ],
     bullets: [
-      "Built Go and Java integrations that normalized provider data and kept live betting interfaces current.",
-      "Built accessible React tools for live odds, trader workflows, and analytics, with virtualized lists for changing data.",
-      "Used FullStory sessions and trader feedback to identify usability issues and prioritize fixes.",
-      "Mentored engineers, reviewed technical designs, and guided delivery decisions.",
+      "Designed Go and Java integrations that normalize provider data for live betting products and keep market interfaces current as data changes.",
+      "Delivered accessible React workflows for live odds, trader operations, and analytics, using list virtualization to preserve responsiveness during continuous updates.",
+      "Combined FullStory evidence with trader feedback to prioritize and ship usability improvements for operational workflows.",
+      "Led technical design reviews and mentored engineers across interface and service delivery decisions.",
     ],
   },
   {
@@ -85,7 +85,7 @@ export const experiences: ExperienceEntry[] = [
     role: "Senior Full Stack Developer",
     start: "Dec 2017",
     end: "Dec 2021",
-    location: "New York, NY",
+    location: "New York, New York",
     caseLog: [
       { label: "Product", value: "Trading workbenches and services" },
       {
@@ -126,9 +126,9 @@ export const experiences: ExperienceEntry[] = [
       },
     ],
     bullets: [
-      "Built Node.js and Java services for electronic trading, balancing throughput, reliability, and compliance.",
-      "Modernized legacy Flash workbenches into modular React tools for traders and engineering teams.",
-      "Improved GitLab CI and Kubernetes workflows so releases were easier to inspect and recover.",
+      "Built Node.js and Java services for electronic trading workflows, balancing throughput, reliability, and compliance requirements.",
+      "Replaced legacy Flash workbenches with modular React tools for traders and engineering teams, improving maintainability and release independence.",
+      "Strengthened GitLab CI and Kubernetes workflows with clearer release inspection and recovery paths.",
     ],
   },
   {
@@ -136,7 +136,7 @@ export const experiences: ExperienceEntry[] = [
     role: "Front End Developer",
     start: "Jun 2017",
     end: "Dec 2017",
-    location: "New York, NY",
+    location: "New York, New York",
     caseLog: [
       { label: "Product", value: "Bank research portals" },
       {
@@ -188,8 +188,8 @@ export const experiences: ExperienceEntry[] = [
       },
     ],
     bullets: [
-      "Built accessible React research portals with Java teams, meeting banking compliance and performance requirements.",
-      "Translated product and legal requirements into practical interfaces and service integrations.",
+      "Built accessible React research portals and Java service integrations for banking clients, meeting compliance and performance requirements.",
+      "Translated product and legal constraints into practical interface and integration designs.",
     ],
   },
   {
@@ -197,7 +197,7 @@ export const experiences: ExperienceEntry[] = [
     role: "Full Stack Web Developer",
     start: "Oct 2015",
     end: "Jun 2017",
-    location: "Buffalo, NY",
+    location: "Buffalo, New York",
     caseLog: [
       { label: "Product", value: "Hospitality and retail web apps" },
       {
@@ -234,8 +234,8 @@ export const experiences: ExperienceEntry[] = [
       { name: "SEO", icon: "seo", accentKey: "seo", kind: "skill" },
     ],
     bullets: [
-      "Built responsive React and Node.js applications for hospitality and retail, with reusable UI patterns.",
-      "Added analytics and SEO foundations to help clients evaluate campaigns and plan future work.",
+      "Built responsive React and Node.js applications for hospitality and retail, establishing reusable interface patterns across client work.",
+      "Implemented analytics and search foundations that enabled campaign evaluation and planning.",
     ],
   },
 ];

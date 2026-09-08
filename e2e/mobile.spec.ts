@@ -49,7 +49,7 @@ test.describe("Mobile navigation", () => {
     await expect(resume).toBeInViewport({ ratio: 1 });
     const downloadEvent = page.waitForEvent("download");
     await resume.tap();
-    expect((await downloadEvent).suggestedFilename()).toBe("tyler-schumacher-resume.pdf");
+    expect((await downloadEvent).suggestedFilename()).toBe("Tyler_Schumacher_Resume.pdf");
     await expect(dialog).not.toBeVisible();
     await trigger.tap();
     await dialog.getByRole("button", { name: "Close navigation", exact: true }).tap();
@@ -125,7 +125,7 @@ test.describe("Mobile navigation", () => {
     await input.fill("resume");
     const downloadEvent = page.waitForEvent("download");
     await dialog.getByRole("option", { name: /Download resume/ }).tap();
-    expect((await downloadEvent).suggestedFilename()).toBe("tyler-schumacher-resume.pdf");
+    expect((await downloadEvent).suggestedFilename()).toBe("Tyler_Schumacher_Resume.pdf");
     await expect(dialog).not.toBeVisible();
   });
 

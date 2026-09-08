@@ -143,7 +143,7 @@ test("serves complete metadata and crawler-readable share assets", async ({
     "/icon-512.png",
     "/apple-touch-icon.png",
     "/favicon.ico",
-    "/tyler-schumacher-resume.pdf",
+    "/Tyler_Schumacher_Resume.pdf",
   ]) {
     expect((await request.get(asset)).status()).toBe(200);
   }

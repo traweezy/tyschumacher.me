@@ -90,11 +90,11 @@ describe("CommandPalette", () => {
     expect(clickSpy).toHaveBeenCalledOnce();
     expect(clickSpy.mock.instances[0]).toHaveAttribute(
       "href",
-      "/tyler-schumacher-resume.pdf",
+      "/Tyler_Schumacher_Resume.pdf",
     );
     expect(clickSpy.mock.instances[0]).toHaveAttribute(
       "download",
-      "tyler-schumacher-resume.pdf",
+      "Tyler_Schumacher_Resume.pdf",
     );
   });
 
@@ -117,7 +117,9 @@ describe("CommandPalette", () => {
     fireEvent.click(await screen.findByRole("option", { name: /^Copy intro$/i }));
 
     expect(writeText).toHaveBeenCalledWith(
-      expect.stringContaining("Tyler Schumacher is a senior full stack engineer"),
+      expect.stringContaining(
+        "Tyler Schumacher is a senior full stack and product engineer with 10+ years of experience",
+      ),
     );
     expect(useUIStore.getState().isCommandOpen).toBe(false);
   });

@@ -302,9 +302,9 @@ test.describe("Home experience", () => {
     await page.goto("/");
     const originalURL = page.url();
     const originalTabs = context.pages().length;
-    const response = await request.get("/tyler-schumacher-resume.pdf");
+    const response = await request.get("/Tyler_Schumacher_Resume.pdf");
     expect(response.headers()["content-disposition"]).toBe(
-      'attachment; filename="tyler-schumacher-resume.pdf"',
+      'attachment; filename="Tyler_Schumacher_Resume.pdf"',
     );
     expect((await response.body()).subarray(0, 5).toString()).toBe("%PDF-");
 
@@ -315,7 +315,7 @@ test.describe("Home experience", () => {
       const downloadPromise = page.waitForEvent("download");
       await action.click();
       const download = await downloadPromise;
-      expect(download.suggestedFilename()).toBe("tyler-schumacher-resume.pdf");
+      expect(download.suggestedFilename()).toBe("Tyler_Schumacher_Resume.pdf");
       expect(await download.failure()).toBeNull();
     }
 
@@ -326,7 +326,7 @@ test.describe("Home experience", () => {
     const paletteDownload = page.waitForEvent("download");
     await dialog.getByRole("option", { name: "Download resume", exact: true }).click();
     expect((await paletteDownload).suggestedFilename()).toBe(
-      "tyler-schumacher-resume.pdf",
+      "Tyler_Schumacher_Resume.pdf",
     );
     await expect(dialog).not.toBeVisible();
 
@@ -336,7 +336,7 @@ test.describe("Home experience", () => {
     const mobileDownload = page.waitForEvent("download");
     await navigation.getByRole("link", { name: "Download resume (PDF)" }).click();
     expect((await mobileDownload).suggestedFilename()).toBe(
-      "tyler-schumacher-resume.pdf",
+      "Tyler_Schumacher_Resume.pdf",
     );
     await expect(navigation).not.toBeVisible();
     expect(page.url()).toBe(originalURL);

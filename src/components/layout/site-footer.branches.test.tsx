@@ -10,7 +10,7 @@ describe("SiteFooter branch behavior", () => {
   it("omits social links when nav config does not include them", async () => {
     vi.doMock("@/data/navigation", () => ({
       secondaryNav: [
-        { id: "resume", title: "Resume", href: "/tyler-schumacher-resume.pdf" },
+        { id: "resume", title: "Resume", href: "/Tyler_Schumacher_Resume.pdf" },
       ],
     }));
 
