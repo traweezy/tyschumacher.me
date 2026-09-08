@@ -61,6 +61,7 @@ Production telemetry is disabled unless `NEXT_PUBLIC_OTEL_EXPORT_URL` is set at 
 ## Content and architecture
 
 - [Application index](docs/app-index.md): entry points, boundaries and editing workflow.
+- [Light-theme audit](docs/light-theme-audit.md): contrast, theme-aware project captures, and screenshot provenance.
 - [Header and timeline audit](docs/hero-timeline-audit.md): parallax behavior, responsive artwork, timeline, and visual review.
 - [Mobile and tablet audit](docs/mobile-tablet-audit.md): responsive fixes, browser coverage, and local HTTPS testing.
 - [Portfolio research and audit](docs/portfolio-audit.md): project provenance, design decisions, upgrades and limitations.
@@ -71,6 +72,11 @@ Production telemetry is disabled unless `NEXT_PUBLIC_OTEL_EXPORT_URL` is set at 
 - `src/state/`: Zustand preferences and UI state.
 
 Project cards distinguish work in progress, private source, local demos and verified staging links. Update screenshots and their capture context together with project claims. `agentRules: false` prevents Next.js from generating agent instruction files in this repository.
+
+Project images can provide `image.lightSrc` with the same dimensions as their
+default dark capture. The selected site theme controls both the preview and its
+full-size link. Stackctl, QuantHelm, and this portfolio have light captures;
+Relantern and Remorseless Records retain their authentic dark-only interfaces.
 
 The latest visual/content research and decisions are recorded in [the refinement audit](docs/portfolio-refinement.md).
 

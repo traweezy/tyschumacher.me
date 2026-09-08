@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { projects } from "@/data/projects";
+import { type Project, projects } from "@/data/projects";
 import { ProjectsGrid } from "./projects-grid";
 
 describe("ProjectsGrid", () => {
@@ -30,17 +30,21 @@ describe("ProjectsGrid", () => {
           }),
         ).toHaveAttribute("href", link.href);
     }
-    expect(screen.getAllByRole("img")).toHaveLength(5);
     for (const project of projects) {
-      expect(screen.getByRole("img", { name: project.image.alt })).toHaveAttribute(
-        "src",
-        project.image.src,
-      );
+      const image: Project["image"] = project.image;
+      const sources = image.lightSrc ? [image.lightSrc, image.src] : [image.src];
       expect(
-        screen.getByRole("link", {
-          name: `Open full screenshot of ${project.name}`,
-        }),
-      ).toHaveAttribute("href", project.image.src);
+        screen
+          .getAllByRole("img", { name: image.alt })
+          .map((el) => el.getAttribute("src")),
+      ).toEqual(sources);
+      expect(
+        screen
+          .getAllByRole("link", {
+            name: `Open full screenshot of ${project.name}`,
+          })
+          .map((el) => el.getAttribute("href")),
+      ).toEqual(sources);
     }
     expect(
       screen.queryByRole("link", {

@@ -48,6 +48,12 @@
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+
 .field input[aria-invalid="true"],
 .field textarea[aria-invalid="true"] {
   border-color: var(--text-error);
@@ -68,8 +74,4 @@
 .status {
   font-size: 0.85rem;
   color: var(--text-secondary);
-}
-
-:root[data-theme="dark"] .form {
-  background: transparent;
 }

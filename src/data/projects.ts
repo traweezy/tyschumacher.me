@@ -23,6 +23,7 @@ export type Project = {
   links: readonly ProjectLink[];
   image: {
     src: string;
+    lightSrc?: string;
     alt: string;
     width: number;
     height: number;
@@ -80,6 +81,7 @@ export const projects = [
     ],
     image: {
       src: "/images/projects/stackctl.webp",
+      lightSrc: "/images/projects/stackctl-light-4683191bb67e.webp",
       alt: "Stackctl’s terminal dashboard showing example services, PostgreSQL connection details, masked credentials, and keyboard controls.",
       width: 1600,
       height: 1017,
@@ -234,6 +236,7 @@ export const projects = [
     ],
     image: {
       src: "/images/projects/quanthelm.webp",
+      lightSrc: "/images/projects/quanthelm-light-3b83007d432e.webp",
       alt: "QuantHelm’s demo dashboard showing portfolio totals, open positions, and a notice that the data is synthetic and cannot be changed.",
       width: 1440,
       height: 1000,
@@ -286,7 +289,8 @@ export const projects = [
       },
     ],
     image: {
-      src: "/images/projects/personal-website-838820f3dc2b.webp",
+      src: "/images/projects/personal-website-dark-f9fefb413b65.webp",
+      lightSrc: "/images/projects/personal-website-light-0a6a032272c8.webp",
       preoptimized: true,
       alt: "Tyler Schumacher’s portfolio homepage with a Buffalo skyline header, introduction, and project, contact, and resume links.",
       width: 1440,

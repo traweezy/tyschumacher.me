@@ -24,6 +24,11 @@ Repository visibility, default branches and current revisions were checked throu
 
 ## Screenshot provenance and preview links
 
+The [September 8 light-theme audit](light-theme-audit.md) adds native light captures
+for Stackctl and QuantHelm and refreshes this portfolio's screenshot in both
+themes. It supersedes the personal-website filename and capture dimensions below.
+Relantern and Remorseless Records retain their authentic dark-only interfaces.
+
 The three retained application images were captured in headed Chromium on September 6, 2026, at 1440 × 1000. The personal website image is a fresh 1440 × 660 capture of the local homepage in headed Chromium. Stackctl uses the repository’s existing `docs/media/tui-services.png` (1600 × 1017), inspected before conversion; its illustrative version, time, and services are documentation example data, not proof of live deployment. All images are encoded as WebP without changing interface content; intrinsic dimensions are reserved and responsive renditions are lazy loaded. Clicking a preview opens its full image.
 
 | Asset                                | Capture source                                                                                  | Context shown to visitors                                                              |

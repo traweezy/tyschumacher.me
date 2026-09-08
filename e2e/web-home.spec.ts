@@ -63,17 +63,20 @@ test("project images reserve their full space while downloads are delayed", asyn
   try {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    const boxes = await page.locator("[data-project] img").evaluateAll((images) =>
-      images.map((image) => {
-        const rect = image.getBoundingClientRect();
-        return {
-          width: rect.width,
-          height: rect.height,
-          expectedRatio:
-            Number(image.getAttribute("height")) / Number(image.getAttribute("width")),
-        };
-      }),
-    );
+    const boxes = await page
+      .locator("[data-project]")
+      .getByRole("img")
+      .evaluateAll((images) =>
+        images.map((image) => {
+          const rect = image.getBoundingClientRect();
+          return {
+            width: rect.width,
+            height: rect.height,
+            expectedRatio:
+              Number(image.getAttribute("height")) / Number(image.getAttribute("width")),
+          };
+        }),
+      );
     expect(boxes).toHaveLength(5);
     for (const box of boxes) {
       expect(box.height).toBeGreaterThan(100);

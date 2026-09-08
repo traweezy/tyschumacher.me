@@ -65,6 +65,18 @@
   overflow: hidden;
   background: var(--surface-200);
 }
+/* Match the selected site theme, including preferences that override the OS.
+   Hiding the entire link also removes the inactive capture from keyboard/AT use.
+   Next Image's default lazy loading defers the hidden image until it is shown. */
+.imageLink[data-screenshot-theme="dark"] {
+  display: none;
+}
+:root[data-theme="civic-dark"] .imageLink[data-screenshot-theme="light"] {
+  display: none;
+}
+:root[data-theme="civic-dark"] .imageLink[data-screenshot-theme="dark"] {
+  display: block;
+}
 .image {
   display: block;
   width: 100%;

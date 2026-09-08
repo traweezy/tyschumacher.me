@@ -1,6 +1,6 @@
 # Application index
 
-Audited 2026-09-06. This is a single-page portfolio with a server-side contact boundary, not a database-backed application.
+Audited 2026-09-08. This is a single-page portfolio with a server-side contact boundary, not a database-backed application.
 
 | Area                   | Entry points                                                                                              | Responsibility                                                                                             |
 | ---------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -28,6 +28,33 @@ Audited 2026-09-06. This is a single-page portfolio with a server-side contact b
 - Contact is the only mutation endpoint. It sends through Resend; the application has no message database, authentication or cookies for sessions.
 - Fonts are self-hosted through `next/font`. Raster project media uses `next/image`, reserved dimensions and responsive sizes.
 - Theme and accessibility preferences are the only persisted browser UI state. Query data uses a one-minute stale time and five-minute garbage collection time.
+
+## Theme and interaction flow
+
+- `app/layout.tsx` bootstraps `data-theme` and `data-theme-mode` from the persisted
+  `tyschumacher.theme-mode` preference, falling back to the OS preference before
+  paint. `site-header.tsx` and `command-palette.tsx` synchronize later changes
+  through the `tyschumacher:theme-mode` browser event. Theme values are
+  `civic-light` / `civic-dark`; shared CSS tokens drive all action colors.
+- `app/providers.tsx` creates the Query client, synchronizes reduced motion from
+  `matchMedia` into Zustand and the document, and loads optional telemetry.
+- `site-header.tsx` owns scroll progress, active-section tracking, compact header,
+  the working-mode popover, and navigation. Zustand coordinates its mobile sheet
+  with the lazily loaded command palette. Native anchors preserve section URLs.
+- `experience-explorer.tsx` derives location filters and the chronological list
+  from `data/experience.ts`. Project content and native disclosures stay in
+  Server Components; their CSS container queries determine the bento layout.
+- `data/projects.ts` provides an optional `image.lightSrc` for authentic alternate
+  captures. `projects-grid.tsx` renders the matching image and full-size link;
+  CSS hides the inactive pair using the selected theme. Shared dimensions reserve
+  space, and lazy loading defers inactive captures. Dark-only apps retain one image.
+- `contact-form.tsx` combines TanStack Form validation with a Query mutation and
+  a 15-second fetch timeout. The API validates origin, content type, bounded body,
+  schema and idempotency before claiming its delivery budget and calling Resend.
+  Its logs omit message contents and contact fields. Tests intercept delivery.
+
+See [the light-theme audit](light-theme-audit.md) for contrast findings, capture
+sources, the selected/system theme matrix, and the visual verification record.
 
 ## Editing content
 

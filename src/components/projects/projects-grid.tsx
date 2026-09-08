@@ -16,6 +16,10 @@ import styles from "./projects-grid.module.css";
 
 type ProjectsGridProps = { projects: readonly Project[] };
 type ProjectCardProps = { project: Project; index: number };
+type ProjectScreenshotProps = {
+  project: Project;
+  theme: "light" | "dark" | "both";
+};
 
 const linkIcons = {
   source: GitHubIcon,
@@ -40,6 +44,36 @@ export const ProjectTechnologies = memo<{
 ));
 ProjectTechnologies.displayName = "ProjectTechnologies";
 
+const ProjectScreenshot = memo<ProjectScreenshotProps>(({ project, theme }) => {
+  const src =
+    theme === "light" ? (project.image.lightSrc ?? project.image.src) : project.image.src;
+
+  return (
+    <a
+      href={src}
+      {...newTabLinkProps}
+      aria-label={`Open full screenshot of ${project.name}`}
+      className={styles.imageLink}
+      data-screenshot-theme={theme}
+      data-observe-click={`projects.${project.slug}.screenshot`}
+    >
+      <Image
+        src={src}
+        alt={project.image.alt}
+        width={project.image.width}
+        height={project.image.height}
+        unoptimized={project.image.preoptimized ?? false}
+        sizes="(min-width: 1280px) 720px, (min-width: 784px) 50vw, 100vw"
+        className={styles.image}
+      />
+      <span className={styles.imageAction} aria-hidden="true">
+        <ExternalLink size={15} /> View screenshot
+      </span>
+    </a>
+  );
+});
+ProjectScreenshot.displayName = "ProjectScreenshot";
+
 const ProjectCard = memo<ProjectCardProps>(({ project, index }) => (
   <article
     className={styles.card}
@@ -57,26 +91,14 @@ const ProjectCard = memo<ProjectCardProps>(({ project, index }) => (
       </span>
     </div>
     <figure className={styles.figure}>
-      <a
-        href={project.image.src}
-        {...newTabLinkProps}
-        aria-label={`Open full screenshot of ${project.name}`}
-        className={styles.imageLink}
-        data-observe-click={`projects.${project.slug}.screenshot`}
-      >
-        <Image
-          src={project.image.src}
-          alt={project.image.alt}
-          width={project.image.width}
-          height={project.image.height}
-          unoptimized={project.image.preoptimized ?? false}
-          sizes="(min-width: 1280px) 720px, (min-width: 784px) 50vw, 100vw"
-          className={styles.image}
-        />
-        <span className={styles.imageAction} aria-hidden="true">
-          <ExternalLink size={15} /> View screenshot
-        </span>
-      </a>
+      {project.image.lightSrc ? (
+        <>
+          <ProjectScreenshot project={project} theme="light" />
+          <ProjectScreenshot project={project} theme="dark" />
+        </>
+      ) : (
+        <ProjectScreenshot project={project} theme="both" />
+      )}
       <figcaption>{project.image.caption}</figcaption>
     </figure>
     <div className={styles.cardBody}>

@@ -2,6 +2,11 @@
 
 Project previews in `public/images/projects/` show the portfolio owner's Stackctl, Remorseless Records, Relantern, QuantHelm and personal website projects. Stackctl uses the existing TUI image from its public repository; the other previews are original browser captures. All are encoded as WebP with interface content preserved. Capture sources and synthetic-data boundaries are recorded in [the project audit](docs/portfolio-audit.md#screenshot-provenance-and-preview-links). Remorseless catalog artwork and vendor marks remain the property of their respective owners and appear only within the application screenshot.
 
+The September 8 light captures of Stackctl, QuantHelm, and the portfolio are
+original captures of their native themes. Stackctl's light capture runs its actual
+TUI with isolated example data in Xterm. Sources and dimensions are recorded in
+[the light-theme audit](docs/light-theme-audit.md#screenshot-capture-record).
+
 Dependency license inventory: `pnpm licenses list --prod`. The CycloneDX inventory is generated with `pnpm run sbom`. Distributed dependencies retain their own upstream notices.
 
 ## Icons

@@ -136,7 +136,7 @@ test.describe("Mobile navigation", () => {
     for (const card of await projects.all()) {
       await card.locator("summary").tap();
       await expect(card.getByText("Current state:")).toBeVisible();
-      const image = card.locator("img");
+      const image = card.getByRole("img");
       await image.scrollIntoViewIfNeeded();
       await expect
         .poll(() => image.evaluate((element: HTMLImageElement) => element.naturalWidth))

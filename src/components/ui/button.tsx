@@ -11,7 +11,7 @@ const base =
 
 const variantStyles: Record<Variant, string> = {
   primary:
-    "bg-[var(--accent)] text-white shadow-elevated hover:bg-[var(--accent)]/90 dark:text-slate-950",
+    "bg-[var(--accent)] text-[var(--accent-contrast)] shadow-elevated hover:bg-[var(--accent-hover)]",
   outline:
     "border border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--accent-soft)]",
   ghost: "text-[var(--text-primary)] hover:bg-[var(--accent-soft)]",
