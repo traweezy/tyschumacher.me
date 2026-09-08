@@ -10,7 +10,7 @@ import { renderWithProviders } from "@/test-utils/render-with-providers";
 
 describe("Section components", () => {
   it("renders hero with clear role and professional links", () => {
-    render(<Hero />);
+    const { container } = render(<Hero />);
 
     expect(
       screen.getByRole("heading", { name: /Tyler Schumacher/i }),
@@ -24,6 +24,13 @@ describe("Section components", () => {
       "download",
     );
     expect(screen.queryByText(/Working console/i)).not.toBeInTheDocument();
+
+    const art = container.querySelector(".hero__art");
+    expect(art).toHaveAttribute("aria-hidden", "true");
+    expect(art?.querySelectorAll(".hero__layer")).toHaveLength(3);
+    expect(art?.querySelector(".hero__layer--backdrop")).toBeInTheDocument();
+    expect(art?.querySelector(".hero__layer--technology")).toBeInTheDocument();
+    expect(art?.querySelector(".hero__layer--skyline")).toBeInTheDocument();
   });
 
   it("lists key skills and approach pillars in the about section", () => {

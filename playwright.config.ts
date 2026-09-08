@@ -20,6 +20,16 @@ export default defineConfig({
   },
   projects: [
     {
+      name: "firefox-static-fallback",
+      testMatch: /.*hero-fallback\.spec\.ts/,
+      use: {
+        ...devices["Desktop Firefox"],
+        launchOptions: {
+          firefoxUserPrefs: { "layout.css.scroll-driven-animations.enabled": false },
+        },
+      },
+    },
+    {
       name: "chromium",
       testMatch: /.*home\.spec\.ts/,
       use: { ...devices["Desktop Chrome"] },

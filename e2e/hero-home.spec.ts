@@ -2,9 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { checkHeroMotion } from "./hero-checks";
 
-test("parallax responds while a tall phone hero is still entering the viewport", async ({
-  page,
-}) => {
+test("a tall phone hero keeps its artwork static while scrolling", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
   await checkHeroMotion(page);
 });

@@ -1,5 +1,4 @@
 import { ArrowDown, Download, ExternalLink, Mail, MapPin } from "lucide-react";
-import Image from "next/image";
 import { memo } from "react";
 import { Container } from "@/components/layout/container";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/brand-icons";
@@ -15,14 +14,9 @@ const profileLinks = {
 export const Hero = memo(() => (
   <section id="home" className="hero" aria-labelledby="hero-title">
     <div className="hero__art" aria-hidden="true">
-      <Image
-        className="hero__image"
-        src="/images/hero/buffalo-engineering-2c3191e9019e.png"
-        alt=""
-        fill
-        sizes="(max-width: 900px) 1920px, (max-width: 1920px) 2880px, 100vw"
-        preload
-      />
+      <span className="hero__layer hero__layer--backdrop" />
+      <span className="hero__layer hero__layer--technology" />
+      <span className="hero__layer hero__layer--skyline" />
     </div>
     <Container className="hero__content">
       <div className="hero__intro">

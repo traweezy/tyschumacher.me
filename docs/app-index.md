@@ -36,6 +36,11 @@ Audited 2026-09-08. This is a single-page portfolio with a server-side contact b
   paint. `site-header.tsx` and `command-palette.tsx` synchronize later changes
   through the `tyschumacher:theme-mode` browser event. Theme values are
   `civic-light` / `civic-dark`; shared CSS tokens drive all action colors.
+- `sections/hero.tsx` renders three decorative layers. `app/globals.css` selects
+  responsive light/dark AVIF images with WebP fallbacks and applies a native view
+  timeline. Distant layers compensate most for document scrolling; phone widths,
+  reduced motion, and unsupported timelines use static artwork. See the
+  [parallax review](parallax-hero-research.md) for the geometry and asset budget.
 - `app/providers.tsx` creates the Query client, synchronizes reduced motion from
   `matchMedia` into Zustand and the document, and loads optional telemetry.
 - `site-header.tsx` owns scroll progress, active-section tracking, compact header,

@@ -2,6 +2,8 @@
 
 Reviewed September 6, 2026. This follows the mobile/tablet and Biome audits.
 
+> Update, September 8, 2026: The single-image hero described below has been superseded by a three-layer, responsive dark/light composition. See [Multi-layer parallax hero research and implementation brief](parallax-hero-research.md) for the active architecture, sources, accessibility behavior, and current visual validation. The remainder of this document is retained as historical context for the timeline and earlier hero iteration.
+
 ## Design and implementation
 
 The supplied `Pictures/website-header-buffalo-engineering-v2-6k.png` is copied

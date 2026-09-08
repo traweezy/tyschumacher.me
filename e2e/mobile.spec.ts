@@ -3,7 +3,9 @@ import { expect, test } from "@playwright/test";
 import { primaryNav } from "@/data/navigation";
 import { checkHeroMotion } from "./hero-checks";
 
-test("hero image, section order, and motion adapt to touch screens", async ({ page }) => {
+test("hero artwork, section order, and motion adapt to touch screens", async ({
+  page,
+}) => {
   await checkHeroMotion(page);
 });
 

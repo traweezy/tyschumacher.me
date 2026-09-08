@@ -19,4 +19,12 @@ Browser support data from [caniuse-lite](https://github.com/browserslist/caniuse
 
 ## Header artwork
 
-The Buffalo skyline header in `public/images/hero/buffalo-engineering-2c3191e9019e.png` was supplied by the portfolio owner as `website-header-buffalo-engineering-v2-6k.png`. The 6516 × 2172 source file is retained intact; Next Image serves optimized sizes, and responsive crops and overlays are applied in CSS. The personal website project preview is an original browser capture of the portfolio.
+The Buffalo skyline header uses light and dark layers in
+`public/images/hero/parallax/`, derived from the approved owner-supplied composite
+and refined with OpenAI ImageGen. The
+[parallax research record](docs/parallax-hero-research.md) describes the layers,
+crops, and processing limitations; the previous single-image asset remains in Git
+history. The red buffalo is a regional artistic motif; Buffalo Bills and related
+marks remain the property of their respective owners, and no affiliation or
+endorsement is implied. The personal website project previews are original
+browser captures of the rendered portfolio in each theme.

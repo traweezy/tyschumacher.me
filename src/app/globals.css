@@ -1327,14 +1327,32 @@ a:focus-visible {
   }
 }
 
-/* The photo keeps a stable dark palette in both site themes. */
 .hero {
   --hero-parallax-travel: clamp(9rem, 18vw, 16rem);
+  /* Positive translation counters document scrolling: distant planes need more. */
+  --hero-backdrop-travel: clamp(5.5rem, 10vw, 9rem);
+  --hero-technology-travel: clamp(3.5rem, 6vw, 6rem);
+  --hero-skyline-travel: clamp(1.25rem, 2.5vw, 2.5rem);
+  --hero-backdrop-image: url("/images/hero/parallax/dark-backdrop-wide.webp");
+  --hero-backdrop-avif: url("/images/hero/parallax/dark-backdrop-wide.avif");
+  --hero-technology-image: url("/images/hero/parallax/dark-technology-wide.webp");
+  --hero-technology-avif: url("/images/hero/parallax/dark-technology-wide.avif");
+  --hero-skyline-image: url("/images/hero/parallax/dark-skyline-wide.webp");
+  --hero-skyline-avif: url("/images/hero/parallax/dark-skyline-wide.avif");
+  --hero-overlay: linear-gradient(
+    90deg,
+    oklch(18% 0.06 260 / 96%),
+    oklch(18% 0.06 260 / 84%) 34%,
+    oklch(18% 0.06 260 / 24%) 75%,
+    oklch(18% 0.06 260 / 10%)
+  );
   --hero-ink: oklch(18% 0.06 260);
   --text-primary: oklch(98% 0.004 260);
   --text-secondary: oklch(87% 0.02 260);
   --accent: oklch(82% 0.09 274);
+  --accent-hover: oklch(90% 0.05 274);
   --accent-contrast: oklch(18% 0.04 260);
+  --hero-outline-hover: oklch(29% 0.06 260);
   --border: oklch(98% 0.004 260 / 22%);
   position: relative;
   isolation: isolate;
@@ -1344,6 +1362,32 @@ a:focus-visible {
   color: var(--text-primary);
   view-timeline-name: --hero;
   view-timeline-axis: block;
+  /* Anchor-navigation scroll padding must not offset the artwork's timeline. */
+  view-timeline-inset: 0;
+}
+
+:root[data-theme-mode="light"] .hero {
+  --hero-backdrop-image: url("/images/hero/parallax/light-backdrop-wide.webp");
+  --hero-backdrop-avif: url("/images/hero/parallax/light-backdrop-wide.avif");
+  --hero-technology-image: url("/images/hero/parallax/light-technology-wide.webp");
+  --hero-technology-avif: url("/images/hero/parallax/light-technology-wide.avif");
+  --hero-skyline-image: url("/images/hero/parallax/light-skyline-wide.webp");
+  --hero-skyline-avif: url("/images/hero/parallax/light-skyline-wide.avif");
+  --hero-overlay: linear-gradient(
+    90deg,
+    oklch(97% 0.012 84 / 97%),
+    oklch(97% 0.012 84 / 88%) 34%,
+    oklch(97% 0.012 84 / 30%) 74%,
+    oklch(97% 0.012 84 / 12%)
+  );
+  --hero-ink: oklch(97% 0.012 84);
+  --text-primary: oklch(21% 0.045 260);
+  --text-secondary: oklch(36% 0.04 260);
+  --accent: oklch(47% 0.19 274);
+  --accent-hover: oklch(39% 0.18 274);
+  --accent-contrast: oklch(98% 0.004 260);
+  --hero-outline-hover: oklch(92% 0.012 84);
+  --border: oklch(22% 0.045 260 / 24%);
 }
 
 .hero__art {
@@ -1353,14 +1397,57 @@ a:focus-visible {
   pointer-events: none;
 }
 
-.hero__image {
-  /* Explicit sizing also works under the site's strict inline-style CSP. */
+.hero__layer {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: right center;
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transform: translate3d(0, 0, 0);
+}
+
+.hero__layer--backdrop {
+  background-image: var(--hero-backdrop-image);
+}
+
+.hero__layer--technology {
+  background-image: var(--hero-technology-image);
+  background-position: right calc(50% + 2.25rem);
+  mix-blend-mode: screen;
+  opacity: 0.72;
+}
+
+.hero__layer--skyline {
+  background-image: var(--hero-skyline-image);
+}
+
+/* Prefer the smaller format; older engines retain the WebP declaration. */
+@supports (background-image: image-set(url("") type("image/avif"))) {
+  .hero__layer--backdrop {
+    background-image: image-set(
+      var(--hero-backdrop-avif) type("image/avif"),
+      var(--hero-backdrop-image) type("image/webp")
+    );
+  }
+
+  .hero__layer--technology {
+    background-image: image-set(
+      var(--hero-technology-avif) type("image/avif"),
+      var(--hero-technology-image) type("image/webp")
+    );
+  }
+
+  .hero__layer--skyline {
+    background-image: image-set(
+      var(--hero-skyline-avif) type("image/avif"),
+      var(--hero-skyline-image) type("image/webp")
+    );
+  }
+}
+
+:root[data-theme-mode="light"] .hero__layer--technology {
+  mix-blend-mode: multiply;
+  opacity: 0.42;
 }
 
 .hero::after {
@@ -1369,33 +1456,77 @@ a:focus-visible {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    oklch(18% 0.06 260 / 94%),
-    oklch(18% 0.06 260 / 82%) 34%,
-    oklch(18% 0.06 260 / 20%) 75%,
-    oklch(18% 0.06 260 / 8%)
-  );
+  background: var(--hero-overlay);
 }
 
 /* Keep native scrolling; unsupported browsers get the same static composition. */
 @supports (animation-timeline: --hero) and
   (animation-range: exit-crossing 0% exit-crossing 100%) {
-  @media (prefers-reduced-motion: no-preference) {
-    :root:not([data-motion="reduce"]) .hero__art {
-      animation: hero-parallax linear both;
+  @media (min-width: 601px) and (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="reduce"]) .hero__layer--backdrop {
+      animation: hero-parallax-backdrop linear both;
       animation-timeline: --hero;
-      animation-range: exit-crossing 0% exit-crossing 65%;
+      animation-range: exit-crossing 0% exit-crossing 100%;
+    }
+
+    :root:not([data-motion="reduce"]) .hero__layer--technology {
+      animation: hero-parallax-technology linear both;
+      animation-timeline: --hero;
+      animation-range: exit-crossing 0% exit-crossing 100%;
+    }
+
+    :root:not([data-motion="reduce"]) .hero__layer--skyline {
+      animation: hero-parallax-skyline linear both;
+      animation-timeline: --hero;
+      animation-range: exit-crossing 0% exit-crossing 100%;
     }
   }
 }
 
-@keyframes hero-parallax {
+@keyframes hero-parallax-backdrop {
   from {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0) scale(1.015);
   }
   to {
-    transform: translateY(var(--hero-parallax-travel));
+    transform: translate3d(0, var(--hero-backdrop-travel), 0) scale(1.015);
+  }
+}
+
+@keyframes hero-parallax-technology {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.01);
+  }
+  to {
+    transform: translate3d(0, var(--hero-technology-travel), 0) scale(1.01);
+  }
+}
+
+@keyframes hero-parallax-skyline {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, var(--hero-skyline-travel), 0);
+  }
+}
+
+@media (max-width: 1100px) {
+  .hero {
+    --hero-backdrop-image: url("/images/hero/parallax/dark-backdrop-tablet.webp");
+    --hero-backdrop-avif: url("/images/hero/parallax/dark-backdrop-tablet.avif");
+    --hero-technology-image: url("/images/hero/parallax/dark-technology-tablet.webp");
+    --hero-technology-avif: url("/images/hero/parallax/dark-technology-tablet.avif");
+    --hero-skyline-image: url("/images/hero/parallax/dark-skyline-tablet.webp");
+    --hero-skyline-avif: url("/images/hero/parallax/dark-skyline-tablet.avif");
+  }
+
+  :root[data-theme-mode="light"] .hero {
+    --hero-backdrop-image: url("/images/hero/parallax/light-backdrop-tablet.webp");
+    --hero-backdrop-avif: url("/images/hero/parallax/light-backdrop-tablet.avif");
+    --hero-technology-image: url("/images/hero/parallax/light-technology-tablet.webp");
+    --hero-technology-avif: url("/images/hero/parallax/light-technology-tablet.avif");
+    --hero-skyline-image: url("/images/hero/parallax/light-skyline-tablet.webp");
+    --hero-skyline-avif: url("/images/hero/parallax/light-skyline-tablet.avif");
   }
 }
 
@@ -1414,6 +1545,10 @@ a:focus-visible {
 
 .hero__eyebrow {
   color: oklch(84% 0.075 355);
+}
+
+:root[data-theme-mode="light"] .hero__eyebrow {
+  color: var(--avatar-pink);
 }
 
 .hero__title {
@@ -1479,7 +1614,7 @@ a:focus-visible {
 }
 
 .hero__cta--primary:hover {
-  background: oklch(90% 0.05 274);
+  background: var(--accent-hover);
 }
 
 .hero__cta--outline {
@@ -1489,7 +1624,7 @@ a:focus-visible {
 }
 
 .hero__cta--outline:hover {
-  background: oklch(29% 0.06 260);
+  background: var(--hero-outline-hover);
 }
 
 .hero__profile-links {
@@ -1531,7 +1666,22 @@ a:focus-visible {
 
 @media (max-width: 900px) {
   .hero {
+    --hero-overlay: linear-gradient(
+      180deg,
+      oklch(18% 0.06 260 / 4%),
+      oklch(18% 0.06 260 / 28%) 9rem,
+      var(--hero-ink) 24rem
+    );
     padding: clamp(12rem, 38vw, 17rem) 0 3rem;
+  }
+
+  :root[data-theme-mode="light"] .hero {
+    --hero-overlay: linear-gradient(
+      180deg,
+      oklch(97% 0.012 84 / 3%),
+      oklch(97% 0.012 84 / 25%) 9rem,
+      var(--hero-ink) 24rem
+    );
   }
 
   .hero__art {
@@ -1539,17 +1689,12 @@ a:focus-visible {
     bottom: auto;
   }
 
-  .hero__image {
-    object-position: 96% center;
+  .hero__layer {
+    background-position: center center;
   }
 
-  .hero::after {
-    background: linear-gradient(
-      180deg,
-      oklch(18% 0.06 260 / 6%),
-      oklch(18% 0.06 260 / 35%) 8rem,
-      var(--hero-ink) 23rem
-    );
+  .hero__layer--technology {
+    background-position: center calc(50% + 2.75rem);
   }
 
   .hero__intro {
@@ -1558,6 +1703,38 @@ a:focus-visible {
 }
 
 @media (max-width: 600px) {
+  .hero {
+    --hero-backdrop-image: url("/images/hero/parallax/dark-backdrop-mobile.webp");
+    --hero-backdrop-avif: url("/images/hero/parallax/dark-backdrop-mobile.avif");
+    --hero-technology-image: url("/images/hero/parallax/dark-technology-mobile.webp");
+    --hero-technology-avif: url("/images/hero/parallax/dark-technology-mobile.avif");
+    --hero-skyline-image: url("/images/hero/parallax/dark-skyline-mobile.webp");
+    --hero-skyline-avif: url("/images/hero/parallax/dark-skyline-mobile.avif");
+  }
+
+  :root[data-theme-mode="light"] .hero {
+    --hero-backdrop-image: url("/images/hero/parallax/light-backdrop-mobile.webp");
+    --hero-backdrop-avif: url("/images/hero/parallax/light-backdrop-mobile.avif");
+    --hero-technology-image: url("/images/hero/parallax/light-technology-mobile.webp");
+    --hero-technology-avif: url("/images/hero/parallax/light-technology-mobile.avif");
+    --hero-skyline-image: url("/images/hero/parallax/light-skyline-mobile.webp");
+    --hero-skyline-avif: url("/images/hero/parallax/light-skyline-mobile.avif");
+  }
+
+  .hero__art {
+    inset: 0 0 auto;
+    height: 24rem;
+  }
+
+  .hero__layer {
+    /* Positive center offsets can uncover the top edge on a 320px phone. */
+    background-position: center min(0px, calc(50% + 1.5rem));
+  }
+
+  .hero__layer--technology {
+    background-position: center min(0px, calc(50% + 3.25rem));
+  }
+
   .hero__actions {
     width: 100%;
   }

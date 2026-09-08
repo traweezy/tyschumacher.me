@@ -14,7 +14,7 @@ could also leave white text on the dark palette's pale accent.
 Primary buttons now use `--accent-contrast` and `--accent-hover`, alongside
 `--accent`, in every state. The contact form's placeholders explicitly use
 `--text-secondary` at full opacity. These changes reuse the existing palette.
-The obsolete
+The light hero eyebrow now uses the readable rose token. The obsolete
 `data-theme="dark"` form selector was removed; this app uses `civic-light` and
 `civic-dark`.
 
@@ -86,8 +86,11 @@ the browser connector reported no available browser. A later Flameshot attempt
 timed out; the earlier successful after capture and browser captures were inspected.
 Evidence is under `/tmp/portfolio-light-review/`.
 
-Project layout and mobile tests now measure the single accessible image in each
-card, excluding the hidden alternate capture.
+Concurrent hero work introduced three background layers and static phone artwork.
+That implementation was preserved; the obsolete single-image motion checks now
+verify all three layers load, their ordered desktop travel, static phone behavior,
+and live reduced-motion changes. Project layout and mobile tests now measure the
+single accessible image in each card, excluding the hidden alternate capture.
 
 Final gates passed:
 
@@ -110,4 +113,7 @@ CI=true PLAYWRIGHT_HTML_OUTPUT_DIR=/tmp/portfolio-light-review/html-final \
   --output=/tmp/portfolio-light-review/e2e-final --workers=2
 ```
 
-This light-theme pass performed no live email submission.
+This light-theme pass performed no live email submission. The subsequent
+[parallax release review](parallax-hero-research.md) adds hero hover contrast
+corrections and a Firefox fallback test, and records the final 66-test browser
+run before the combined changes are committed and pushed.

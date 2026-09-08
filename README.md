@@ -63,6 +63,7 @@ Production telemetry is disabled unless `NEXT_PUBLIC_OTEL_EXPORT_URL` is set at 
 - [Application index](docs/app-index.md): entry points, boundaries and editing workflow.
 - [Light-theme audit](docs/light-theme-audit.md): contrast, theme-aware project captures, and screenshot provenance.
 - [Header and timeline audit](docs/hero-timeline-audit.md): parallax behavior, responsive artwork, timeline, and visual review.
+- [Multi-layer hero research](docs/parallax-hero-research.md): current depth model, dark/light art direction, performance, and accessibility decisions.
 - [Mobile and tablet audit](docs/mobile-tablet-audit.md): responsive fixes, browser coverage, and local HTTPS testing.
 - [Portfolio research and audit](docs/portfolio-audit.md): project provenance, design decisions, upgrades and limitations.
 - [Third-party notices](THIRD_PARTY_NOTICES.md): asset provenance and license notes.
