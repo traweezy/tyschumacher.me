@@ -161,6 +161,11 @@ jobs:
       - name: Verify Playwright
         run: pnpm exec playwright --version
 
+      - name: Align container home ownership for Firefox
+        # Actions mounts /github/home with pwuser ownership while this job runs as root.
+        # Firefox requires the existing home directory to belong to its current user.
+        run: chown "$(id -u):$(id -g)" "$HOME"
+
       - name: End-to-end tests
         run: pnpm test:e2e
 

@@ -118,6 +118,12 @@ three-plane totals above describe this implementation.
   benchmarks. A request-interception comparison was discarded because it bypassed
   emulated image transfer.
 
+The first hosted run passed all 65 Chromium/WebKit checks, but Firefox refused
+to launch because Actions mounted `/github/home` with `pwuser` ownership while
+the container job ran as root. The workflow now aligns that existing directory's
+ownership with the job user before launching browsers. It does not change the
+home environment variable or disable Firefox's safety checks.
+
 The browser run uses isolated output paths and a fresh production server:
 
 ```sh
