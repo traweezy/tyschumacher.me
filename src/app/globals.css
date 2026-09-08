@@ -1336,9 +1336,9 @@ a:focus-visible {
 .hero {
   --hero-parallax-travel: clamp(9rem, 18vw, 16rem);
   /* Positive translation counters document scrolling: distant planes need more. */
-  --hero-backdrop-travel: clamp(5.5rem, 10vw, 9rem);
-  --hero-technology-travel: clamp(3.5rem, 6vw, 6rem);
-  --hero-skyline-travel: clamp(1.25rem, 2.5vw, 2.5rem);
+  --hero-backdrop-travel: clamp(22rem, 40vw, 36rem);
+  --hero-technology-travel: clamp(10.5rem, 18vw, 18rem);
+  --hero-skyline-travel: clamp(2.5rem, 5vw, 5rem);
   --hero-backdrop-image: url("/images/hero/parallax/dark-backdrop-wide.webp");
   --hero-backdrop-avif: url("/images/hero/parallax/dark-backdrop-wide.avif");
   --hero-technology-image: url("/images/hero/parallax/dark-technology-wide.webp");

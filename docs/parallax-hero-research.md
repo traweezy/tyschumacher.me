@@ -17,9 +17,9 @@ skyline move slowest on screen. The corrected model is:
 
 | Plane | Content | Downward compensation | Screen movement |
 | --- | --- | --- | --- |
-| Backdrop | Sky, clouds, horizon, water | `clamp(5.5rem, 10vw, 9rem)` | Slowest |
-| Technology | Constellation, stars, buffalo | `clamp(3.5rem, 6vw, 6rem)` | Intermediate |
-| Skyline | City Hall, grain elevators, reflections | `clamp(1.25rem, 2.5vw, 2.5rem)` | Fastest artwork plane |
+| Backdrop | Sky, clouds, horizon, water | `clamp(22rem, 40vw, 36rem)` | Slowest |
+| Technology | Constellation, stars, buffalo | `clamp(10.5rem, 18vw, 18rem)` | Intermediate |
+| Skyline | City Hall, grain elevators, reflections | `clamp(2.5rem, 5vw, 5rem)` | Fastest artwork plane |
 
 This follows the geometry described by [Chrome's Performant Parallaxing](https://developer.chrome.com/blog/performant-parallaxing/)
 (Paul Lewis and Robert Flack, updated December 2, 2016). Its historical Safari and
@@ -31,10 +31,19 @@ anchor-navigation scroll padding. The [CSSWG working draft](https://drafts.csswg
 (May 14, 2026) defines the inset and range behavior. `animation-timeline` follows
 the animation shorthand so the shorthand cannot reset it.
 
-At 1440px, full compensation is 144 / 86.4 / 36px. A measured 350px scroll in
-Chromium moved the planes upward approximately 300.7 / 324.0 / 344.4px; the common
-header-height change also affects absolute viewport travel. Regression tests now
+The stronger-motion adjustment increases backdrop travel fourfold, technology
+travel threefold, and skyline travel twofold. At 1440px, full compensation is
+576 / 259.2 / 72px. The target is at least 200px of backdrop compensation during
+a 350px scroll at that width, with the artwork continuing upward on screen and
+covering the visible scene. The initial crop and full exit range stay the same.
+
+At 1440 × 900, a measured 350px Chromium scroll increased compensation from
+59.5 / 35.7 / 14.9px to 237.3 / 106.8 / 29.7px. Backdrop-to-skyline separation
+increased from about 45px to 208px, making the depth easier to see. Header
+condensation also affects absolute viewport travel. Existing regression tests
 assert viewport ordering, live motion preferences, and return to the start pose.
+This adjustment adds no JavaScript, dependencies, or image payload. Before/after
+captures and measurements are under `/tmp/stronger-hero-parallax/` locally.
 
 ## Rendering, accessibility, and art direction
 
