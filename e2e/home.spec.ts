@@ -223,7 +223,7 @@ test.describe("Home experience", () => {
     const experienceSection = page.getByRole("region", { name: /Experience/i });
     await expect(experienceSection).toBeVisible();
 
-    await experienceSection.getByRole("button", { name: "New York, NY" }).click();
+    await experienceSection.getByRole("button", { name: "New York, New York" }).click();
     await expect(experienceSection.locator(".experience-card")).toHaveCount(2);
   });
 

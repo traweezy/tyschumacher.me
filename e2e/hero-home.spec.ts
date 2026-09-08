@@ -21,7 +21,7 @@ test("timeline remains coherent when locations change", async ({ page }) => {
   const section = page.locator("#experience");
   await expect(section.locator(".career-entry")).toHaveCount(4);
   await expect(section.getByText("Current role", { exact: true })).toHaveCount(1);
-  await section.getByRole("button", { name: "Buffalo, NY", exact: true }).click();
+  await section.getByRole("button", { name: "Buffalo, New York", exact: true }).click();
   await expect(section.locator(".career-entry")).toHaveCount(1);
   await expect(section.getByText("Current role", { exact: true })).toHaveCount(0);
   expect(

@@ -160,7 +160,7 @@ test.describe("Mobile navigation", () => {
     await popup.waitForLoadState("domcontentloaded");
     await expect(popup).toHaveURL(/\/images\/projects\//);
     await popup.close();
-    await page.getByRole("button", { name: "Buffalo, NY", exact: true }).tap();
+    await page.getByRole("button", { name: "Buffalo, New York", exact: true }).tap();
     await expect(
       page.getByRole("list", { name: "Experience timeline" }).locator("article"),
     ).toHaveCount(1);

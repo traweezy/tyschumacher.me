@@ -1144,6 +1144,12 @@ a:focus-visible {
   }
 }
 
+@media (width >= 80rem) and (width < 88rem) {
+  .site-header__identity-meta {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
   .site-header__bar {
     gap: 0.65rem;
