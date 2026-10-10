@@ -3,7 +3,7 @@
 export const resume = {
   phone: "+1 (716) 948 4255",
   summary:
-    "Senior full stack and product engineer with 10+ years across commerce, sportsbook, trading, banking, and applied AI. Current freelance client: Remorseless Records. Builds accessible React and TypeScript interfaces and reliable Go, Java, and Node.js services.",
+    "Senior full stack and product engineer with 10+ years building commerce, sportsbook, trading, and banking software. Builds accessible React and TypeScript interfaces and Go, Java, and Node.js services. Led technical design reviews and mentored engineers.",
   experienceBulletLimits: [
     { company: "Lab49", count: 1 },
     { company: "Twisted Rope", count: 1 },
@@ -12,12 +12,12 @@ export const resume = {
     {
       slug: "stackctl",
       description:
-        "Created reproducible local service stacks with stable JSON contracts, health diagnostics, release checksums, SPDX SBOMs, and artifact attestations.",
+        "Created a Go CLI and dashboard for reproducible local service stacks, with stable JSON contracts, health diagnostics, checksums, SPDX SBOMs, and artifact attestations.",
     },
     {
       slug: "relantern",
       description:
-        "Built a developer intelligence platform with hybrid retrieval, reciprocal rank fusion, structured LLM outputs, evidence validation, cost controls, and offline evaluations.",
+        "Build a developer intelligence platform with hybrid retrieval, reciprocal rank fusion, structured LLM outputs, evidence validation, cost controls, and offline evaluations.",
     },
   ],
   education: {

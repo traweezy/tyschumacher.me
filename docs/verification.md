@@ -373,3 +373,33 @@ is rendered and inspected at one page. Private review artifacts are under
 Vercel deployment and live PDF byte comparison remain release checks until
 recorded separately. No contact email or account privacy change is part of
 this verification.
+
+## Résumé audit and readability revision, October 10, 2026
+
+The owner requested deep résumé research, supported improvements, and updates to
+current copies and professional profiles before reviewing the result. The revision
+uses a plain contact block and a single text column, removes decorative PDF icons,
+and increases all visible text to at least 10 points. The tagged PDF remains one
+US Letter page with seven working link annotations and a verified text layer.
+The published filename and lowercase redirect contract remain intact.
+
+The summary foregrounds professional product engineering, services, technical
+design reviews, and mentorship. Personal AI work is explicitly separated from
+professional experience in the website profile and selected project heading.
+Caesars contributions use past tense and the owner confirmed millions of users
+context. Current freelance work, official past titles, employment dates, education,
+and project development boundaries are preserved. No invented performance figures,
+production launch, formal management scope, or production AI deployment is added.
+
+The approach follows Harvard's guidance on factual and audience specific writing,
+Yale's action, project, and result guidance, MIT's simple formatting and terminology
+guidance, Greenhouse's documented parsing limitations, and Gergely Orosz's advice
+on readable developer résumés. A text extraction check reduces avoidable parsing
+issues; it is not a guarantee of an employer's ATS result or an ATS score.
+
+Local checks pass: Biome, strict TypeScript, the production build, six focused
+content tests, and the full 94 test suite. The final PDF render is inspected for
+wrapping, margins, clipping, hierarchy, and reading order. Local desktop website
+text is visually inspected and a narrow viewport has no horizontal overflow.
+Live publication, byte comparisons, and account update evidence are recorded
+separately in the owner's private résumé audit report.

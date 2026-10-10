@@ -59,9 +59,9 @@ export const experiences: ExperienceEntry[] = [
       { name: "PostgreSQL", icon: "postgresql", accentKey: "postgresql" },
     ],
     bullets: [
-      "Develop the Remorseless Records commerce platform with React, Next.js, TypeScript, and Medusa for catalog management, publishing, search, and Admin workflows.",
-      "Integrate Stripe checkout, payment recovery, refunds, and order reconciliation with Medusa as the commerce authority.",
-      "Improve accessibility, responsive layouts, security, CI, deployment checks, and database and media recovery.",
+      "Develop the Remorseless Records commerce platform with React, Next.js, TypeScript, and Medusa for catalog, publishing, search, and administrative workflows.",
+      "Integrate Stripe checkout, payment recovery, refunds, and order reconciliation, keeping Medusa as the system of record for commerce.",
+      "Improve accessibility, responsive layouts, security, CI, deployment checks, and database and media recovery for the new platform.",
     ],
   },
   {
@@ -116,9 +116,9 @@ export const experiences: ExperienceEntry[] = [
       },
     ],
     bullets: [
-      "Designed Go and Java integrations that normalize provider data for live betting products and keep market interfaces current as data changes.",
-      "Delivered accessible React workflows for live odds, trader operations, and analytics, using list virtualization to preserve responsiveness during continuous updates.",
-      "Combined FullStory evidence with trader feedback to prioritize and ship usability improvements for operational workflows.",
+      "Designed Go and Java integrations that normalized live betting data from multiple providers and kept market interfaces current as data changed.",
+      "Built accessible React live odds, trader, and analytics tools for a sportsbook platform serving millions of users, with list virtualization to keep continuous updates responsive.",
+      "Used FullStory evidence and trader feedback to prioritize and ship improvements to operational workflows.",
       "Led technical design reviews and mentored engineers across interface and service delivery decisions.",
     ],
   },
