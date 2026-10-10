@@ -190,7 +190,15 @@ const html = `<!doctype html>
                 <p>${escapeHtml(entry.role)}</p>
                 <p class="location">${escapeHtml(entry.location)}</p>
               </div>
-              <ul>${entry.bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}</ul>
+              <ul>${entry.bullets
+                .slice(
+                  0,
+                  resume.experienceBulletLimits.find(
+                    (limit) => limit.company === entry.company,
+                  )?.count,
+                )
+                .map((bullet) => `<li>${escapeHtml(bullet)}</li>`)
+                .join("")}</ul>
             </article>`,
             )
             .join("")}

@@ -24,9 +24,51 @@ export type ExperienceEntry = {
 
 export const experiences: ExperienceEntry[] = [
   {
+    company: "Freelance",
+    role: "Senior Full Stack and Product Engineer",
+    start: "Jul 2025",
+    location: "Buffalo, New York",
+    caseLog: [
+      { label: "Client work", value: "Remorseless Records commerce platform" },
+      {
+        label: "Service focus",
+        value:
+          "Websites, commerce systems, integrations, and internal tools for local businesses and remote teams.",
+      },
+      {
+        label: "Delivery",
+        value:
+          "Product interfaces, commerce workflows, accessibility, and dependable release and recovery procedures.",
+      },
+    ],
+    workTypes: [
+      {
+        name: "Consulting",
+        icon: "consulting",
+        accentKey: "consulting",
+        kind: "domain",
+      },
+      { name: "Commerce", icon: "retail", accentKey: "retail", kind: "domain" },
+    ],
+    stack: [
+      { name: "React", icon: "react", accentKey: "react" },
+      { name: "Next.js", icon: "nextdotjs", accentKey: "next" },
+      { name: "TypeScript", icon: "typescript", accentKey: "typescript" },
+      { name: "Medusa", icon: "medusa", accentKey: "medusa" },
+      { name: "Stripe", icon: "stripe", accentKey: "stripe" },
+      { name: "PostgreSQL", icon: "postgresql", accentKey: "postgresql" },
+    ],
+    bullets: [
+      "Develop the Remorseless Records commerce platform with React, Next.js, TypeScript, and Medusa for catalog management, publishing, search, and Admin workflows.",
+      "Integrate Stripe checkout, payment recovery, refunds, and order reconciliation with Medusa as the commerce authority.",
+      "Improve accessibility, responsive layouts, security, CI, deployment checks, and database and media recovery.",
+    ],
+  },
+  {
     company: "Caesars Sportsbook",
     role: "Senior Full Stack Developer",
     start: "Dec 2021",
+    end: "Oct 2026",
     location: "Jersey City, New Jersey, Remote",
     caseLog: [
       { label: "Product", value: "Live odds, trader tools, analytics" },

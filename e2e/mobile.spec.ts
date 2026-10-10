@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { experiences } from "@/data/experience";
 import { primaryNav } from "@/data/navigation";
 import { checkHeroMotion } from "./hero-checks";
 
@@ -163,11 +164,14 @@ test.describe("Mobile navigation", () => {
     await page.getByRole("button", { name: "Buffalo, New York", exact: true }).tap();
     await expect(
       page.getByRole("list", { name: "Experience timeline" }).locator("article"),
-    ).toHaveCount(1);
+    ).toHaveCount(
+      experiences.filter((experience) => experience.location === "Buffalo, New York")
+        .length,
+    );
     await page.getByRole("button", { name: "All", exact: true }).tap();
     await expect(
       page.getByRole("list", { name: "Experience timeline" }).locator("article"),
-    ).toHaveCount(4);
+    ).toHaveCount(experiences.length);
     await page.getByRole("link", { name: "Back to top" }).tap();
     await expect(page).toHaveURL(/#home$/);
   });

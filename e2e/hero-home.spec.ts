@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { experiences } from "@/data/experience";
 import { checkHeroMotion } from "./hero-checks";
 
 test("a tall phone hero keeps its artwork static while scrolling", async ({ page }) => {
@@ -19,9 +20,19 @@ test("hero art follows scrolling and respects live motion preferences", async ({
 test("timeline remains coherent when locations change", async ({ page }) => {
   await page.goto("/");
   const section = page.locator("#experience");
-  await expect(section.locator(".career-entry")).toHaveCount(4);
+  await expect(section.locator(".career-entry")).toHaveCount(experiences.length);
   await expect(section.getByText("Current role", { exact: true })).toHaveCount(1);
   await section.getByRole("button", { name: "Buffalo, New York", exact: true }).click();
+  const buffaloExperiences = experiences.filter(
+    (experience) => experience.location === "Buffalo, New York",
+  );
+  await expect(section.locator(".career-entry")).toHaveCount(buffaloExperiences.length);
+  await expect(section.getByText("Current role", { exact: true })).toHaveCount(
+    buffaloExperiences.filter((experience) => !experience.end).length,
+  );
+  await section
+    .getByRole("button", { name: "Jersey City, New Jersey, Remote", exact: true })
+    .click();
   await expect(section.locator(".career-entry")).toHaveCount(1);
   await expect(section.getByText("Current role", { exact: true })).toHaveCount(0);
   expect(
@@ -30,7 +41,7 @@ test("timeline remains coherent when locations change", async ({ page }) => {
       .evaluate((element) => getComputedStyle(element, "::before").display),
   ).toBe("none");
   await section.getByRole("button", { name: "All", exact: true }).click();
-  await expect(section.locator(".career-entry")).toHaveCount(4);
+  await expect(section.locator(".career-entry")).toHaveCount(experiences.length);
   await expect(section.getByText("Current role", { exact: true })).toHaveCount(1);
   const all = section.getByRole("button", { name: "All", exact: true });
   for (const colorScheme of ["light", "dark"] as const) {

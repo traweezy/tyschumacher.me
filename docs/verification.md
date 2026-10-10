@@ -332,3 +332,44 @@ The full resolution hero continues to use responsive Next Image delivery.
 All browser profiles use the local HTTPS preview to match production transport
 and CSP. Normal image assertions are retained. Certificate exceptions apply
 only to the local test certificate; deployed checks validate real TLS.
+
+
+## Freelance profile and resume refresh — October 10, 2026
+
+The owner requested consistent freelance positioning across the resume, website,
+LinkedIn and GitHub. The current role is labeled Freelance, beginning July 2025
+after the owner's date correction; Caesars ends October 2026. Remorseless
+Records is the named current client. Buffalo businesses and remote teams are
+a service focus, without inventing other clients, metrics or a production launch.
+
+The presentation follows [Harvard's resume guidance](https://careerservices.fas.harvard.edu/resources/create-a-strong-resume/)
+on specific, active, factual content and consistent chronology, and
+[Upwork's freelance resume guidance](https://www.upwork.com/resources/how-to-list-freelance-work-on-resumes)
+on role, dates, client and concrete contributions. One ongoing Freelance role
+with a named client is the application of that guidance to this work history.
+
+Website and resume share the experience data. The resume includes the freelance
+client in Experience and retains Stackctl and Relantern as independent projects.
+Older Lab49 and Twisted Rope bullets are curated for the PDF only; the website
+keeps their full detail. The PDF remains one tagged page with seven link
+annotations, all six skill groups, education and contact information. Documents
+and website copies are identical. The legacy lowercase resume URL is retained.
+
+Before publication, the existing dependency audit identified Next.js, sharp
+and source-map-js advisories that would fail CI. Minimal reviewed fixes update
+Next.js to 16.3.8 and override sharp 0.35.5 and source-map-js 1.2.2. Registry
+publication dates are September 30, September 27 and September 30 respectively;
+all satisfy this repository's one-day cooling rule without an exception.
+
+Local verification passes: frozen install, Biome, strict typecheck, production
+build, 94 unit tests and all 66 browser tests. Coverage is 89.27% statements,
+84% branches, 90.42% functions and 89.51% lines. The dependency audit reports
+no known vulnerabilities and the production CycloneDX SBOM regenerates. Timeline
+tests account for five roles and retain the single-entry connector check.
+
+Rendered desktop and phone pages are reviewed in both themes. The final PDF
+is rendered and inspected at one page. Private review artifacts are under
+`~/Documents/Codex/2026-10-10/professional-profile-refresh/`. Exact GitHub CI,
+Vercel deployment and live PDF byte comparison remain release checks until
+recorded separately. No contact email or account privacy change is part of
+this verification.

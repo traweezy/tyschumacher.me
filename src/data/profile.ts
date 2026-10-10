@@ -16,5 +16,5 @@ export const profile = {
   experience: "10+ years",
   headline: "Software for teams that work live.",
   subhead:
-    "With 10+ years of experience, I build real time sportsbook, electronic trading, banking, commerce, and AI enabled software that helps teams understand changing information and act with confidence.",
+    "Freelance full stack and product engineering, based in Buffalo. I build websites, commerce systems, integrations, and internal tools, with current client work for Remorseless Records. My 10+ years of experience span sportsbook, trading, banking, and applied AI.",
 } satisfies Profile;
